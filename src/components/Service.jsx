@@ -3,9 +3,9 @@ import CardService from "./CardService";
 
 const Service = () => {
   return (
-    <div className="w-full flex justify-center">
-      <div className="max-w-[1440px] w-full flex flex-col ">
-        <div className="flex justify-center mt-[80px] mb-[40px] text-blue-950 text-[32px] font-medium leading-[48px]">
+    <div className="w-full flex justify-center bg-[#f3f4f6]">
+      <div className="   w-full flex flex-col ">
+        <div className="flex justify-center mt-[80px] mb-[40px] text-blue-950 text-[32px] font-bold leading-[48px]">
           บริการยอดฮิตของเรา
         </div>
         <div className="flex justify-between mb-[60px]">

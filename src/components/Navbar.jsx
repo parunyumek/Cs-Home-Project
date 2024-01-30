@@ -17,12 +17,12 @@ const Navbar = () => {
               HomeServices
             </div>
           </div>
-          <button className="text-black text-base font-medium leading-normal">
+          <button className="text-black text-base font-bold leading-normal">
             บริการของเรา
           </button>
         </div>
         <div className="flex items-center">
-          <button className="flex w-[115px] h-10 px-6 py-2 rounded-lg border border-blue-600 justify-start items-center gap-2.5">
+          <button className="flex w-[118px] h-10 px-6 py-2 rounded-lg border border-blue-600 justify-start items-center gap-2.5">
             <div className="text-center text-blue-600 text-base font-medium ">
               เข้าสู่ระบบ
             </div>

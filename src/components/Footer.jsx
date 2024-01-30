@@ -2,7 +2,7 @@ import Container from "./Container";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-[#ffffff]">
       <Container>
         <div className="flex w-full justify-between items-center h-[193px]">
           <div className="gap-[10px] flex items-center">
@@ -12,7 +12,7 @@ const Footer = () => {
             </span>
           </div>
           <div>
-            <div className="text-zinc-800 text-lg font-medium leading-[27px]">
+            <div className="text-zinc-800 text-lg font-bold leading-[27px]">
               บริษัท โฮมเซอร์วิสเซส จำกัด
             </div>
             <div className="text-gray-600 text-sm font-normal leading-[21px]">

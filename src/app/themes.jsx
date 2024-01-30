@@ -3,14 +3,14 @@
 import { createTheme } from "@mui/material/styles";
 import { Prompt } from "next/font/google";
 
-const promt = Prompt({
+const prompt = Prompt({
   weight: "400",
   subsets: ["latin"],
 });
 
 const theme = createTheme({
   typography: {
-    fontFamily: `${promt.style.fontFamily}, sans-serif`,
+    fontFamily: `${prompt.style.fontFamily}, sans-serif`,
   },
 });
 

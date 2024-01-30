@@ -7,7 +7,7 @@ const Banner = () => {
       <Container>
         <div className="flex justify-between flex-col mt-[78px] mb-[50px]">
           <div>
-            <Typography className="text-blue-700 text-[64px] font-bold  leading-[96px]">
+            <Typography className="text-blue-700 text-[64px] font-extrabold  leading-[96px]">
               เรื่องบ้าน...ให้เราช่วยดูแลคุณ
             </Typography>
             <Typography className="text-black text-[42px] font-semibold ">

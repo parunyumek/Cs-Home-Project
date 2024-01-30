@@ -19,7 +19,7 @@ const CardService = () => {
           </div>
         </div>
         <div className="flex-col justify-start items-start gap-1 flex">
-          <div className="text-zinc-800 text-xl font-medium  leading-[30px]">
+          <div className="text-zinc-800 text-xl font-bold leading-[30px]">
             ทำความสะอาดทั่วไป
           </div>
           <div className="justify-start items-center gap-2 inline-flex">
