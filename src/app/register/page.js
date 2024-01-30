@@ -1,5 +1,11 @@
+import RegisterForm from "@/components/RegisterForm.jsx";
+
 const Page = () => {
-  return <div>test register</div>;
+  return (
+    <div>
+      <RegisterForm />
+    </div>
+  );
 };
 
 export default Page;
