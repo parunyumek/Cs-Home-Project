@@ -2,8 +2,7 @@
 
 import { Prompt } from "next/font/google";
 import { useState } from "react";
-import supabase from "./supabase.jsx";
-
+import { supabase } from "../../supabase";
 const prompt = Prompt({
   weight: ["400"],
   subsets: ["latin"],
@@ -40,10 +39,10 @@ const RegisterForm = () => {
   return (
     <form onSubmit={handleRegister}>
       <div
-        className={`${prompt.className} flex items-center justify-center w-[1440px]  bg-[#f3f4f6] `}
+        className={`${prompt.className} flex items-center justify-center   bg-[#f3f4f6]  h-screen `}
       >
-        <div className="w-[600px] h-[800px] bg-white rounded-[5px] shadow border border-zinc-300 flex-col justify-center items-center">
-          <div className=" w-[100%]">
+        <div className="w-[600px] h-auto pb-10 bg-white rounded-[5px] shadow border border-zinc-300 flex-col justify-center items-center">
+          <div className=" ">
             <h1 className="text-blue-600 text-2xl font-medium mb-3 text-center pt-[41px]">
               ลงทะเบียนผู้ใช้ใหม่
             </h1>
