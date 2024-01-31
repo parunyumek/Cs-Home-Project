@@ -7,7 +7,6 @@ const Page = () => {
     <div>
       <Navbar />
       <RegisterForm />
-      <Footer/>
     </div>
   );
 };

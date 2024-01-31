@@ -4,7 +4,7 @@ const Partner = () => {
       <div>
         <img src="/assets/images/part-male-construction-worker.png" alt="" />
       </div>
-      <div className="flex flex-col justify-center gap-6 ml-[130px]">
+      <div className="flex flex-col justify-center gap-6 ml-[300px]">
         <div className="text-white text-[40px] font-semibold leading-[50px]">
           มาร่วมเป็นพนักงานซ่อม
           <br />
