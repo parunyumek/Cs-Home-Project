@@ -35,37 +35,41 @@ const RegisterForm = () => {
     try {
       // ตรวจสอบข้อมูลในแบบฟอร์ม
 
-      const { user, error } = await supabase.auth.signUp({
-        fullName,
-        phoneNumber,
+      const { data } = await supabase.auth.signUp({
+        displayName: fullName,
+        phone: phoneNumber,
         email,
         password,
       });
 
-      if (error) {
-        console.error("Error registering user:", error.message);
+      if (data.error) {
+        console.error("Error registering user:", res.error.message);
       } else {
         // ลงทะเบียนผู้ใช้สำเร็จ
         console.log("User registered successfully.");
-        router.push("/login");
 
         // ใช้ 'user' จาก authentication ไปบันทึกในตาราง 'users'
 
-        const { data, error } = await supabase.from("users").insert([
-          {
-            fullname: fullName,
-            phone_no: phoneNumber,
-            email,
-            password,
-            created_at: new Date(),
-          },
-        ]);
+        if (data.user.id) {
+          const res = await supabase.from("users").insert([
+            {
+              fullname: fullName,
+              phone_no: phoneNumber,
+              email,
+              password,
+              created_at: new Date(),
+              auth_id: data.user.id,
+            },
+          ]);
 
-        if (error) {
-          console.error("Error adding user data to table:", error.message);
-        } else {
-          console.log("User data added to table successfully:", data);
+          console.log("res :>> ", res);
         }
+
+        // if (error) {
+        //   console.error("Error adding user data to table:", error.message);
+        // } else {
+        //   console.log("User data added to table successfully:", data);
+        // }
       }
     } catch (error) {
       console.error("Error registering user:", error.message);
@@ -77,7 +81,7 @@ const RegisterForm = () => {
       <div
         className={`${prompt.className} flex items-center justify-center   bg-[#f3f4f6]  h-screen `}
       >
-        <div className="w-[600px] h-auto pb-10 bg-white rounded-[5px] shadow border border-zinc-300 flex-col justify-center items-center">
+        <div className=" w-[600px] h-auto pb-10 bg-white rounded-[5px] shadow border border-zinc-300 flex-col justify-center items-center">
           <div className=" ">
             <h1 className="text-blue-600 text-2xl font-medium mb-3 text-center pt-[41px]">
               ลงทะเบียนผู้ใช้ใหม่
