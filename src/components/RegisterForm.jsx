@@ -6,8 +6,6 @@ import { supabase } from "../../supabase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
-
 const RegisterForm = () => {
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -334,9 +332,12 @@ const RegisterForm = () => {
 
       if (error) {
         console.error("Error registering user:", error.message);
+        alert("อีเมลล์นี้ถูกลงทะเบียนแล้ว");
       } else {
         // ลงทะเบียนผู้ใช้สำเร็จ
         console.log("User registered successfully.");
+        alert("ลงทะเบียนสำเร็จ กรุณาเช็คอีเมลของคุณเพื่อยืนยันการลงทะเบียน");
+        router.push("/login");
 
         const { data, error } = await supabase.from("users").insert([
           {
@@ -359,6 +360,16 @@ const RegisterForm = () => {
       console.error("Error registering user:", error.message);
     }
   };
+  // const handleSubmit = async (event) => {
+  //   // เรียกใช้ handleDuplicateInput เพื่อตรวจสอบข้อมูลที่ซ้ำ
+  //   const isDuplicate = await handleDuplicateInput(event);
+
+  //   // ตรวจสอบผลลัพธ์จาก handleDuplicateInput
+  //   // ถ้าไม่มีข้อมูลที่ซ้ำจะเรียก handleRegister เพื่อทำการลงทะเบียน
+  //   if (!isDuplicate) {
+  //     await handleRegister(event);
+  //   }
+  // };
 
   return (
     <form onSubmit={handleRegister}>
@@ -465,6 +476,11 @@ const RegisterForm = () => {
                     name="checkbox-agreement"
                     className="mr-3 w-5 h-5"
                     required
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity(
+                        "กรุณากดยอมรับข้อตกลงเพื่อลงทะเบียน"
+                      )
+                    }
                     onChange={handleCheckboxChange}
                   />
                   <label
