@@ -1,8 +1,14 @@
 import * as React from "react";
 import Container from "./Container";
 import Link from "next/link";
+import { getCookie } from "cookies-next";
+import Logout from "./Logout";
 
 const Navbar = () => {
+  const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
+
+  console.log("user :>> ", user);
+
   return (
     <nav className="flex justify-center w-full bg-white h-[80px]">
       <Container>
@@ -24,7 +30,11 @@ const Navbar = () => {
         <div className="flex items-center">
           <button className="flex w-[118px] h-10 px-6 py-2 rounded-lg border border-blue-600 justify-start items-center gap-2.5">
             <div className="text-center text-blue-600 text-base font-medium ">
-              <Link href={"/login"}>เข้าสู่ระบบ</Link>
+              {user.aud === "authenticated" ? (
+                <Logout />
+              ) : (
+                <Link href={"/login"}>เข้าสู่ระบบ</Link>
+              )}
             </div>
           </button>
         </div>

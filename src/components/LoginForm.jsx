@@ -1,13 +1,7 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { handleLogin } from "../app/login/action";
+import { handleLogin } from "../app/login/actions";
 import Link from "next/link";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   return (
     <div className="w-full flex justify-center h-screen">
       <form
@@ -45,7 +39,7 @@ const LoginForm = () => {
           />
         </div>
         <button
-          type="submit"
+          // onClick={handleLogin}
           className="w-[440px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg mt-11 text-center text-white text-base font-medium leading-normal"
         >
           เข้าสู่ระบบ
