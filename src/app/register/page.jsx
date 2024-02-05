@@ -1,7 +1,8 @@
 import RegisterForm from "@/components/RegisterForm.jsx";
 import Navbar from "@/components/Navbar";
 
-const Page = () => {
+
+const page = () => {
   return (
     <div>
       <Navbar />
@@ -10,4 +11,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default page;
