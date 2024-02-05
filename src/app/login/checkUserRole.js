@@ -29,4 +29,26 @@ const checkUserRole = async (email) => {
   }
 };
 
+export const checkUserData = async (email) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error) {
+      console.error("Database query error:", error.message);
+    }
+
+    if (data) {
+      console.log("data :>> ", data);
+
+      return data;
+    }
+  } catch (error) {
+    console.error("Check user data error:", error.message);
+  }
+};
+
 export default checkUserRole;
