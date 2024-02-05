@@ -4,24 +4,29 @@ import * as React from "react";
 import Container from "./Container";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
-import Logout from "./Logout";
 import { checkUserData } from "@/app/login/checkUserRole";
 import { useEffect, useState } from "react";
+import DropdownUser from "./DropdownUser";
 
 const Navbar = () => {
   const [userData, setUserData] = useState({});
   const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
-
-  console.log("user :>> ", user);
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
 
   const handleGetUserData = async () => {
     const result = await checkUserData(user?.email);
-    console.log(result);
     setUserData(result);
   };
 
   useEffect(() => {
-    handleGetUserData();
+    const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
+    const fetchData = async () => {
+      const result = await checkUserData(user?.email);
+      setUserData(result);
+      setIsUserAuthenticated(user.aud === "authenticated");
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -44,8 +49,8 @@ const Navbar = () => {
         </div>
         <div className="flex items-center">
           <div className="text-center text-blue-600 text-base font-medium ">
-            {user.aud === "authenticated" ? (
-              <Logout userData={userData} />
+            {isUserAuthenticated ? (
+              <DropdownUser />
             ) : (
               <button className="flex w-[118px] h-10 px-6 py-2 rounded-lg border border-blue-600 justify-start items-center gap-2.5">
                 <Link href={"/login"}>เข้าสู่ระบบ</Link>
