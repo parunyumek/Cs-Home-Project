@@ -27,5 +27,7 @@ export function middleware(request) {
 // See "Matching Paths" below to learn more
 export const config = {
   // จะเข้า middleware เมื่อมี path ตามข้างล่างนี้
-  matcher: "/admin-page/:path*",
+  matcher: "/admin/category/:path*",
+  matcher: "/admin/promotion/:path*",
+  matcher: "/admin/services/:path*",
 };

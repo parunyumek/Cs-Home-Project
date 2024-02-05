@@ -90,7 +90,7 @@ export const handleLogin = async (formData) => {
 
       cookies().set("user", JSON.stringify({ ...user, role: userRole }));
 
-      redirect("/admin-page");
+      redirect("/admin/category");
     } else {
       // Redirect or handle non-admin user logic here
       console.log("Redirecting to regular user page...");
