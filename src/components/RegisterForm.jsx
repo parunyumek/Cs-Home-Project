@@ -321,8 +321,28 @@ const RegisterForm = () => {
     event.preventDefault();
 
     try {
-      // ตรวจสอบข้อมูลในแบบฟอร์ม
+      // Validate form data
 
+      // Check if the email is already registered
+      const { data: existingUserData, error: existingUserError } =
+        await supabase.from("users").select("email").eq("email", email);
+
+      if (existingUserError) {
+        console.error(
+          "Error checking for existing user:",
+          existingUserError.message
+        );
+        alert("เกิดข้อผิดพลาดขณะตรวจสอบอีเมล");
+        return;
+      }
+
+      if (existingUserData && existingUserData.length > 0) {
+        console.error("Email is already registered.");
+        alert("อีเมลล์นี้ถูกลงทะเบียนแล้ว");
+        return;
+      }
+
+      // Continue with user registration
       const { user, error } = await supabase.auth.signUp({
         fullName,
         phoneNumber,
@@ -332,27 +352,40 @@ const RegisterForm = () => {
 
       if (error) {
         console.error("Error registering user:", error.message);
-        alert("อีเมลล์นี้ถูกลงทะเบียนแล้ว");
+        alert("เกิดข้อผิดพลาดขณะลงทะเบียน ");
+        return;
+      }
+
+      if (user && !user.confirmed) {
+        // User registration successful, but email confirmation is required
+        console.log(
+          "User registration successful. Email confirmation required."
+        );
+        alert("ลงทะเบียนสำเร็จ กรุณาเช็คอีเมลของคุณเพื่อยืนยันการลงทะเบียน");
+        router.push("/login");
       } else {
-        // ลงทะเบียนผู้ใช้สำเร็จ
-        console.log("User registered successfully.");
+        // User registration successful
+        console.log("User registration successful.");
         alert("ลงทะเบียนสำเร็จ กรุณาเช็คอีเมลของคุณเพื่อยืนยันการลงทะเบียน");
         router.push("/login");
 
-        const { data, error } = await supabase.from("users").insert([
-          {
-            fullname: fullName,
-            phone_no: phoneNumber,
-            email,
-            password,
-            created_at: new Date(),
-          },
-        ]);
+        // Insert user data into the "users" table
+        const { data: userData, error: dataError } = await supabase
+          .from("users")
+          .insert([
+            {
+              fullname: fullName,
+              phone_no: phoneNumber,
+              email,
+              password,
+              created_at: new Date(),
+            },
+          ]);
 
-        if (error) {
-          console.error("Error adding user data to table:", error.message);
+        if (dataError) {
+          console.error("Error adding user data to table:", dataError.message);
         } else {
-          console.log("User data added to table successfully:", data);
+          console.log("User data added to table successfully:", userData);
           router.push("/login");
         }
       }
@@ -360,6 +393,7 @@ const RegisterForm = () => {
       console.error("Error registering user:", error.message);
     }
   };
+
   // const handleSubmit = async (event) => {
   //   // เรียกใช้ handleDuplicateInput เพื่อตรวจสอบข้อมูลที่ซ้ำ
   //   const isDuplicate = await handleDuplicateInput(event);
