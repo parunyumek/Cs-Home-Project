@@ -10,13 +10,7 @@ import DropdownUser from "./DropdownUser";
 
 const Navbar = () => {
   const [userData, setUserData] = useState({});
-  const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-
-  const handleGetUserData = async () => {
-    const result = await checkUserData(user?.email);
-    setUserData(result);
-  };
 
   useEffect(() => {
     const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};

@@ -7,7 +7,13 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const AdminCreateServiceForm = ({ onServiceNameChange }) => {
-  const [subServiceItems, setSubServiceItems] = useState([{}]); // {} ให้มีช่องรายการบริการย่อยอยู่ 1 อันตั้งแต่เริ่มต้น
+  const [subServiceItems, setSubServiceItems] = useState([
+    {
+      serviceListName: "",
+      price: "",
+      unit: "",
+    },
+  ]); // {} ให้มีช่องรายการบริการย่อยอยู่ 1 อันตั้งแต่เริ่มต้น
 
   const [serviceName, setServiceName] = useState("");
   const [serviceCategory, setServiceCategory] = useState("");
@@ -48,17 +54,28 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
 
   const addSubServiceItem = (event) => {
     event.preventDefault();
-    const newSubServiceItems = [...subServiceItems];
-    newSubServiceItems.push({}); // เพิ่ม object ใหม่เข้าไปใน array
+    const newSubServiceItems = [
+      ...subServiceItems,
+      {
+        serviceListName: "",
+        price: "",
+        unit: "",
+      },
+    ];
     setSubServiceItems(newSubServiceItems);
   };
 
-
-  const removeSubServiceItem = (subServiceIndex) => {
+  const removeSubServiceItem = (index) => {
     /// มีบัคต้องแก้จุดนี้
-    setSubServiceItems((prevItems) =>
-      prevItems.filter((_, index) => index !== subServiceIndex)
-    );
+    const newSubServiceItems = [...subServiceItems];
+    newSubServiceItems.splice(index, 1);
+    setSubServiceItems(newSubServiceItems);
+  };
+
+  const fillSubServiceItem = (value, index, key) => {
+    const newSubServiceItems = [...subServiceItems];
+    newSubServiceItems[index][key] = value;
+    setSubServiceItems(newSubServiceItems);
   };
 
   const handleSubmit = async (event) => {
@@ -177,6 +194,10 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
                   id={`serviceName${index}`}
                   name={`serviceName${index}`}
                   className="border border-gray-300 rounded-lg px-4 py-2 w-[440px] text-gray-700"
+                  onChange={(e) =>
+                    fillSubServiceItem(e.target.value, index, "serviceListName")
+                  }
+                  value={item.serviceListName}
                 />
               </div>
               <div className="flex flex-col">
@@ -192,6 +213,10 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
                   name={`serviceCost${index}`}
                   className="border border-gray-300 rounded-lg px-4 py-2 w-[440px] text-right text-gray-700 "
                   placeholder="฿"
+                  onChange={(e) =>
+                    fillSubServiceItem(e.target.value, index, "price")
+                  }
+                  value={item.price}
                 />
               </div>
               <div className="flex flex-col">
@@ -206,6 +231,10 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
                   id={`serviceUnit${index}`}
                   name={`serviceUnit${index}`}
                   className="border border-gray-300 rounded-lg px-4 py-2   w-[440px] text-gray-700"
+                  onChange={(e) =>
+                    fillSubServiceItem(e.target.value, index, "unit")
+                  }
+                  value={item.unit}
                 />
               </div>
               <button
