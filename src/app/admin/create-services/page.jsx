@@ -6,6 +6,7 @@ import AdminCreateServiceForm from "@/components/AdminCreateServiceForm";
 import Link from "next/link";
 import { supabase } from "/supabase.js";
 import { useRouter } from "next/navigation";
+import { v4 as uuid } from "uuid";
 
 const Page = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
@@ -13,6 +14,9 @@ const Page = () => {
 
   const [serviceName, setServiceName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  // const [serviceCategory, setServiceCategory] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [subServiceItems, setSubServiceItems] = useState([
     {
       subServiceName: "",
@@ -36,31 +40,41 @@ const Page = () => {
       console.log("No sub services provided. Aborting submission.");
       return;
     }
+    console.log(222222, subServiceItems);
 
+    const fileName = uuid();
+    const { error } = await supabase.storage
+      .from("picture")
+      .upload(fileName, imageFile);
+
+    if (error) {
+      throw error;
+    }
+
+    const publicUrl = supabase.storage.from("picture").getPublicUrl(fileName);
+
+    console.log(publicUrl);
     // Prepare data for insertion
     const newService = {
       service_name: serviceName,
       category_name: selectedCategory,
       sub_services: subServiceItems,
+      img: publicUrl?.data?.publicUrl,
     };
     console.log(newService);
 
     try {
       // Insert data into 'services' table
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("services")
         .insert([newService]);
-
-      if (error) {
-        console.error("Error inserting data:", error.message);
-      } else {
+ 
         console.log("Data inserted successfully:", data);
         // Clear form fields after successful insertion
         setServiceName("");
         setSelectedCategory(""); // Clear selected category
         setSubServiceItems([{ subServiceName: "", price: "", unit: "" }]); // Reset subServiceItems
-        router.push("/admin/services");
-      }
+      
     } catch (error) {
       console.error("Error inserting data:", error.message);
     }
@@ -87,6 +101,13 @@ const Page = () => {
     setSubServiceItems(subService);
   };
 
+  const handleImage = (image) => {
+    setImage(image);
+  };
+  const handleImageFile = (imageFile) => {
+    setImageFile(imageFile);
+  };
+
   return (
     <div className="bg-[#f3f4f6] w-screen h-screen ">
       <AdminNavbar2
@@ -101,9 +122,13 @@ const Page = () => {
         onServiceNameChange={handleServiceNameChange}
         onServiceCategoryChange={handleServiceCategoryChange}
         onSubServiceChange={handleSubServiceItems}
+        onImageChange={handleImage}
+        onImageFileChange={handleImageFile}
         serviceNameP={serviceName}
         serviceCategoryP={selectedCategory}
         subServiceItemsP={subServiceItems}
+        imageP={image}
+        imageFileP={imageFile}
         onSubmits={(event) => handleSubmit(event, subServiceItems)} // Pass subServiceItems here
       />
 

@@ -1,21 +1,21 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+
 import { supabase } from "/supabase.js";
+import React, { useState, useEffect } from "react";
 
 const AdminCreateServiceForm = ({
   onServiceNameChange,
   onServiceCategoryChange,
   onSubServiceChange,
+  onImageChange,
+  onImageFileChange,
   serviceNameP,
   serviceCategoryP,
   subServiceItemsP,
+  imageP,
   onSubmits,
 }) => {
-
   const [serviceCategory, setServiceCategory] = useState([]);
-  const [imageURL, setImageURL] = useState("");
-
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -38,25 +38,6 @@ const AdminCreateServiceForm = ({
 
     fetchCategories();
   }, []);
-
-  const handleUploadButtonClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleImageChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const { data, error } = await supabase.storage
-        .from("images")
-        .upload(`path/to/store/${file.name}`, file);
-
-      if (error) {
-        console.error("Error uploading image:", error.message);
-      } else {
-        setImageURL(data.Key);
-      }
-    }
-  };
 
   const handleServiceNameChange = (event) => {
     const newName = event.target.value;
@@ -91,11 +72,32 @@ const AdminCreateServiceForm = ({
     onSubServiceChange(newSubServiceItems);
   };
 
-  const removeSubServiceItem = (index) => {
+  const removeSubServiceItem = (e, index) => {
+    e.preventDefault();
     /// มีบัคต้องแก้จุดนี้
     const newSubServiceItems = [...subServiceItemsP];
     newSubServiceItems.splice(index, 1);
     onSubServiceChange(newSubServiceItems);
+  };
+
+  const deleteImage = () => {
+    onImageChange(null);
+  };
+
+  const handleImageClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      onImageFileChange(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        onImageChange(reader.result);
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
   };
 
   return (
@@ -147,27 +149,64 @@ const AdminCreateServiceForm = ({
             </select>
           </div>
 
-          <div className="mt-14">
+          <div className="mt-14 flex">
             <label htmlFor="fullName" className="text-gray-700 ml-5 ">
               รูปภาพ<span className="text-rose-700 text-[16px] ">*</span>
             </label>
-            <input
-              type="file"
-              id="serviceImage"
-              name="serviceImage"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageChange}
-              ref={fileInputRef}
-            />
+
+            <div className="flex-col">
+              <div key={1}>
+                <div
+                  className="ml-[268px] h-[150px] w-[440px] border-2 rounded-lg border-dashed text-center cursor-pointer relative z-0 "
+                  onClick={handleImageClick}
+                  style={{
+                    backgroundImage: `url(${imageP})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  {imageP === null && (
+                    <div className="flex flex-col text-center justify-center items-center h-full ">
+                      <div>
+                        <div
+                          className="flex justify-center mt-6 mb-2"
+                          id="service-pic"
+                        >
+                          <img src="/assets/icons/Path.svg" alt="" />
+                        </div>
+                        <span className=" text-blue-500 mr-3">
+                          อัพโหลดรูปภาพ
+                        </span>
+                        <span>หรือ ลากและวางที่นี่</span>
+                        <p>PNG, JPG ขนาดไม่เกิน 5MB</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="h-[30px]">
+                  <span className="ml-[278px] text-xs">
+                    ขนาดภาพที่แนะนำ: 1440 x 225 PX
+                  </span>
+                  {imageP !== null && (
+                    <button
+                      className=" text-blue-500 underline underline-offset-1 ml-[190px]"
+                      onClick={deleteImage}
+                    >
+                      ลบรูปภาพ
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
             <img
-              src="/assets/images/imageupload.svg"
-              className="ml-[345px]  "
-              alt="upload image"
-              onClick={handleUploadButtonClick}
+              id="imagePreview"
+              className="hidden max-w-full max-h-[225px]"
+              alt="preview"
             />
           </div>
-          <h1 className="text-gray-700 mt-24 text-[16px] ml-5">
+
+          <h1 className="text-gray-700 mt-20 text-[16px] ml-5">
             รายการบริการย่อย
           </h1>
 
@@ -230,7 +269,7 @@ const AdminCreateServiceForm = ({
               </div>
               <button
                 className="text-gray-400 underline"
-                onClick={() => removeSubServiceItem(index)}
+                onClick={(e) => removeSubServiceItem(e, index)}
               >
                 ลบบริการ
               </button>
