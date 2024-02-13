@@ -1,24 +1,44 @@
 "use client";
-import React, { useRef, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import React, { useRef, useState, useEffect } from "react";
+import { supabase } from "/supabase.js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const AdminCreateServiceForm = ({
+  onServiceNameChange,
+  onServiceCategoryChange,
+  onSubServiceChange,
+  serviceNameP,
+  serviceCategoryP,
+  subServiceItemsP,
+  onSubmits,
+}) => {
+  // const [serviceName, setServiceName] = useState("");
+  // const [selectedCategory, setSelectedCategory] = useState("");
+  const [serviceCategory, setServiceCategory] = useState([]);
+  const [imageURL, setImageURL] = useState("");
 
-const AdminCreateServiceForm = ({ onServiceNameChange }) => {
-  const [subServiceItems, setSubServiceItems] = useState([
-    {
-      serviceListName: "",
-      price: "",
-      unit: "",
-    },
-  ]); // {} ให้มีช่องรายการบริการย่อยอยู่ 1 อันตั้งแต่เริ่มต้น
-
-  const [serviceName, setServiceName] = useState("");
-  const [serviceCategory, setServiceCategory] = useState("");
-  const [subServices, setSubServices] = useState([]);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        let { data, error } = await supabase
+          .from("categories")
+          .select("category_name");
+
+        if (error) {
+          throw error;
+        }
+
+        const categoryNames = data.map((category) => category.category_name);
+
+        setServiceCategory(categoryNames);
+      } catch (error) {
+        console.error("Error fetching categories:", error.message);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleUploadButtonClick = () => {
     fileInputRef.current.click();
@@ -27,7 +47,6 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Upload the file to Supabase storage
       const { data, error } = await supabase.storage
         .from("images")
         .upload(`path/to/store/${file.name}`, file);
@@ -35,7 +54,6 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
       if (error) {
         console.error("Error uploading image:", error.message);
       } else {
-        // Set the uploaded image URL to the state
         setImageURL(data.Key);
       }
     }
@@ -43,69 +61,42 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
 
   const handleServiceNameChange = (event) => {
     const newName = event.target.value;
-    setServiceName(newName);
-    // Pass the service name to the parent component
-    onServiceNameChange(newName);
+    // setServiceName(newName);
+    onServiceNameChange(newName); // ส่งค่า serviceName ไปยัง Page
   };
 
   const handleServiceCategoryChange = (event) => {
-    setServiceCategory(event.target.value);
+    const newCategory = event.target.value;
+
+    onServiceCategoryChange(newCategory); // ส่งค่า serviceCategory ไปยัง Page
+  };
+
+  const fillSubServiceItem = (value, index, key) => {
+    const updatedSubServiceItems = [...subServiceItemsP];
+    updatedSubServiceItems[index][key] = value;
+    onSubServiceChange(updatedSubServiceItems); // )
+    console.log("subServiceItemsP", subServiceItemsP);
   };
 
   const addSubServiceItem = (event) => {
+    // เพิ่มช่องบริการย่อย
     event.preventDefault();
     const newSubServiceItems = [
-      ...subServiceItems,
+      ...subServiceItemsP,
       {
-        serviceListName: "",
+        subServiceName: "",
         price: "",
         unit: "",
       },
     ];
-    setSubServiceItems(newSubServiceItems);
+    onSubServiceChange(newSubServiceItems);
   };
 
   const removeSubServiceItem = (index) => {
     /// มีบัคต้องแก้จุดนี้
-    const newSubServiceItems = [...subServiceItems];
+    const newSubServiceItems = [...subServiceItemsP];
     newSubServiceItems.splice(index, 1);
-    setSubServiceItems(newSubServiceItems);
-  };
-
-  const fillSubServiceItem = (value, index, key) => {
-    const newSubServiceItems = [...subServiceItems];
-    newSubServiceItems[index][key] = value;
-    setSubServiceItems(newSubServiceItems);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Prepare data for insertion
-    const newService = {
-      name: serviceName,
-      category: serviceCategory,
-      sub_services: subServices,
-    };
-
-    try {
-      // Insert data into 'services' table
-      const { data, error } = await supabase
-        .from("services")
-        .insert([newService]);
-
-      if (error) {
-        console.error("Error inserting data:", error.message);
-      } else {
-        console.log("Data inserted successfully:", data);
-        // Clear form fields after successful insertion
-        setServiceName("");
-        setServiceCategory("");
-        setSubServices([]);
-      }
-    } catch (error) {
-      console.error("Error inserting data:", error.message);
-    }
+    onSubServiceChange(newSubServiceItems);
   };
 
   return (
@@ -119,7 +110,7 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
     >
       <form
         className="ml-72 mt-28 bg-white w-4/5 h-auto rounded-[10px] pb-11"
-        onSubmit={handleSubmit}
+        onSubmit={(event) => onSubmits(event)}
       >
         <div className="">
           <div>
@@ -131,7 +122,7 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
               id="serviceName"
               name="serviceName"
               className="border border-gray-300 rounded-lg px-4 py-2 mt-10 ml-64 w-[440px] text-gray-700"
-              value={serviceName}
+              value={serviceNameP}
               onChange={handleServiceNameChange}
             />
           </div>
@@ -143,15 +134,17 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
               name="serviceCategory"
               id="serviceCategory"
               className="border border-gray-300 rounded-lg px-4 py-2 mt-10 ml-64 w-[440px] text-gray-700"
-              value={serviceCategory}
+              value={serviceCategoryP}
               onChange={handleServiceCategoryChange}
             >
               <option value="" disabled selected>
                 กรุณาเลือกหมวดหมู่
               </option>
-              <option value="บริการทั่วไป">บริการทั่วไป</option>
-              <option value="บริการห้องครัว">บริการห้องครัว</option>
-              <option value="บริการห้องน้ำ">บริการห้องน้ำ</option>
+              {serviceCategory.map((category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -179,8 +172,7 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
             รายการบริการย่อย
           </h1>
 
-          {/* แสดง element ของรายการบริการที่มีอยู่ก่อน */}
-          {subServiceItems.map((item, index) => (
+          {subServiceItemsP.map((item, index) => (
             <div key={index} className="flex flex-row gap-3 mt-10 ml-16">
               <div className="flex flex-col">
                 <label
@@ -191,13 +183,13 @@ const AdminCreateServiceForm = ({ onServiceNameChange }) => {
                 </label>
                 <input
                   type="text"
-                  id={`serviceName${index}`}
-                  name={`serviceName${index}`}
+                  id={`subServiceName${index}`}
+                  name={`subServiceName${index}`}
                   className="border border-gray-300 rounded-lg px-4 py-2 w-[440px] text-gray-700"
                   onChange={(e) =>
-                    fillSubServiceItem(e.target.value, index, "serviceListName")
+                    fillSubServiceItem(e.target.value, index, "subServiceName")
                   }
-                  value={item.serviceListName}
+                  value={item.subServiceName}
                 />
               </div>
               <div className="flex flex-col">

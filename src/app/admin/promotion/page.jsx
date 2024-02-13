@@ -4,11 +4,21 @@ import AdminSideBar from "@/components/AdminSidebar";
 
 const page = () => {
   // Your admin page content
+  const navbarTitle = "Promotion Code";
+  const inputPlaceHolder = "ค้นหาPromotion Code..";
+  const createCategoryTitle = "เพิ่ม Promotion Code +";
+  const linkToCreateCategory = "";
+
   return (
     <div className="bg-[#f3f4f6] w-[1440px] h-screen">
-      <AdminNavbar />
+      <AdminNavbar
+        title1={navbarTitle}
+        title2={inputPlaceHolder}
+        title3={createCategoryTitle}
+        buttonlink1={linkToCreateCategory}
+      />
       <AdminSideBar />
-      <Logout />
+    
     </div>
   );
 };

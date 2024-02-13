@@ -1,35 +1,91 @@
-// page.jsx
 "use client";
 import React, { useState } from "react";
 import AdminNavbar2 from "@/components/AdminNavbar2";
 import AdminSideBar from "@/components/AdminSidebar";
 import AdminCreateServiceForm from "@/components/AdminCreateServiceForm";
 import Link from "next/link";
+import { supabase } from "/supabase.js";
 
 const Page = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState(false);
 
   const [serviceName, setServiceName] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  // const [serviceCategory, setServiceCategory] = useState("");
+  const [subServiceItems, setSubServiceItems] = useState([
+    {
+      subServiceName: "",
+      price: "",
+      unit: "",
+    },
+  ]);
 
   const navbarTitle = "เพิ่มบริการ";
   const buttonText1 = "ยกเลิก";
   const buttonText2 = "สร้าง";
 
-  const handleCancelButtonClick = () => {
-    // Open the confirmation popup
 
+  const handleSubmit = async (event) => {
+    console.log(111111);
+    // Prevent default form submission behavior
+    event.preventDefault();
+
+    // Check if subServiceItems is null or empty
+    if (!subServiceItems || subServiceItems.length === 0) {
+      console.log("No sub services provided. Aborting submission.");
+      return;
+    }
+    console.log(222222, subServiceItems);
+    // Prepare data for insertion
+    const newService = {
+      service_name: serviceName,
+      category_name: selectedCategory,
+      sub_services: subServiceItems,
+    };
+    console.log(newService);
+    try {
+      // Insert data into 'services' table
+      const { data, error } = await supabase
+        .from("services")
+        .insert([newService]);
+
+      if (error) {
+        console.error("Error inserting data:", error.message);
+      } else {
+        console.log("Data inserted successfully:", data);
+        // Clear form fields after successful insertion
+        setServiceName("");
+        setSelectedCategory(""); // Clear selected category
+        setSubServiceItems([{ subServiceName: "", price: "", unit: "" }]); // Reset subServiceItems
+      }
+    } catch (error) {
+      console.error("Error inserting data:", error.message);
+    }
+  };
+
+  const handleCancelButtonClick = () => {
     setIsDeleteConfirmationOpen(true);
   };
 
   const handleCancelDelete = () => {
-    // Close the confirmation popup
     setIsDeleteConfirmationOpen(false);
   };
 
   const handleServiceNameChange = (name) => {
-    setServiceName(name); // Set serviceName in Page.jsx as well
+    setServiceName(name);
   };
+
+  const handleServiceCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleSubServiceItems = (subService) => {
+    console.log("subService", subService);
+    setSubServiceItems(subService);
+  };
+
+
 
   return (
     <div className="bg-[#f3f4f6] w-screen h-screen ">
@@ -38,9 +94,18 @@ const Page = () => {
         buttonTitle1={buttonText1}
         buttonTitle2={buttonText2}
         button1click={handleCancelButtonClick}
+        button2click={handleSubmit}
       />
       <AdminSideBar />
-      <AdminCreateServiceForm onServiceNameChange={handleServiceNameChange} />
+      <AdminCreateServiceForm
+        onServiceNameChange={handleServiceNameChange}
+        onServiceCategoryChange={handleServiceCategoryChange}
+        onSubServiceChange={handleSubServiceItems}
+        serviceNameP={serviceName}
+        serviceCategoryP={selectedCategory}
+        subServiceItemsP={subServiceItems}
+        onSubmits={(event) => handleSubmit(event, subServiceItems)} // Pass subServiceItems here
+      />
 
       {/* Confirmation Popup */}
       {isDeleteConfirmationOpen && (
