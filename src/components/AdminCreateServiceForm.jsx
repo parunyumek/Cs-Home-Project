@@ -11,8 +11,7 @@ const AdminCreateServiceForm = ({
   subServiceItemsP,
   onSubmits,
 }) => {
-  // const [serviceName, setServiceName] = useState("");
-  // const [selectedCategory, setSelectedCategory] = useState("");
+
   const [serviceCategory, setServiceCategory] = useState([]);
   const [imageURL, setImageURL] = useState("");
 

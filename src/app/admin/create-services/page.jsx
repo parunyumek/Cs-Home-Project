@@ -5,6 +5,7 @@ import AdminSideBar from "@/components/AdminSidebar";
 import AdminCreateServiceForm from "@/components/AdminCreateServiceForm";
 import Link from "next/link";
 import { supabase } from "/supabase.js";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
@@ -12,7 +13,6 @@ const Page = () => {
 
   const [serviceName, setServiceName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  // const [serviceCategory, setServiceCategory] = useState("");
   const [subServiceItems, setSubServiceItems] = useState([
     {
       subServiceName: "",
@@ -21,13 +21,13 @@ const Page = () => {
     },
   ]);
 
+  const router = useRouter();
+
   const navbarTitle = "เพิ่มบริการ";
   const buttonText1 = "ยกเลิก";
   const buttonText2 = "สร้าง";
 
-
   const handleSubmit = async (event) => {
-    console.log(111111);
     // Prevent default form submission behavior
     event.preventDefault();
 
@@ -36,7 +36,7 @@ const Page = () => {
       console.log("No sub services provided. Aborting submission.");
       return;
     }
-    console.log(222222, subServiceItems);
+
     // Prepare data for insertion
     const newService = {
       service_name: serviceName,
@@ -44,6 +44,7 @@ const Page = () => {
       sub_services: subServiceItems,
     };
     console.log(newService);
+
     try {
       // Insert data into 'services' table
       const { data, error } = await supabase
@@ -58,6 +59,7 @@ const Page = () => {
         setServiceName("");
         setSelectedCategory(""); // Clear selected category
         setSubServiceItems([{ subServiceName: "", price: "", unit: "" }]); // Reset subServiceItems
+        router.push("/admin/services");
       }
     } catch (error) {
       console.error("Error inserting data:", error.message);
@@ -84,8 +86,6 @@ const Page = () => {
     console.log("subService", subService);
     setSubServiceItems(subService);
   };
-
-
 
   return (
     <div className="bg-[#f3f4f6] w-screen h-screen ">
