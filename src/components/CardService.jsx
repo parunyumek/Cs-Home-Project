@@ -1,6 +1,30 @@
 "use client";
+import * as React from "react";
+import Link from "next/link";
+import { getCookie } from "cookies-next";
+import { checkUserData } from "@/app/login/checkUserRole";
+import { useEffect, useState } from "react";
 
 const CardService = () => {
+  const [userData, setUserData] = useState({});
+  const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+  const handleGetUserData = async () => {
+    const result = await checkUserData(user?.email);
+    setUserData(result);
+  };
+
+  useEffect(() => {
+    const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
+    const fetchData = async () => {
+      const result = await checkUserData(user?.email);
+      setUserData(result);
+      setIsUserAuthenticated(user.aud === "authenticated");
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="w-[349px] h-[369px] relative bg-white rounded-lg border border-gray-300">
       <img
@@ -28,9 +52,15 @@ const CardService = () => {
         </div>
       </div>
       <div className="py-0.5 left-[25px] top-[325px] absolute rounded-lg justify-start items-start gap-2.5 inline-flex">
-        <button className="text-blue-600 text-base font-semibold  underline leading-normal">
-          เลือกบริการ
-        </button>
+        {isUserAuthenticated ? (
+          <button className="text-blue-600 text-base font-semibold  underline leading-normal ">
+            <Link href={"/select"}>เลือกบริการ</Link>
+          </button>
+        ) : (
+          <button className="text-blue-600 text-base font-semibold  underline leading-normal ">
+            <Link href={"/login"}>เลือกบริการ</Link>
+          </button>
+        )}
       </div>
     </div>
   );

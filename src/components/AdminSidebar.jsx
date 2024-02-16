@@ -3,7 +3,7 @@ import Logout from "./Logout";
 
 const AdminSideBar = () => {
   return (
-    <div className="w-60 h-screen bg-blue-950 flex flex-col fixed">
+    <div className="w-60 h-screen bg-blue-950 flex flex-col fixed  left-[0px]  ">
       <div className="w-48 h-[46px] bg-indigo-50 rounded-xl mt-6 ml-6">
         <div className="text-blue-600 text-xl font-medium flex justify-center mt-2">
           HomeServices

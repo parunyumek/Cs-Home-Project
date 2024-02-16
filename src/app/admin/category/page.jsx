@@ -4,7 +4,7 @@ import AdminSideBar from "@/components/AdminSidebar";
 const page = () => {
   // Your admin page content
   return (
-    <div className="bg-[#f3f4f6] w-[1440px] h-screen">
+    <div className="w-full  h-screen bg-[#f3f4f6]">
       <AdminNavbar />
       <AdminSideBar />
     </div>

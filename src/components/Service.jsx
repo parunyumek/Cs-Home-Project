@@ -1,5 +1,6 @@
 import Container from "./Container";
 import CardService from "./CardService";
+import Link from "next/link";
 
 const Service = () => {
   return (
@@ -17,7 +18,7 @@ const Service = () => {
           <div className="flex justify-center mb-[147px]">
             <button className="flex w-[155px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2">
               <div className="text-center text-white text-base font-medium leading-normal">
-                ดูบริการท้ังหมด
+                <Link href={"/service"}>ดูบริการทั้งหมด</Link>
               </div>
             </button>
           </div>

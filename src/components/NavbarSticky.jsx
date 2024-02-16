@@ -8,7 +8,8 @@ import { checkUserData } from "@/app/login/checkUserRole";
 import { useEffect, useState } from "react";
 import DropdownUser from "./DropdownUser";
 
-const Navbar = () => {
+
+const NavbarSticky = () => {
   const [userData, setUserData] = useState({});
   const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
@@ -30,7 +31,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex justify-center w-full bg-white h-[80px]">
+    <nav className="flex justify-center w-full bg-white h-[80px]  sticky top-0 z-10">
       <Container>
         <div className="flex gap-[70px]">
           <button>
@@ -43,7 +44,7 @@ const Navbar = () => {
           </button>
           <div className="flex items-center justify-center">
             <button className=" w-[114ps] h-[44px] text-black text-base font-bold leading-normal">
-              <Link href={"/service"}>บริการของเรา</Link>
+              บริการของเรา
             </button>
           </div>
         </div>
@@ -62,5 +63,4 @@ const Navbar = () => {
     </nav>
   );
 };
-
-export default Navbar;
+export default NavbarSticky
