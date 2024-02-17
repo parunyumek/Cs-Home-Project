@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "../../supabase";
-
+import Swal from "sweetalert2";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -335,6 +335,14 @@ const RegisterForm = () => {
       } else {
         // ลงทะเบียนผู้ใช้สำเร็จ
         console.log("User registered successfully.");
+        Swal.fire({
+          title: "ขอบคุณสำหรับการลงทะเบียน !",
+          text: "โปรดเช็คอีเมลเพื่อยืนยันการลงทะเบียน",
+          icon: "success",
+          confirmButtonColor: "#2563EB",
+          confirmButtonText: "ตกลง",
+        });
+        router.push("/login");
 
         const { data, error } = await supabase.from("users").insert([
           {

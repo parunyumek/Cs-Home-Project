@@ -31,6 +31,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.3",
+    "sweetalert2": "^11.10.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

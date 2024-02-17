@@ -7,6 +7,7 @@ import Link from "next/link";
 import { supabase } from "/supabase.js";
 import { useRouter } from "next/navigation";
 import { v4 as uuid } from "uuid";
+import Swal from "sweetalert2";
 
 const Page = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
@@ -19,6 +20,7 @@ const Page = () => {
   const [imageFile, setImageFile] = useState(null);
   const [subServiceItems, setSubServiceItems] = useState([
     {
+      subServiceId: "1",
       subServiceName: "",
       price: "",
       unit: "",
@@ -32,15 +34,25 @@ const Page = () => {
   const buttonText2 = "สร้าง";
 
   const handleSubmit = async (event) => {
-    // Prevent default form submission behavior
     event.preventDefault();
 
     // Check if subServiceItems is null or empty
-    if (!subServiceItems || subServiceItems.length === 0) {
-      console.log("No sub services provided. Aborting submission.");
+    if (
+      !subServiceItems ||
+      subServiceItems.length === 0 ||
+      !serviceName ||
+      !selectedCategory ||
+      imageFile === null
+    ) {
+      Swal.fire({
+        title: "<p class='text-red-600'>โปรดตรวจเช็คข้อมูล</p>",
+        text: "กรุณาระบุข้อมูลให้ครบทุกช่อง",
+        icon: "question",
+        confirmButtonColor: "#2563EB",
+        confirmButtonText: "ตกลง",
+      });
       return;
     }
-    console.log(222222, subServiceItems);
 
     const fileName = uuid();
     const { error } = await supabase.storage
@@ -65,16 +77,16 @@ const Page = () => {
 
     try {
       // Insert data into 'services' table
-      const { data } = await supabase
-        .from("services")
-        .insert([newService]);
- 
-        console.log("Data inserted successfully:", data);
-        // Clear form fields after successful insertion
-        setServiceName("");
-        setSelectedCategory(""); // Clear selected category
-        setSubServiceItems([{ subServiceName: "", price: "", unit: "" }]); // Reset subServiceItems
-      
+      const { data } = await supabase.from("services").insert([newService]);
+
+      console.log("Data inserted successfully:", data);
+      // Clear form fields after successful insertion
+      setServiceName("");
+      setSelectedCategory(""); // Clear selected category
+      setSubServiceItems([
+        { subServiceId: "1", subServiceName: "", price: "", unit: "" },
+      ]);
+      router.push("/admin/services"); // Reset subServiceItems
     } catch (error) {
       console.error("Error inserting data:", error.message);
     }
