@@ -51,4 +51,26 @@ export const checkUserData = async (email) => {
   }
 };
 
+export const checkTagSelect = async (list) => {
+  try {
+    const { data, error } = await supabase
+      .from("mock_service")
+      .select("*")
+      .eq("list", list)
+      .single();
+
+    if (error) {
+      console.error("Database query error:", error.message);
+    }
+
+    if (data) {
+      console.log("data :>> ", data);
+
+      return data;
+    }
+  } catch (error) {
+    console.error("Check user data error:", error.message);
+  }
+};
+
 export default checkUserRole;
