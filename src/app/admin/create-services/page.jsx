@@ -18,6 +18,8 @@ const Page = () => {
   // const [serviceCategory, setServiceCategory] = useState("");
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [subServiceItems, setSubServiceItems] = useState([
     {
       subServiceId: "1",
@@ -72,6 +74,7 @@ const Page = () => {
       category_name: selectedCategory,
       sub_services: subServiceItems,
       img: publicUrl?.data?.publicUrl,
+      img: publicUrl?.data?.publicUrl,
     };
     console.log(newService);
 
@@ -119,6 +122,12 @@ const Page = () => {
   const handleImageFile = (imageFile) => {
     setImageFile(imageFile);
   };
+  const handleImage = (image) => {
+    setImage(image);
+  };
+  const handleImageFile = (imageFile) => {
+    setImageFile(imageFile);
+  };
 
   return (
     <div className="bg-[#f3f4f6] w-screen h-screen ">
@@ -136,9 +145,13 @@ const Page = () => {
         onSubServiceChange={handleSubServiceItems}
         onImageChange={handleImage}
         onImageFileChange={handleImageFile}
+        onImageChange={handleImage}
+        onImageFileChange={handleImageFile}
         serviceNameP={serviceName}
         serviceCategoryP={selectedCategory}
         subServiceItemsP={subServiceItems}
+        imageP={image}
+        imageFileP={imageFile}
         imageP={image}
         imageFileP={imageFile}
         onSubmits={(event) => handleSubmit(event, subServiceItems)} // Pass subServiceItems here
