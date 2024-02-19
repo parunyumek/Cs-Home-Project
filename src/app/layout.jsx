@@ -2,6 +2,7 @@ import { Prompt } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./themes";
+import StoreProvider from "../StoreProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -17,7 +18,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={promt.className}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <StoreProvider>{children}</StoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
