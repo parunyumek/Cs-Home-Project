@@ -17,7 +17,6 @@ const checkUserRole = async (email) => {
     }
 
     if (data) {
-      console.log("data :>> ", data);
       const userRole = data.role;
 
       console.log("userRole :>> ", userRole);
@@ -42,8 +41,6 @@ export const checkUserData = async (email) => {
     }
 
     if (data) {
-      console.log("data :>> ", data);
-
       return data;
     }
   } catch (error) {
@@ -64,8 +61,6 @@ export const checkTagSelect = async (list) => {
     }
 
     if (data) {
-      console.log("data :>> ", data);
-
       return data;
     }
   } catch (error) {

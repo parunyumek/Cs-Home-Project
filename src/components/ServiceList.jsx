@@ -9,7 +9,8 @@ import { serviceIncrement, serviceDecrement } from "@/reducers/service.reducer";
 
 const ServiceList = () => {
   const dispatch = useDispatch();
-  const { services, data } = useSelector((state) => state); // ไว้เรียกใช้ value ใน reducer
+  const data = useSelector((state) => state.data); // ไว้เรียกใช้ value ใน reducer
+  const services = useSelector((state) => state.services);
 
   return (
     <div className="flex justify-between gap-6">
@@ -32,7 +33,7 @@ const ServiceList = () => {
                   {service.subServiceName}
                   <p className=" text-sm text-gray-700 flex gap-3">
                     <img src="/assets/icons/sell_black.svg" alt="" />
-                    {service.price} บาท / เครื่อง
+                    {service.price} บาท / {service.unit}
                   </p>
                 </label>
                 <div className="flex items-center gap-4">

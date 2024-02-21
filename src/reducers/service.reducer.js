@@ -5,8 +5,7 @@ const initialState = {
   // value: 0,
   services: [],
   data: [],
-  address: [],
-  addressData: [],
+  address: {},
 };
 
 // 2
@@ -30,7 +29,7 @@ const serviceReducer = createSlice({
       const services = action.payload.map((item) => {
         return { ...item, quantity: 0 };
       });
-
+      console.log("services :>> ", services);
       state.services = services; //reassign value from payload to state
     },
     serviceIncrement: (state, action) => {
@@ -45,6 +44,7 @@ const serviceReducer = createSlice({
             }
           : service
       );
+      console.log("newServices :>> ", newServices);
       state.services = newServices;
     },
     serviceDecrement: (state, action) => {
@@ -63,14 +63,10 @@ const serviceReducer = createSlice({
 
       state.data = payload;
     },
-    setAddress: (state, action) => {
+    saveAddress: (state, action) => {
       const { payload } = action;
 
       state.address = payload;
-    },
-    addressSelect: (state, action) => {
-      const { payload } = action;
-      const addressData = payload.services;
     },
   },
 });
@@ -85,7 +81,6 @@ export const {
   setService,
   serviceDecrement,
   setData,
-  setAddress,
-  addressSelect,
+  saveAddress,
 } = serviceReducer.actions;
 export default serviceReducer.reducer;

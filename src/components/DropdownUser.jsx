@@ -25,7 +25,6 @@ const DropdownUser = () => {
 
   const handleGetUserData = async () => {
     const result = await checkUserData(user?.email);
-    console.log(result);
     setUserData(result);
   };
 

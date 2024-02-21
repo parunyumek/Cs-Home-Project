@@ -6,22 +6,30 @@ import { useSelector } from "react-redux";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 
-const BottomTab = () => {
+const BottomTab = ({ params }) => {
   const search = useSearchParams();
   const router = useRouter();
   const services = useSelector((state) => state.services);
+  const step = search.get("step") ? parseInt(search.get("step")) : 0;
 
   const onClickNext = () => {
-    const step = search.get("step") ? parseInt(search.get("step")) + 1 : 1;
-    if (step <= 2) {
-      router.push(`/servicedetails?step=${step}`);
+    // const step = search.get("step") ? parseInt(search.get("step")) + 1 : 1;
+    const nextStep = step + 1;
+
+    console.log("nextStep :>> ", nextStep);
+    if (nextStep <= 3) {
+      router.push(`/servicedetails/${params.id}?step=${nextStep}`);
     }
   };
 
   const onClickBack = () => {
-    const step = search.get("step") ? parseInt(search.get("step")) - 1 : 1;
-    if (step >= 0) {
-      router.push(`/servicedetails?step=${step}`);
+    const backStep = step - 1;
+
+    // const step = search.get("step") ? parseInt(search.get("step")) - 1 : 1;
+    if (backStep === -1) {
+      router.push(`/service`);
+    } else {
+      router.push(`/servicedetails/${params.id}?step=${backStep}`);
     }
   };
 
@@ -30,6 +38,11 @@ const BottomTab = () => {
       (service) => service.quantity > 0
     );
     return hasQuantityGreaterThanZero;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่เมื่อกด Enter
+    // ดำเนินการต่อจากนี้ เช่น ส่งข้อมูลไปยังเซิร์ฟเวอร์
   };
 
   return (
@@ -47,6 +60,7 @@ const BottomTab = () => {
             className=" rounded-lg bg-blue-600 text-white w-40 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
             onClick={onClickNext}
             disabled={!canProcess()}
+            onSubmit={handleSubmit}
           >
             ดำเนินการต่อ
             <KeyboardArrowRightRoundedIcon className=" text-white" />
