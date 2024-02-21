@@ -46,7 +46,7 @@ const BottomTab = ({ params }) => {
   };
 
   return (
-    <div className="w-full flex justify-center h-24 bg-white border-t border-gray-300 bottom-0 sticky">
+    <div className="w-full  flex justify-center h-24 bg-white border-t border-gray-300 bottom-0 sticky">
       <Container>
         <div className="w-full flex justify-between items-center">
           <button
