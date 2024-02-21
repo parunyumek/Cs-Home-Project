@@ -21,10 +21,6 @@ const Page = ({ params }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.data); // ไว้เรียกใช้ value ใน reducer
 
-  useEffect(() => {
-    dispatch(saveAddress({})); // ล้างข้อมูลใน addressState
-  }, []);
-
   const fetchServices = async () => {
     try {
       if (params.id) {
@@ -41,6 +37,7 @@ const Page = ({ params }) => {
   useEffect(() => {
     if (parseInt(params.id) !== data.id) {
       fetchServices();
+      dispatch(saveAddress({}));
     }
   }, []);
 

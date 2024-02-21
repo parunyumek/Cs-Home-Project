@@ -50,6 +50,7 @@ const AddAddressForm = () => {
         ...value,
         hour: address.hour,
         minute: address.minute,
+        address: address.address,
       })
     );
   };
