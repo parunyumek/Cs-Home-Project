@@ -1,15 +1,21 @@
 import React from "react";
 import Link from "next/link";
 
-const AdminNavbar = ({ title1, title2, title3, buttonlink1,navBarInputOnChange }) => {
+const AdminNavbar = ({
+  title1,
+  title2,
+  title3,
+  buttonlink1,
+  navBarInputOnChange,
+}) => {
   // AdminNavbar with search box and 1 button
   return (
     <nav className="w-screen h-[80px] border-gray-300 border-b-2 flex flex-row  fixed left-[240px] bg-white">
-      <container className="w-4/5 flex flex-row  justify-between">
-        <div className="text-black text-[20px] font-semibold leading-[30px] mt-6 ml-8">
+      <div className="w-4/5 flex flex-row  justify-between">
+        <div className="text-black text-[20px] font-semibold leading-[30px]  mt-6 ml-8 w-[500px]">
           {title1}
         </div>
-        <div className="flex ml-[1000px] ">
+        <div className="flex">
           <div className="mt-4 ">
             {" "}
             <input
@@ -28,7 +34,7 @@ const AdminNavbar = ({ title1, title2, title3, buttonlink1,navBarInputOnChange }
             </button>
           </Link>
         </div>
-      </container>
+      </div>
     </nav>
   );
 };
