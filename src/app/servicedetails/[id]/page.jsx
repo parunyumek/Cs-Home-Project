@@ -43,7 +43,7 @@ const Page = ({ params }) => {
 
   return (
     <Fragment>
-      <div className=" bg-[#f3f4f6] w-screen h-screen relative -z-20 ">
+      <div className=" bg-[#f3f4f6] w-screen h-screen relative  ">
         <Navbar />
         <BackgroundService />
         <ServiceName />

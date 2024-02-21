@@ -18,7 +18,7 @@ const BackgroundService = () => {
   const data = useSelector((state) => state.data);
 
   return (
-    <div className="absolute h-60 w-full -z-10">
+    <div className="absolute h-60 w-full ">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{

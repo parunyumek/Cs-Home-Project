@@ -22,7 +22,7 @@ const ServiceName = () => {
   const data = useSelector((state) => state.data);
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center sticky z-10">
       <Container>
         <div className="flex justify-center items-center gap-3 rounded-lg min-w-min px-9 h-[68px] bg-white shadow-sm mt-10 text-black">
           <Link href="/service">บริการของเรา</Link>
