@@ -11,7 +11,9 @@ const Payment = () => {
           <PaymentProcess />
           <div className="flex gap-8">
             <div className="  flex flex-col gap-6 bg-white p-6 rounded-lg border-gray-300 border w-2/3">
-              Payment
+              <div className="top"></div>
+              <div className="mib"></div>
+              <div className="low"></div>
             </div>
             <div className="w-1/3">
               <Summary />
