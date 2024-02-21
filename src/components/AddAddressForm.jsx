@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -6,13 +7,15 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useSelector, useDispatch } from "react-redux";
 import { Address, CreateInput } from "thai-address-autocomplete-react";
 import { saveAddress } from "@/reducers/service.reducer";
-import dayjs from "dayjs";
 
 const InputThaiAddress = CreateInput();
 
 const AddAddressForm = () => {
   const dispatch = useDispatch();
   const addressState = useSelector((state) => state.address);
+
+  const [selectedDate, setSelectedDate] = useState(null); // เก็บค่าวันที่ที่เลือก
+  const [selectedTime, setSelectedTime] = useState(null); // เก็บค่าเวลาที่เลือก
 
   const [address, setAddress] = useState({
     more: "",
@@ -51,6 +54,8 @@ const AddAddressForm = () => {
     );
   };
 
+  const minTime = dayjs().add(1, "hour");
+
   return (
     <div className=" w-full flex flex-col gap-6 bg-white p-6 rounded-lg border-gray-300 border">
       <h2 className=" text-xl font-normal text-gray-700">กรอกข้อมูลบริการ</h2>
@@ -62,6 +67,8 @@ const AddAddressForm = () => {
               <DatePicker
                 disablePast
                 format="DD/MM/YYYY"
+                value={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
                 slotProps={{
                   textField: {
                     placeholder: "กรุณาเลือกวันที่",
@@ -99,8 +106,25 @@ const AddAddressForm = () => {
             <label htmlFor="time">เวลาที่สะดวกใช้บริการ</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker
-                disablePast
+                disablePast={
+                  selectedDate && selectedDate.isSame(new Date(), "day")
+                }
                 ampm={false}
+                value={selectedTime}
+                onChange={(time) => setSelectedTime(time)}
+                minTime={
+                  selectedDate
+                    ? selectedDate.isSame(new Date(), "day")
+                      ? minTime
+                      : null
+                    : null
+                }
+                shouldDisableTime={(value) =>
+                  selectedDate &&
+                  (value.hour() > 16 ||
+                    (value.hour() === 16 && value.minute() >= 31) ||
+                    value.hour() < 8)
+                }
                 slotProps={{
                   textField: {
                     placeholder: "กรุณาเลือกเวลา",
