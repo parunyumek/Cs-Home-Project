@@ -49,19 +49,19 @@ const Summary = () => {
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
             <span className="text-gray-700">วันที่</span>
-            <span>{formattedDate}</span>
+            <span className="text-black">{formattedDate}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-700">เวลา</span>
             {address.hour && (
-              <span>
+              <span className="text-black">
                 {address.hour}.{address.minute} น.
               </span>
             )}
           </div>
           <div className="flex justify-between">
             <span className="text-gray-700">สถานที่</span>
-            <span className="flex flex-col justify-end items-end">
+            <span className="flex flex-col justify-end items-end text-black">
               <p>
                 {address.address} {address.district}
               </p>

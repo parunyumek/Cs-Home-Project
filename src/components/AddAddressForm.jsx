@@ -60,7 +60,7 @@ const AddAddressForm = () => {
   return (
     <div className=" w-full flex flex-col gap-6 bg-white p-6 rounded-lg border-gray-300 border">
       <h2 className=" text-xl font-normal text-gray-700">กรอกข้อมูลบริการ</h2>
-      <form className="flex flex-col gap-6">
+      <form className="flex flex-col gap-6 text-black">
         <div className="flex justify-between gap-6">
           <div className="flex flex-col w-full gap-1">
             <label htmlFor="date">วันที่สะดวกใช้บริการ</label>
@@ -103,7 +103,7 @@ const AddAddressForm = () => {
               />
             </LocalizationProvider>
           </div>
-          <div className="flex flex-col w-full gap-1">
+          <div className="flex flex-col w-full gap-1 ">
             <label htmlFor="time">เวลาที่สะดวกใช้บริการ</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker

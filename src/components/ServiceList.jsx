@@ -28,7 +28,7 @@ const ServiceList = () => {
               >
                 <label
                   htmlFor={service.id}
-                  className=" text-lg font-medium gap-2 flex flex-col"
+                  className=" text-lg font-medium gap-2 flex flex-col text-black"
                 >
                   {service.subServiceName}
                   <p className=" text-sm text-gray-700 flex gap-3">
@@ -50,7 +50,7 @@ const ServiceList = () => {
                   >
                     <RemoveIcon fontSize="small" className=" text-blue-600" />
                   </button>
-                  <Typography className=" w-3">
+                  <Typography className=" w-3 text-black">
                     {service.quantity || 0}
                   </Typography>
                   <button
