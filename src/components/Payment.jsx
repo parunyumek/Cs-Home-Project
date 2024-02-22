@@ -5,13 +5,97 @@ import PaymentProcess from "./PaymentProcess";
 
 const Payment = () => {
   return (
-    <div className="w-full flex justify-center mb-10 mt-16">
+    <div className="w-full h-full flex justify-center mb-10 mt-16">
       <Container>
         <div className="flex flex-col w-full gap-8">
           <PaymentProcess />
           <div className="flex gap-8">
-            <div className="  flex flex-col gap-6 bg-white p-6 rounded-lg border-gray-300 border w-2/3">
-              Payment
+            <div className="  flex flex-col gap-6 bg-white  text-black p-6 rounded-lg border-gray-300 border w-2/3">
+              <div className=" text-gray-800 text-[20px]">ชำระเงิน</div>
+              <div className="grid grid-cols-2 gap-10 ml-8">
+                <button className="w-[331px] h-[86px] relative rounded-[5px] shadow border border-gray-300 ">
+                  <div className="w-[68px] h-[60px]  flex-col  justify-center items-center gap-1 inline-flex">
+                    <img src="/assets/icons/icon-qrcode.svg" alt=""/>
+                    <div className="text-center text-gray-800 text-sm">พร้อมเพ</div>
+                  </div>
+                </button>
+                <button className="w-[331px] h-[86px] relative bg-indigo-50 rounded-[5px] border border-blue-600">
+                  <div className="w-[68px] h-[60px] flex-col justify-center  items-center gap-1 inline-flex">
+                    <img src="/assets/icons/icon-creditCard.svg" alt="" />
+                    <div className="text-center text-blue-800 text-sm">บัตรเครดิต</div>
+                  </div>
+                </button>
+              </div>
+              <div className="flex flex-col ">
+                <div className="w-full h-[72px] flex-col justify-start items-start gap-1 inline-flex mt-8">
+                  <label className="text-gray-900 text-base font-medium leading-normal">
+                    หมายเลขบัตรเครดิต<span className="text-rose-700">*</span>
+                  </label>
+                  <input
+                    id="creditCardId"
+                    type="text"
+                    name="creditCardId"
+                    placeholder="กรุณากรอกหมายเลขบัตรเครดิต"
+                    className=" self-stretch text-gray-500 w-full leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
+                  />
+                </div>
+                <div className="mt-8">
+                  <label className="text-gray-900 text-base font-medium leading-normal">
+                    ชื่อบนบัตร<span className="text-rose-700">*</span>
+                  </label>
+                  <input
+                    id="creditCardname"
+                    type="text"
+                    name="creditCardname"
+                    placeholder="กรุณากรอกชื่อบนบัตร"
+                    className=" self-stretch text-gray-500 w-full leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
+                  />
+                </div>
+                <div className="flex flex-row justify-between mt-8">
+                  <div className="w-[47%] ">
+                    <label className="text-gray-900 text-base font-medium leading-normal">
+                      วันหมดอายุ<span className="text-rose-700">*</span>
+                    </label>
+                    <input
+                      id="exprieDate"
+                      type="text"
+                      name="exprieDate"
+                      placeholder="MM/YY"
+                      className=" self-stretch text-gray-500 w-full leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
+                    />
+                  </div>
+                  <div className="w-[47%]">
+                    <label className="text-gray-900 text-base font-medium leading-normal">
+                      รหัส cvc / cvv<span className="text-rose-700">*</span>
+                    </label>
+                    <input
+                      id="cvc/cvv"
+                      type="text"
+                      name="cvc/cvv"
+                      placeholder="xxx"
+                      className=" self-stretch text-gray-500 w-full leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
+                    />
+                  </div>
+                </div>
+                <div className="w-full h-[0px] border border-gray-300 mt-12"></div>
+              </div>
+              <div className="mt-4">
+                <label className="text-gray-900 text-base font-medium leading-normal">
+                  Promotion Code
+                </label>
+                <div className="flex flex-row gap-12 ">
+                  <input
+                    id="promotionCode"
+                    type="text"
+                    name="promotionCode"
+                    placeholder="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
+                    className=" self-stretch text-gray-500 w-[47%] leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
+                  />
+                  <button className="w-[90px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg text-white ">
+                    ใช้โค้ด
+                  </button>
+                </div>
+              </div>
             </div>
             <div className="w-1/3">
               <Summary />
