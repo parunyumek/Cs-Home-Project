@@ -5,11 +5,15 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import Logout from "./Logout";
 import { getCookie } from "cookies-next";
 import { checkUserData } from "@/app/login/checkUserRole";
 import { useState, useEffect } from "react";
-
+import { Divider } from "@mui/material";
+import handleLogout from "@/app/login/actions";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import RestoreRoundedIcon from "@mui/icons-material/RestoreRounded";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 const DropdownUser = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -53,12 +57,24 @@ const DropdownUser = () => {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
+        sx={{}}
       >
-        <MenuItem onClick={handleClose}>ข้อมูลผู้ใช้งาน</MenuItem>
-        <MenuItem onClick={handleClose}>รายงานคำสั่งซ่อม</MenuItem>
-        <MenuItem onClick={handleClose}>ประวัติการซ่อม</MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Logout />
+        <MenuItem onClick={handleClose} className="flex gap-2">
+          <PersonOutlineOutlinedIcon sx={{ fill: "#9AA1B0" }} />
+          ข้อมูลผู้ใช้งาน
+        </MenuItem>
+        <MenuItem onClick={handleClose} className="flex gap-2">
+          <AssignmentOutlinedIcon sx={{ fill: "#9AA1B0" }} />
+          รายงานคำสั่งซ่อม
+        </MenuItem>
+        <MenuItem onClick={handleClose} className="flex gap-2">
+          <RestoreRoundedIcon sx={{ fill: "#9AA1B0" }} />
+          ประวัติการซ่อม
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={() => handleLogout()} className="flex gap-2">
+          <LogoutRoundedIcon sx={{ fill: "#9AA1B0" }} />
+          ออกจากระบบ
         </MenuItem>
       </Menu>
     </Fragment>

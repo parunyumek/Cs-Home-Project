@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Container from "./Container";
 
 const Banner = () => {
@@ -21,7 +22,7 @@ const Banner = () => {
           </div>
           <div className="w-[191px] h-[54px] px-8 py-3 bg-blue-600 rounded-lg justify-start items-start gap-2.5 inline-flex">
             <button className="text-center text-white text-xl font-medium leading-[30px]">
-              เช็คราคาบริการ
+              <Link href={"/service"}>เช็คราคาบริการ</Link>
             </button>
           </div>
         </div>
