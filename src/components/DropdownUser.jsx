@@ -14,6 +14,9 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import RestoreRoundedIcon from "@mui/icons-material/RestoreRounded";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+
 const DropdownUser = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -38,16 +41,26 @@ const DropdownUser = () => {
 
   return (
     <Fragment>
-      <Button
-        id="fade-button"
-        aria-controls={open ? "fade-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-        className=" text-gray-700"
-      >
-        {userData?.fullname}
-      </Button>
+      <div className="flex gap-3">
+        <Button
+          id="fade-button"
+          aria-controls={open ? "fade-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+          sx={{ color: "#646C80" }}
+        >
+          {userData?.fullname}
+        </Button>
+        <img
+          src="\assets\icons\22638092_4500_1_01.svg"
+          alt=""
+          className=" w-10 h-10 rounded-full"
+        />
+        <div className="w-10 h-10 rounded-full bg-gray-100 flex justify-center items-center">
+          <NotificationsIcon sx={{ height: "30px", fill: "#9AA1B0" }} />
+        </div>
+      </div>
       <Menu
         id="fade-menu"
         MenuListProps={{
@@ -71,6 +84,18 @@ const DropdownUser = () => {
           <RestoreRoundedIcon sx={{ fill: "#9AA1B0" }} />
           ประวัติการซ่อม
         </MenuItem>
+        {userData?.role === "admin" && ( // เพิ่มเงื่อนไขตรวจสอบว่าผู้ใช้เป็น admin หรือไม่
+          <MenuItem onClick={handleClose} className="flex gap-2">
+            <button
+              onClick={() => {
+                window.location.href = "/admin/category";
+              }}
+            >
+              <AdminPanelSettingsOutlinedIcon sx={{ fill: "#9AA1B0" }} /> Admin
+              Dashboard
+            </button>
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem onClick={() => handleLogout()} className="flex gap-2">
           <LogoutRoundedIcon sx={{ fill: "#9AA1B0" }} />

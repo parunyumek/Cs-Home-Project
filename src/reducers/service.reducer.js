@@ -6,6 +6,7 @@ const initialState = {
   services: [],
   data: [],
   address: {},
+  role: "",
 };
 
 // 2
@@ -68,6 +69,11 @@ const serviceReducer = createSlice({
 
       state.address = payload;
     },
+    setUserRole: (state, action) => {
+      const { payload } = action;
+
+      state.role = payload;
+    },
   },
 });
 
@@ -82,5 +88,6 @@ export const {
   serviceDecrement,
   setData,
   saveAddress,
+  setUserRole,
 } = serviceReducer.actions;
 export default serviceReducer.reducer;

@@ -6,7 +6,7 @@ const Logout = () => {
   return (
     <div className=" fixed flex flex-row  justify-start mt-3">
       <button onClick={() => handleLogout()} className="">
-        {/* ออกจากระบบ */}
+        ออกจากระบบ
       </button>
     </div>
   );

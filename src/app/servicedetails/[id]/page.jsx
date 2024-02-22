@@ -50,8 +50,9 @@ const Page = ({ params }) => {
         {(stepParam === "0" || !stepParam) && <ServiceDetail />}
         {stepParam === "1" && <AddAddress />}
         {stepParam === "2" && <Payment />}
+
+        <BottomTab params={params} />
       </div>
-      <BottomTab params={params} />
     </Fragment>
   );
 };

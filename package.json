@@ -39,6 +39,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.21.3",
     "redux-persist": "^6.0.0",
+    "stripe": "^14.17.0",
     "sweetalert2": "^11.10.5",
     "thai-address-autocomplete-react": "^1.0.1",
     "uuid": "^9.0.1"
