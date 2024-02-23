@@ -32,6 +32,7 @@ const serviceReducer = createSlice({
         return { ...item, quantity: 0 };
       });
       console.log("services :>> ", services);
+      state.total = "0.00";
       state.services = services; //reassign value from payload to state
     },
     serviceIncrement: (state, action) => {

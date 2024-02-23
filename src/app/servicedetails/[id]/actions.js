@@ -9,8 +9,6 @@ export const fetchData = async (id) => {
       .eq("id", id)
       .single();
 
-    console.log("service :>> ", service);
-
     return service;
   } catch (error) {
     console.error("Error checking email:", error.message);

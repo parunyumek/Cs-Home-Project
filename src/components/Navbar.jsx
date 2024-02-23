@@ -9,29 +9,24 @@ import { useEffect, useState } from "react";
 import DropdownUser from "./DropdownUser";
 
 const Navbar = () => {
-  const [userData, setUserData] = useState({});
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+  const [checkedAuthentication, setCheckedAuthentication] = useState(false);
 
   useEffect(() => {
-    const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
-    const authenticatedUser = JSON.parse(
-      localStorage.getItem("authenticatedUser")
-    );
-
-    if (authenticatedUser) {
-      setUserData(authenticatedUser);
-      setIsUserAuthenticated(true);
-    } else {
+    if (!checkedAuthentication) {
       const fetchData = async () => {
-        const result = await checkUserData(user?.email);
-        setUserData(result);
-        setIsUserAuthenticated(user.aud === "authenticated");
-        localStorage.setItem("authenticatedUser", JSON.stringify(result));
+        const userCookie = getCookie("user");
+        if (userCookie) {
+          const user = JSON.parse(userCookie);
+          const isAuthenticated = checkUserData(user);
+          setIsUserAuthenticated(isAuthenticated);
+        }
+        setCheckedAuthentication(true);
       };
 
       fetchData();
     }
-  }, []);
+  }, [checkedAuthentication]);
 
   return (
     <nav className="flex justify-center w-full bg-white h-[80px]">

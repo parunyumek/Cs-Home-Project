@@ -6,8 +6,8 @@ import { th } from "date-fns/locale";
 const Summary = () => {
   const services = useSelector((state) => state.services);
   const address = useSelector((state) => state.address);
-  console.log("address :>> ", address);
   const total = useSelector((state) => state.total);
+  console.log("total :>> ", total);
 
   const selectedServices = services
     ? services.filter((service) => service.quantity > 0)
