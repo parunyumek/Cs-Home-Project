@@ -4,9 +4,9 @@ import Link from "next/link";
 const AdminNavbar = ({ title1, title2, title3, buttonlink1,navBarInputOnChange }) => {
   // AdminNavbar with search box and 1 button
   return (
-    <nav className="w-screen h-[80px] border-gray-300 border-b-2 flex flex-row  fixed left-[240px] bg-white">
-      <container className="w-4/5 flex flex-row  justify-between">
-        <div className="text-black text-[20px] font-semibold leading-[30px] mt-6 ml-8">
+    <nav className=" h-[80px] border-gray-300 border-b-2 bg-white w-[100%]">
+      <div className="  flex flex-row  justify-between">
+        <div className="text-black text-[20px] font-semibold leading-[30px]  mt-6 ml-8 ">
           {title1}
         </div>
         <div className="flex ml-[1000px] ">
@@ -20,15 +20,15 @@ const AdminNavbar = ({ title1, title2, title3, buttonlink1,navBarInputOnChange }
             />
           </div>
           <Link
-            className="w-[148px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex mt-4 ml-6"
+            className=" h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex mt-4 ml-6"
             href={buttonlink1}
           >
-            <button className="text-center text-white text-base font-medium leading-normal w-100">
+            <button className="text-center text-white  font-medium mr- ">
               {title3}
             </button>
           </Link>
         </div>
-      </container>
+      </div>
     </nav>
   );
 };

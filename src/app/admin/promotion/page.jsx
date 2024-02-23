@@ -10,15 +10,15 @@ const page = () => {
   const linkToCreateCategory = "";
 
   return (
-    <div className="bg-[#f3f4f6] w-[1440px] h-screen">
+    <div className="flex">
+      <AdminSideBar />
+
       <AdminNavbar
         title1={navbarTitle}
         title2={inputPlaceHolder}
         title3={createCategoryTitle}
         buttonlink1={linkToCreateCategory}
       />
-      <AdminSideBar />
-    
     </div>
   );
 };
