@@ -5,8 +5,9 @@ const initialState = {
   // value: 0,
   services: [],
   data: [],
-  address: [],
-  addressData: [],
+  address: {},
+  role: "",
+  total: "",
 };
 
 // 2
@@ -30,7 +31,7 @@ const serviceReducer = createSlice({
       const services = action.payload.map((item) => {
         return { ...item, quantity: 0 };
       });
-
+      console.log("services :>> ", services);
       state.services = services; //reassign value from payload to state
     },
     serviceIncrement: (state, action) => {
@@ -45,6 +46,17 @@ const serviceReducer = createSlice({
             }
           : service
       );
+
+      const total = newServices.reduce((accumulatedTotal, service) => {
+        return (
+          accumulatedTotal +
+          parseFloat(service.price) * parseFloat(service.quantity)
+        );
+      }, 0);
+
+      const formattedTotal = total.toFixed(2);
+
+      state.total = formattedTotal;
       state.services = newServices;
     },
     serviceDecrement: (state, action) => {
@@ -56,6 +68,16 @@ const serviceReducer = createSlice({
           ? { ...service, quantity: service.quantity - 1 }
           : service
       );
+      const total = newServices.reduce((accumulatedTotal, service) => {
+        return (
+          accumulatedTotal +
+          parseFloat(service.price) * parseFloat(service.quantity)
+        );
+      }, 0);
+
+      const formattedTotal = total.toFixed(2);
+
+      state.total = formattedTotal;
       state.services = newServices;
     },
     setData: (state, action) => {
@@ -63,14 +85,15 @@ const serviceReducer = createSlice({
 
       state.data = payload;
     },
-    setAddress: (state, action) => {
+    saveAddress: (state, action) => {
       const { payload } = action;
 
       state.address = payload;
     },
-    addressSelect: (state, action) => {
+    setUserRole: (state, action) => {
       const { payload } = action;
-      const addressData = payload.services;
+
+      state.role = payload;
     },
   },
 });
@@ -85,7 +108,7 @@ export const {
   setService,
   serviceDecrement,
   setData,
-  setAddress,
-  addressSelect,
+  saveAddress,
+  setUserRole,
 } = serviceReducer.actions;
 export default serviceReducer.reducer;

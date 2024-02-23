@@ -5,23 +5,32 @@ import Container from "./Container";
 import { useSelector } from "react-redux";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import { supabase } from "../../supabase";
 
-const BottomTab = () => {
+const BottomTab = ({ params }) => {
   const search = useSearchParams();
   const router = useRouter();
   const services = useSelector((state) => state.services);
+  const step = search.get("step") ? parseInt(search.get("step")) : 0;
+  const total = useSelector((state) => state.total);
+  const address = useSelector((state) => state.address);
 
   const onClickNext = () => {
-    const step = search.get("step") ? parseInt(search.get("step")) + 1 : 1;
-    if (step <= 2) {
-      router.push(`/servicedetails?step=${step}`);
+    const nextStep = step + 1;
+
+    console.log("nextStep :>> ", nextStep);
+    if (nextStep <= 2) {
+      router.push(`/servicedetails/${params.id}?step=${nextStep}`);
     }
   };
 
   const onClickBack = () => {
-    const step = search.get("step") ? parseInt(search.get("step")) - 1 : 1;
-    if (step >= 0) {
-      router.push(`/servicedetails?step=${step}`);
+    const backStep = step - 1;
+
+    if (backStep === -1) {
+      router.push(`/service`);
+    } else {
+      router.push(`/servicedetails/${params.id}?step=${backStep}`);
     }
   };
 
@@ -32,8 +41,38 @@ const BottomTab = () => {
     return hasQuantityGreaterThanZero;
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+  };
+
+  const handleInsert = async (e) => {
+    const { sendAddress } = await supabase
+      .from("address")
+      .insert([
+        {
+          province: address.province,
+          district: address.amphoe,
+          sub_district: address.district,
+          address_no: address.address,
+          remark: address.more,
+        },
+      ])
+      .select();
+
+    console.log(sendAddress);
+
+    const { status } = await supabase
+      .from("orders")
+      .insert([
+        { mock_order_histories: services, total_price: parseInt(total) },
+      ])
+      .select();
+
+    console.log(status);
+  };
+
   return (
-    <div className="w-full flex justify-center h-24 bg-white border-t border-gray-300 bottom-0 sticky">
+    <div className="w-full  flex justify-center h-24 bg-white border-t border-gray-300 bottom-0 sticky">
       <Container>
         <div className="w-full flex justify-between items-center">
           <button
@@ -43,14 +82,26 @@ const BottomTab = () => {
             <KeyboardArrowLeftRoundedIcon className=" text-blue-500" />
             ย้อนกลับ
           </button>
-          <button
-            className=" rounded-lg bg-blue-600 text-white w-40 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
-            onClick={onClickNext}
-            disabled={!canProcess()}
-          >
-            ดำเนินการต่อ
-            <KeyboardArrowRightRoundedIcon className=" text-white" />
-          </button>
+          {step === 2 ? ( // เพิ่มเงื่อนไขตรวจสอบว่า step เท่ากับ 2 หรือไม่
+            <button
+              className=" rounded-lg bg-blue-600 text-white w-48 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
+              onClick={handleInsert}
+              disabled={!canProcess()}
+            >
+              ยืนยันการชำระเงิน
+              <KeyboardArrowRightRoundedIcon className=" text-white" />
+            </button>
+          ) : (
+            <button
+              className=" rounded-lg bg-blue-600 text-white w-40 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
+              onClick={onClickNext}
+              disabled={!canProcess()}
+              onSubmit={handleSubmit}
+            >
+              ดำเนินการต่อ
+              <KeyboardArrowRightRoundedIcon className=" text-white" />
+            </button>
+          )}
         </div>
       </Container>
     </div>

@@ -21,9 +21,11 @@ const AdminSideBar = () => {
         </button>
       </div>
       <div className="flex flex-col mt-[410px]">
-        <div className="text-zinc-100 text-base font-normal leading-normal h-[54px] bg-blue-950 hover:bg-blue-900">
-          <Logout />
-        </div>
+        <button>
+          <div className="text-zinc-100 text-base font-normal leading-normal h-[54px] bg-blue-950 hover:bg-blue-900 flex justify-center">
+            <Logout />
+          </div>
+        </button>
       </div>
     </div>
   );

@@ -14,13 +14,23 @@ const Navbar = () => {
 
   useEffect(() => {
     const user = getCookie("user") ? JSON.parse(getCookie("user")) : {};
-    const fetchData = async () => {
-      const result = await checkUserData(user?.email);
-      setUserData(result);
-      setIsUserAuthenticated(user.aud === "authenticated");
-    };
+    const authenticatedUser = JSON.parse(
+      localStorage.getItem("authenticatedUser")
+    );
 
-    fetchData();
+    if (authenticatedUser) {
+      setUserData(authenticatedUser);
+      setIsUserAuthenticated(true);
+    } else {
+      const fetchData = async () => {
+        const result = await checkUserData(user?.email);
+        setUserData(result);
+        setIsUserAuthenticated(user.aud === "authenticated");
+        localStorage.setItem("authenticatedUser", JSON.stringify(result));
+      };
+
+      fetchData();
+    }
   }, []);
 
   return (

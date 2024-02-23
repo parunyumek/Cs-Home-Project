@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography } from "@mui/material";
+import Link from "next/link";
 import Container from "./Container";
 
 const Banner = () => {
@@ -9,12 +9,12 @@ const Banner = () => {
       <Container>
         <div className="flex justify-between flex-col mt-[78px] mb-[50px]">
           <div>
-            <Typography className="text-blue-700 text-[64px] font-extrabold  leading-[96px]">
+            <div className="text-blue-700 text-[64px] font-extrabold  leading-[96px]">
               เรื่องบ้าน...ให้เราช่วยดูแลคุณ
-            </Typography>
-            <Typography className="text-black text-[42px] font-semibold ">
+            </div>
+            <div className="text-black text-[42px] font-semibold ">
               “สะดวก ราคาคุ้มค่า เชื่อถือได้“
-            </Typography>
+            </div>
           </div>
           <div className="w-[515px] text-gray-500 text-2xl font-normal ">
             ซ่อมเครื่องใช้ไฟฟ้า ซ่อมแอร์ ทำความสะอาดบ้าน โดยพนักงานแม่บ้าน
@@ -22,7 +22,7 @@ const Banner = () => {
           </div>
           <div className="w-[191px] h-[54px] px-8 py-3 bg-blue-600 rounded-lg justify-start items-start gap-2.5 inline-flex">
             <button className="text-center text-white text-xl font-medium leading-[30px]">
-              เช็คราคาบริการ
+              <Link href={"/service"}>เช็คราคาบริการ</Link>
             </button>
           </div>
         </div>

@@ -87,7 +87,7 @@ const PaymentProcess = () => {
   const step = search.get("step") ? parseInt(search.get("step")) : 0;
 
   return (
-    <div>
+    <div className="sticky">
       <Container>
         <div className="w-full bg-white pt-8 pb-5 rounded-lg border-gray-300 border">
           <Box sx={{ width: "100%" }}>
