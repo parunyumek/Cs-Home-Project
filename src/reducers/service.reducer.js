@@ -7,6 +7,7 @@ const initialState = {
   data: [],
   address: {},
   role: "",
+  total: "",
 };
 
 // 2
@@ -45,7 +46,17 @@ const serviceReducer = createSlice({
             }
           : service
       );
-      console.log("newServices :>> ", newServices);
+
+      const total = newServices.reduce((accumulatedTotal, service) => {
+        return (
+          accumulatedTotal +
+          parseFloat(service.price) * parseFloat(service.quantity)
+        );
+      }, 0);
+
+      const formattedTotal = total.toFixed(2);
+
+      state.total = formattedTotal;
       state.services = newServices;
     },
     serviceDecrement: (state, action) => {
@@ -57,6 +68,16 @@ const serviceReducer = createSlice({
           ? { ...service, quantity: service.quantity - 1 }
           : service
       );
+      const total = newServices.reduce((accumulatedTotal, service) => {
+        return (
+          accumulatedTotal +
+          parseFloat(service.price) * parseFloat(service.quantity)
+        );
+      }, 0);
+
+      const formattedTotal = total.toFixed(2);
+
+      state.total = formattedTotal;
       state.services = newServices;
     },
     setData: (state, action) => {

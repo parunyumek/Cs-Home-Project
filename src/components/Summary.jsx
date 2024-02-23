@@ -5,21 +5,13 @@ import { th } from "date-fns/locale";
 
 const Summary = () => {
   const services = useSelector((state) => state.services);
-  console.log("services :>> ", services);
   const address = useSelector((state) => state.address);
+  console.log("address :>> ", address);
+  const total = useSelector((state) => state.total);
 
   const selectedServices = services
     ? services.filter((service) => service.quantity > 0)
     : [];
-
-  const total = selectedServices.reduce((accumulatedTotal, service) => {
-    return (
-      accumulatedTotal +
-      parseFloat(service.price) * parseFloat(service.quantity)
-    );
-  }, 0);
-
-  const formattedTotal = total.toFixed(2);
 
   const formattedDate = address.date
     ? format(new Date(address.date), "dd MMM yyyy", { locale: th })
@@ -74,7 +66,7 @@ const Summary = () => {
       )}
       {Object.keys(address).length > 0 && <hr />}
       <h2 className="flex justify-between text-gray-700 text-lg">
-        รวม <span className=" font-semibold">{formattedTotal} ฿</span>
+        รวม <span className=" font-semibold">{total} ฿</span>
       </h2>
     </div>
   );

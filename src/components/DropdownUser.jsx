@@ -72,20 +72,68 @@ const DropdownUser = () => {
         TransitionComponent={Fade}
         sx={{}}
       >
-        <MenuItem onClick={handleClose} className="flex gap-2">
+        <MenuItem
+          onClick={handleClose}
+          className="flex gap-2"
+          sx={{
+            color: "#4B5160",
+            "&:hover": {
+              backgroundColor: "#EFEFF2",
+              color: "#232630",
+              "& svg": { fill: "#323640" },
+            },
+          }}
+        >
           <PersonOutlineOutlinedIcon sx={{ fill: "#9AA1B0" }} />
           ข้อมูลผู้ใช้งาน
         </MenuItem>
-        <MenuItem onClick={handleClose} className="flex gap-2">
-          <AssignmentOutlinedIcon sx={{ fill: "#9AA1B0" }} />
+        <MenuItem
+          onClick={handleClose}
+          className="flex gap-2"
+          sx={{
+            color: "#4B5160",
+            "&:hover": {
+              backgroundColor: "#EFEFF2",
+              color: "#232630",
+              "& svg": { fill: "#323640" },
+            },
+          }}
+        >
+          <AssignmentOutlinedIcon
+            sx={{
+              fill: "#9AA1B0",
+            }}
+          />
           รายงานคำสั่งซ่อม
         </MenuItem>
-        <MenuItem onClick={handleClose} className="flex gap-2">
+        <MenuItem
+          onClick={handleClose}
+          className="flex gap-2"
+          sx={{
+            color: "#4B5160",
+            "&:hover": {
+              backgroundColor: "#EFEFF2",
+              color: "#232630",
+              "& svg": { fill: "#323640" },
+            },
+          }}
+        >
           <RestoreRoundedIcon sx={{ fill: "#9AA1B0" }} />
           ประวัติการซ่อม
         </MenuItem>
         {userData?.role === "admin" && ( // เพิ่มเงื่อนไขตรวจสอบว่าผู้ใช้เป็น admin หรือไม่
-          <MenuItem onClick={handleClose} className="flex gap-2">
+          <MenuItem
+            onClick={handleClose}
+            className="flex gap-2"
+            sx={{
+              color: "#4B5160",
+              "&:hover": {
+                backgroundColor: "#EFEFF2",
+                color: "#232630",
+                "& svg": { fill: "#323640" },
+              },
+            }}
+          >
             <button
               onClick={() => {
                 window.location.href = "/admin/category";
@@ -97,7 +145,18 @@ const DropdownUser = () => {
           </MenuItem>
         )}
         <Divider />
-        <MenuItem onClick={() => handleLogout()} className="flex gap-2">
+        <MenuItem
+          onClick={() => handleLogout()}
+          className="flex gap-2"
+          sx={{
+            color: "#4B5160",
+            "&:hover": {
+              backgroundColor: "#EFEFF2",
+              color: "#232630",
+              "& svg": { fill: "#323640" },
+            },
+          }}
+        >
           <LogoutRoundedIcon sx={{ fill: "#9AA1B0" }} />
           ออกจากระบบ
         </MenuItem>

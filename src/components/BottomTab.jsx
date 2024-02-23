@@ -12,11 +12,10 @@ const BottomTab = ({ params }) => {
   const router = useRouter();
   const services = useSelector((state) => state.services);
   const step = search.get("step") ? parseInt(search.get("step")) : 0;
-
-  console.log("services :>> ", services);
+  const total = useSelector((state) => state.total);
+  const address = useSelector((state) => state.address);
 
   const onClickNext = () => {
-    // const step = search.get("step") ? parseInt(search.get("step")) + 1 : 1;
     const nextStep = step + 1;
 
     console.log("nextStep :>> ", nextStep);
@@ -28,7 +27,6 @@ const BottomTab = ({ params }) => {
   const onClickBack = () => {
     const backStep = step - 1;
 
-    // const step = search.get("step") ? parseInt(search.get("step")) - 1 : 1;
     if (backStep === -1) {
       router.push(`/service`);
     } else {
@@ -44,21 +42,33 @@ const BottomTab = ({ params }) => {
   };
 
   const handleSubmit = async (e) => {
-    const servicedata = services;
     e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+  };
+
+  const handleInsert = async (e) => {
+    const { sendAddress } = await supabase
+      .from("address")
+      .insert([
+        {
+          province: address.province,
+          district: address.amphoe,
+          sub_district: address.district,
+          address_no: address.address,
+          remark: address.more,
+        },
+      ])
+      .select();
+
+    console.log(sendAddress);
 
     const { status } = await supabase
       .from("orders")
-      .insert([{ mock_order_histories: servicedata }]);
+      .insert([
+        { mock_order_histories: services, total_price: parseInt(total) },
+      ])
+      .select();
 
     console.log(status);
-
-    // if (error) {
-    //   console.error("Error inserting data to Supabase:", error.message);
-    //   return;
-    // }
-
-    // console.log("Data inserted successfully to Supabase:", data);
   };
 
   return (
@@ -75,9 +85,8 @@ const BottomTab = ({ params }) => {
           {step === 2 ? ( // เพิ่มเงื่อนไขตรวจสอบว่า step เท่ากับ 2 หรือไม่
             <button
               className=" rounded-lg bg-blue-600 text-white w-48 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
-              onClick={onClickNext}
+              onClick={handleInsert}
               disabled={!canProcess()}
-              onSubmit={handleSubmit}
             >
               ยืนยันการชำระเงิน
               <KeyboardArrowRightRoundedIcon className=" text-white" />
