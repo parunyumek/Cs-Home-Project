@@ -9,23 +9,21 @@ const AdminNavbar2 = ({
 }) => {
   // AdminNavbar with 2 buttons
   return (
-    <nav className="h-[80px] border-gray-300 border-b-2 bg-white">
-      <div className="container w-screen flex flex-row justify-between items-center ml-16 ">
-        <div className="text-black text-[20px] font-semibold leading-[30px] ">
-          {title1}
-        </div>
-        <div className="">
-          <div className="w-[112px] h-11 px-6 py-2.5 bg-white rounded-lg justify-center items-center gap-2 inline-flex ml-6 border-blue-600 border-[1px]">
+    <nav>
+      <div className=" h-[80px] flex flex-row justify-between items-center border-gray-300 border-b-2 bg-white px-10">
+        <div className="text-black text-[20px] font-semibold  ">{title1}</div>
+        <div className="flex ">
+          <div>
             <button
-              className="text-center text-blue-600 text-base font-medium leading-normal w-100 "
+              className="text-center text-blue-600  font-medium px-10 py-2.5 bg-white rounded-lg border-blue-600 border-[1px]"
               onClick={button1click}
             >
               {buttonTitle1}
             </button>
           </div>
-          <div className="w-[112px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex ml-6">
+          <div>
             <button
-              className="text-center text-white text-base font-medium leading-normal w-100"
+              className="text-center text-white font-medium px-10 py-2.5 bg-blue-600 rounded-lg ml-6 border-[1px]"
               onClick={button2click}
             >
               {buttonTitle2}
