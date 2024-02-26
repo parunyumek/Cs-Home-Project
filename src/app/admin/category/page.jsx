@@ -12,7 +12,7 @@ const Page = () => {
   const navbarTitle = "หมวดหมู่";
   const placeHolderMessage = "ค้นหาหมวดหมู่...";
   const buttonText = "เพิ่มหมวดหมู่ +";
-  const linkToCreateService = "/admin/create-services";
+  const linkToCreateService = "/admin/create-category";
 
   const fetchCategoriesList = async () => {
     try {

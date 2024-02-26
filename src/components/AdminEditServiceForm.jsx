@@ -3,6 +3,8 @@
 import { supabase } from "/supabase.js";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const AdminCreateServiceForm = ({
   onSubmits,
@@ -20,6 +22,11 @@ const AdminCreateServiceForm = ({
   createdAtProps,
   updatedAtProps,
 }) => {
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false);
+
+    const router = useRouter();
+
   const handleServiceNameChange = (event) => {
     const newName = event.target.value;
     onServiceNameChange(newName);
@@ -64,6 +71,49 @@ const AdminCreateServiceForm = ({
     event.preventDefault();
     ("");
     onImageChange(null);
+  };
+
+  const handleCancelButtonClick = (serviceName) => {
+    setIsDeleteConfirmationOpen(true);
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteConfirmationOpen(false);
+  };
+
+  const deleteService = async (serviceNameProps) => {
+    try {
+      const { error } = await supabase
+        .from("services")
+        .delete()
+        .eq("service_name", serviceNameProps);
+
+      if (error) {
+        throw error;
+      }
+
+      // Refresh the service list after deletion
+      Swal.fire({
+        title: "ทำการลบบริการเรียบร้อย",
+        icon: "success",
+        customClass: {
+          title: "text-xl text-blue-600",
+          confirmButton: "hidden", // Hide the confirm button
+        },
+        timer: 2000,
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showConfirmButton: false,
+      }).then(() => {
+        console.log("Dialog closed automatically");
+        router.push("/admin/services");
+      });
+      setIsDeleteConfirmationOpen(false);
+    } catch (error) {
+      console.error("Error deleting service:", error.message);
+    }
   };
 
   const handleImageClick = () => {
@@ -154,7 +204,6 @@ const AdminCreateServiceForm = ({
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "contain",
                   backgroundPosition: "center",
-                  
                 }}
               >
                 {imageProps === null && (
@@ -301,6 +350,51 @@ const AdminCreateServiceForm = ({
           </div>
         </div>
       </form>
+      <div className=" text-gray-600 underline mt-5 ml-[1700px] flex flex-row font-bold  ">
+        {" "}
+        <img src="/assets/icons/trashbin.svg" className="ml-3" alt="Delete" />
+        <p className="ml-2 cursor-pointer " onClick={handleCancelButtonClick}>
+          ลบบริการ
+        </p>
+      </div>
+      {isDeleteConfirmationOpen && (
+        <div className="fixed z-10 inset-0 overflow-y-auto flex justify-center items-center">
+          <div className="flex justify-center items-center min-h-screen">
+            <div className="bg-white w-[360px] h-[270px] rounded-lg  p-6 text-[#00144D] shadow-md relative">
+              <img
+                src="/assets/icons/alerticon.svg"
+                className="ml-[130px] mb-4"
+              />
+              <button
+                className="text-[#4F5E8C] absolute right-7 top-5"
+                onClick={handleCancelDelete}
+              >
+                X
+              </button>
+              <p className="text-[20px] font-semibold mb-4 text-center">
+                ยืนยันการลบรายการ?
+              </p>
+              <p className="text-[16px] font-light mb-10 text-center ">
+                คุณต้องการลบรายการ ‘{serviceNameProps}’ ใช่หรือไม่
+              </p>
+              <div className="flex justify-center gap-2">
+                <button
+                  className="mr-2 bg-blue-600 text-white px-4 py-2 rounded-lg w-[112px] h-[44px]"
+                  onClick={() => deleteService(serviceNameProps)}
+                >
+                  ลบรายการ
+                </button>
+                <button
+                  className="bg-white px-4 py-2 rounded-lg border-[1px] border-blue-600 text-blue-600 w-[112px] h-[44px]"
+                  onClick={handleCancelDelete}
+                >
+                  ยกเลิก
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

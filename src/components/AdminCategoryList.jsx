@@ -60,7 +60,6 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
     }
   };
 
-
   useEffect(() => {
     const fetchAndFilterCategories = async () => {
       try {
@@ -97,7 +96,7 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
   const handleDragEnd = (result) => {
     if (!result.destination) return; // If dropped outside the list, return
 
-    const items = Array.from(filteredServiceList);
+    const items = Array.from(filteredCategoryList);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
@@ -142,7 +141,7 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
         console.log("Dialog closed automatically");
       });
       setIsDeleteConfirmationOpen(false);
-     fetchCategoryList();
+      fetchCategoryList();
     } catch (error) {
       console.error("Error deleting service:", error.message);
     }
@@ -200,7 +199,9 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                           <p className=" ml-[35px] w-auto text-center  ">
                             {index + 1}
                           </p>
-                          <Link href={""}>
+                          <Link
+                            href={`/admin/details-category?id=${category.id}`}
+                          >
                             <p className="ml-[45px] w-[480px] text-start text-black hover:text-blue-600">
                               {category.category_name}
                             </p>
@@ -219,7 +220,9 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                                 handleCancelButtonClick(category.category_name)
                               }
                             />
-                            <Link href={""}>
+                            <Link
+                              href={`/admin/edit-category?id=${category.id}`}
+                            >
                               <img
                                 src="/assets/icons/edit.svg"
                                 className=""
