@@ -11,12 +11,12 @@ const AdminNavbar3 = ({
   // AdminNavbar with 1 button and back button
   return (
     <nav className="w-screen h-[80px] border-gray-300 border-b-2 flex flex-row fixed left-[230px] bg-white">
-      <div className="container w-screen flex flex-row justify-between items-center ml-16 ">
-        <div className="ml-10  w-auto ">
+      <div className="container w-screen flex flex-row justify-between items-center ml-20  ">
+        <div className="ml-10  w-auto  ">
           <Link href={backButtonClick}>
             <img
               src="/assets/icons/backarrowicon.svg"
-              className="absolute left-[60px] top-6"
+              className="absolute left-[60px] top-6 hover:opacity-50"
               alt="back"
             />
           </Link>
@@ -26,9 +26,9 @@ const AdminNavbar3 = ({
           </div>
         </div>
         <div className="">
-          <div className="w-[112px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex ml-6">
+          <div className="px-6 py-2.5 justify-center items-center gap-2 inline-flex ml-6">
             <button
-              className="text-center text-white text-base font-medium leading-normal w-100"
+              className="text-center text-white text-base font-medium leading-normal w-100 bg-blue-600 rounded-lg w-[112px] h-11 hover:bg-blue-500 "
               onClick={button2Click}
             >
               {buttonTitle1}
