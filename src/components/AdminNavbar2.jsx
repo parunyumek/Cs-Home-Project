@@ -11,7 +11,7 @@ const AdminNavbar2 = ({
   return (
     <nav className="w-screen h-[80px] border-gray-300 border-b-2 flex flex-row fixed left-[230px] bg-white z-10">
       <div className="container w-screen flex flex-row justify-between items-center ml-20 ">
-        <div className="text-black text-[20px] font-semibold leading-[30px] ">
+        <div className="text-black text-[20px] font-semibold leading-[30px] relative right-5 ">
           {title1}
         </div>
         <div className="">
