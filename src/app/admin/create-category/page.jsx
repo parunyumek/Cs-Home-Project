@@ -2,31 +2,16 @@
 import React, { useState } from "react";
 import AdminNavbar2 from "@/components/AdminNavbar2";
 import AdminSideBar from "@/components/AdminSidebar";
-import AdminCreateServiceForm from "@/components/AdminCreateServiceForm";
 import Link from "next/link";
 import { supabase } from "/supabase.js";
 import { useRouter } from "next/navigation";
-import { v4 as uuid } from "uuid";
 import Swal from "sweetalert2";
 
 const Page = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState(false);
 
-  const [serviceName, setServiceName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  // const [serviceCategory, setServiceCategory] = useState("");
-
-  const [image, setImage] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [subServiceItems, setSubServiceItems] = useState([
-    {
-      subServiceId: "1",
-      subServiceName: "",
-      price: "",
-      unit: "",
-    },
-  ]);
+  const [categoryName, setCategoryName] = useState("");
 
   const router = useRouter();
 
@@ -34,17 +19,15 @@ const Page = () => {
   const buttonText1 = "ยกเลิก";
   const buttonText2 = "สร้าง";
 
+  const handleCategoryNameChange = (event) => {
+    setCategoryName(event.target.value);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Check if subServiceItems is null or empty
-    if (
-      !subServiceItems ||
-      subServiceItems.length === 0 ||
-      !serviceName ||
-      !selectedCategory ||
-      imageFile === null
-    ) {
+    if (!categoryName) {
       Swal.fire({
         title: "<p class='text-red-600'>โปรดตรวจเช็คข้อมูล</p>",
         text: "กรุณาระบุข้อมูลให้ครบทุกช่อง",
@@ -55,40 +38,16 @@ const Page = () => {
       return;
     }
 
-    const fileName = uuid();
-    const { error } = await supabase.storage
-      .from("picture")
-      .upload(fileName, imageFile);
-
-    if (error) {
-      throw error;
-    }
-
-    const publicUrl = supabase.storage.from("picture").getPublicUrl(fileName);
-
-    console.log(publicUrl);
-    // Prepare data for insertion
-    const newService = {
-      service_name: serviceName,
-      category_name: selectedCategory,
-      sub_services: subServiceItems,
-      img: publicUrl?.data?.publicUrl,
-      img: publicUrl?.data?.publicUrl,
-    };
-    console.log(newService);
-
     try {
       // Insert data into 'services' table
-      const { data } = await supabase.from("services").insert([newService]);
-
+      const { data } = await supabase
+        .from("categories")
+        .insert([{ category_name: categoryName }]);
       console.log("Data inserted successfully:", data);
       // Clear form fields after successful insertion
-      setServiceName("");
-      setSelectedCategory(""); // Clear selected category
-      setSubServiceItems([
-        { subServiceId: "1", subServiceName: "", price: "", unit: "" },
-      ]);
-      router.push("/admin/services"); // Reset subServiceItems
+      setCategoryName("");
+
+      router.push("/admin/category"); // Reset subServiceItems
     } catch (error) {
       console.error("Error inserting data:", error.message);
     }
@@ -112,7 +71,10 @@ const Page = () => {
         button2click={handleSubmit}
       />
       <AdminSideBar />
-      <form className="ml-72 mt-28 bg-white w-4/5 h-auto rounded-[10px] pb-11 fixed ">
+      <form
+        className="ml-72 mt-28 bg-white w-4/5 h-auto rounded-[10px] pb-11 fixed"
+        onSubmit={handleSubmit}
+      >
         <label htmlFor="categoryName" className="text-gray-700 ml-5 font-bold">
           ชื่อหมวดหมู่<span className="text-rose-700 text-[16px]">*</span>
         </label>
@@ -120,8 +82,8 @@ const Page = () => {
           type="text"
           id="categoryName"
           name="categoryName"
-          value=""
-          onChange=""
+          value={categoryName}
+          onChange={handleCategoryNameChange}
           className="border border-gray-300 rounded-lg px-4 py-2 mt-10 ml-48 w-[440px] text-gray-700"
         />
       </form>
@@ -144,12 +106,12 @@ const Page = () => {
                 ยืนยันการลบรายการ?{" "}
               </p>
               <p className="text-[16px] font-light mb-10 text-center ">
-                คุณต้องการลบรายการ ‘{serviceName}’ ใช่หรือไม่{" "}
+                คุณต้องการลบรายการ ‘{categoryName}’ ใช่หรือไม่{" "}
               </p>
               <div className="flex justify-center gap-2">
                 <Link
                   className="mr-2 bg-blue-600 text-white px-4 py-2 rounded-lg w-[112px] h-[44px]"
-                  href="/admin/services"
+                  href="/admin/category"
                 >
                   ลบรายการ
                 </Link>
