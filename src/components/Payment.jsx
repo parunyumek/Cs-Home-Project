@@ -15,14 +15,18 @@ const Payment = () => {
               <div className="grid grid-cols-2 gap-10 ml-8">
                 <button className="w-[331px] h-[86px] relative rounded-[5px] shadow border border-gray-300 ">
                   <div className="w-[68px] h-[60px]  flex-col  justify-center items-center gap-1 inline-flex">
-                    <img src="/assets/icons/icon-qrcode.svg" alt=""/>
-                    <div className="text-center text-gray-800 text-sm">พร้อมเพ</div>
+                    <img src="/assets/icons/icon-qrcode.svg" alt="" />
+                    <div className="text-center text-gray-800 text-sm">
+                      พร้อมเพย์
+                    </div>
                   </div>
                 </button>
                 <button className="w-[331px] h-[86px] relative bg-indigo-50 rounded-[5px] border border-blue-600">
                   <div className="w-[68px] h-[60px] flex-col justify-center  items-center gap-1 inline-flex">
                     <img src="/assets/icons/icon-creditCard.svg" alt="" />
-                    <div className="text-center text-blue-800 text-sm">บัตรเครดิต</div>
+                    <div className="text-center text-blue-800 text-sm">
+                      บัตรเครดิต
+                    </div>
                   </div>
                 </button>
               </div>

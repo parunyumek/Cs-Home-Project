@@ -5,24 +5,13 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Swal from "sweetalert2";
 import Link from "next/link";
 
-const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
+const AdminCategoryLists = ({ categoryListP, searchInput }) => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState(false);
-  const [serviceName, setServiceName] = useState([]);
-  const [filteredServiceList, setFilteredServiceList] = useState([]);
+  const [categoryName, setCategoryName] = useState([]);
+  const [filteredCategoryList, setFilteredCategoryList] = useState([]);
   const [createdAt, setCreatedAt] = useState("");
   const [updatedAt, setUpdatedAt] = useState("");
-  const categoryBackgroundColors = {
-    บริการทั่วไป: "bg-blue-100",
-    บริการห้องครัว: "bg-purple-100",
-    บริการห้องน้ำ: "bg-green-100",
-  };
-
-  const categoryTextColors = {
-    บริการทั่วไป: "text-blue-800",
-    บริการห้องครัว: "text-purple-900",
-    บริการห้องน้ำ: "text-green-900",
-  };
 
   // Function to format timestamp
   const formatDate = (timestamp) => {
@@ -50,8 +39,29 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
     setUpdatedAt(updatedTime);
   };
 
+  const fetchCategoryList = async () => {
+    try {
+      let { data, error } = await supabase.from("categories").select("*");
+
+      if (error) {
+        throw error;
+      }
+
+      // Modify the timestamp format before setting state
+      data.forEach((category) => {
+        category.created_at = formatDate(category.created_at);
+        category.updated_at = formatDate(category.updated_at);
+      });
+
+      setFilteredCategoryList(data);
+      timeFormatted(data[0].created_at, data[0].updated_at, formatDate);
+    } catch (error) {
+      console.error("Error fetching services:", error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchAndFilterServices = async () => {
+    const fetchAndFilterCategories = async () => {
       try {
         let { data, error } = await supabase.from("categories").select("*");
 
@@ -60,39 +70,41 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
         }
 
         // Modify the timestamp format before setting state
-        data.forEach((service) => {
-          service.created_at = formatDate(service.created_at);
-          service.updated_at = formatDate(service.updated_at);
+        data.forEach((category) => {
+          category.created_at = formatDate(category.created_at);
+          category.updated_at = formatDate(category.updated_at);
         });
 
         // Filter the services based on search input
-        const filteredList = data.filter((service) =>
-          service.service_name.toLowerCase().includes(searchInput.toLowerCase())
+        const filteredList = data.filter((category) =>
+          category.category_name
+            .toLowerCase()
+            .includes(searchInput.toLowerCase())
         );
 
-        setFilteredServiceList(filteredList);
+        setFilteredCategoryList(filteredList);
         timeFormatted(data[0].created_at, data[0].updated_at, formatDate);
       } catch (error) {
         console.error("Error fetching services:", error.message);
       }
     };
 
-    fetchAndFilterServices();
-  }, [searchInput, serviceDetails]);
+    fetchAndFilterCategories();
+  }, [searchInput, categoryListP]);
 
   // Function to handle reordering
   const handleDragEnd = (result) => {
     if (!result.destination) return; // If dropped outside the list, return
 
-    const items = Array.from(filteredServiceList);
+    const items = Array.from(filteredCategoryList);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setFilteredServiceList(items);
+    setFilteredCategoryList(items);
   };
 
-  const handleCancelButtonClick = (serviceName) => {
-    setServiceName(serviceName); // Store the service name in the state
+  const handleCancelButtonClick = (CategoryName) => {
+    setCategoryName(CategoryName); // Store the service name in the state
     setIsDeleteConfirmationOpen(true);
   };
 
@@ -100,12 +112,12 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
     setIsDeleteConfirmationOpen(false);
   };
 
-  const deleteService = async (serviceName) => {
+  const deleteCategory = async (categoryName) => {
     try {
       const { error } = await supabase
-        .from("services")
+        .from("categories")
         .delete()
-        .eq("service_name", serviceName);
+        .eq("category_name", categoryName);
 
       if (error) {
         throw error;
@@ -129,7 +141,7 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
         console.log("Dialog closed automatically");
       });
       setIsDeleteConfirmationOpen(false);
-      fetchServicesDetails();
+      fetchCategoryList();
     } catch (error) {
       console.error("Error deleting service:", error.message);
     }
@@ -159,17 +171,17 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
               </div>
             </div>
 
-            <Droppable droppableId="serviceDetails">
+            <Droppable droppableId="categoryListP">
               {(provided) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   className=""
                 >
-                  {filteredServiceList.map((service, index) => (
+                  {filteredCategoryList.map((category, index) => (
                     <Draggable
-                      key={service.id}
-                      draggableId={service.id.toString()}
+                      key={category.id}
+                      draggableId={category.id.toString()}
                       index={index}
                     >
                       {(provided) => (
@@ -188,37 +200,28 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
                             {index + 1}
                           </p>
                           <Link
-                            href={`/admin/details-services?id=${service.id}`}
+                            href={`/admin/details-category?id=${category.id}`}
                           >
                             <p className="ml-[45px] w-[480px] text-start text-black hover:text-blue-600">
-                              {service.service_name}
+                              {category.category_name}
                             </p>
                           </Link>
-                          <div className="w-[285px]">
-                            <span
-                              className={`p-1 rounded-md text-sm ${
-                                categoryBackgroundColors[service.category_name]
-                              } ${categoryTextColors[service.category_name]}`}
-                            >
-                              {service.category_name}
-                            </span>
-                          </div>
 
-                          <p className=" w-[280px] text-start   ">
+                          <p className=" w-[420px] text-start   ">
                             {createdAt}
                           </p>
-                          <p className=" w-[285px] text-start  ">{updatedAt}</p>
+                          <p className=" w-[430px] text-start  ">{updatedAt}</p>
                           <div className="flex flex-row  gap-4 ">
                             <img
                               src="/assets/icons/trashbin.svg"
                               className="cursor-pointer"
                               alt="Delete"
                               onClick={() =>
-                                handleCancelButtonClick(service.service_name)
+                                handleCancelButtonClick(category.category_name)
                               }
                             />
                             <Link
-                              href={`/admin/edit-services?id=${service.id}`}
+                              href={`/admin/edit-category?id=${category.id}`}
                             >
                               <img
                                 src="/assets/icons/edit.svg"
@@ -257,12 +260,12 @@ const AdminCategoryLists = ({ serviceDetails, searchInput }) => {
                 ยืนยันการลบรายการ?
               </p>
               <p className="text-[16px] font-light mb-10 text-center ">
-                คุณต้องการลบรายการ ‘{serviceName}’ ใช่หรือไม่
+                คุณต้องการลบรายการ ‘{categoryName}’ ใช่หรือไม่
               </p>
               <div className="flex justify-center gap-2">
                 <button
                   className="mr-2 bg-blue-600 text-white px-4 py-2 rounded-lg w-[112px] h-[44px]"
-                  onClick={() => deleteService(serviceName)}
+                  onClick={() => deleteCategory(categoryName)}
                 >
                   ลบรายการ
                 </button>

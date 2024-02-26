@@ -48,8 +48,6 @@ export const checkPasswordDatabase = async (password) => {
 };
 
 export const handleLogin = async (formData) => {
-  // const email = formData.get("email");
-  // const password = formData.get("password");
   const { email, password } = formData;
 
   const emailInDatabase = await checkEmailDatabase(email);
@@ -86,15 +84,11 @@ export const handleLogin = async (formData) => {
 
     if (userRole === "admin") {
       // Redirect or handle admin-specific logic here
-      console.log("Redirecting to admin page...");
-
       cookies().set("user", JSON.stringify({ ...user, role: userRole }));
 
-      redirect("/admin/category");
+      redirect("/");
     } else {
       // Redirect or handle non-admin user logic here
-      console.log("Redirecting to regular user page...");
-
       cookies().set("user", JSON.stringify(user));
 
       redirect("/");

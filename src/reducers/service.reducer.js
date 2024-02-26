@@ -6,6 +6,8 @@ const initialState = {
   services: [],
   data: [],
   address: {},
+  role: "",
+  total: "",
 };
 
 // 2
@@ -30,6 +32,7 @@ const serviceReducer = createSlice({
         return { ...item, quantity: 0 };
       });
       console.log("services :>> ", services);
+      state.total = "0.00";
       state.services = services; //reassign value from payload to state
     },
     serviceIncrement: (state, action) => {
@@ -44,7 +47,17 @@ const serviceReducer = createSlice({
             }
           : service
       );
-      console.log("newServices :>> ", newServices);
+
+      const total = newServices.reduce((accumulatedTotal, service) => {
+        return (
+          accumulatedTotal +
+          parseFloat(service.price) * parseFloat(service.quantity)
+        );
+      }, 0);
+
+      const formattedTotal = total.toFixed(2);
+
+      state.total = formattedTotal;
       state.services = newServices;
     },
     serviceDecrement: (state, action) => {
@@ -56,6 +69,16 @@ const serviceReducer = createSlice({
           ? { ...service, quantity: service.quantity - 1 }
           : service
       );
+      const total = newServices.reduce((accumulatedTotal, service) => {
+        return (
+          accumulatedTotal +
+          parseFloat(service.price) * parseFloat(service.quantity)
+        );
+      }, 0);
+
+      const formattedTotal = total.toFixed(2);
+
+      state.total = formattedTotal;
       state.services = newServices;
     },
     setData: (state, action) => {
@@ -67,6 +90,11 @@ const serviceReducer = createSlice({
       const { payload } = action;
 
       state.address = payload;
+    },
+    setUserRole: (state, action) => {
+      const { payload } = action;
+
+      state.role = payload;
     },
   },
 });
@@ -82,5 +110,6 @@ export const {
   serviceDecrement,
   setData,
   saveAddress,
+  setUserRole,
 } = serviceReducer.actions;
 export default serviceReducer.reducer;

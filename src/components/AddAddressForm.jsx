@@ -29,8 +29,6 @@ const AddAddressForm = () => {
     zipcode: "", // รหัสไปรษณีย์ postal code
   });
 
-  console.log("addressState :>> ", addressState);
-
   useEffect(() => {
     setAddress({ ...address, ...addressState });
   }, []);
@@ -69,6 +67,7 @@ const AddAddressForm = () => {
                 disablePast
                 format="DD/MM/YYYY"
                 value={selectedDate}
+                defaultValue={address.date}
                 onChange={(date) => setSelectedDate(date)}
                 slotProps={{
                   textField: {
@@ -168,9 +167,16 @@ const AddAddressForm = () => {
               placeholder="กรุณากรอกที่อยู่"
               className="border-zinc-400 h-11 bg-white rounded-lg border px-2 py-4 focus:outline-none focus:ring-1 focus:ring-blue-500"
               type="text"
-              onChange={(e) =>
-                setAddress({ ...address, address: e.target.value })
-              }
+              onChange={(e) => {
+                setAddress({ ...address, address: e.target.value });
+                dispatch(
+                  saveAddress({
+                    ...address,
+                    address: e.target.value,
+                  })
+                );
+              }}
+              value={address.address}
             />
           </div>
           <div className="flex flex-col w-full gap-1">
@@ -230,7 +236,16 @@ const AddAddressForm = () => {
             placeholder="กรุณาระบุข้อมูลเพิ่มเติม"
             className="border-zinc-400 h-24 bg-white rounded-lg border p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
             style={{ overflowY: "auto" }}
-            onChange={(e) => setAddress({ ...address, more: e.target.value })}
+            onChange={(e) => {
+              setAddress({ ...address, more: e.target.value });
+              dispatch(
+                saveAddress({
+                  ...address,
+                  more: e.target.value,
+                })
+              );
+            }}
+            value={address.more}
           />
         </div>
       </form>

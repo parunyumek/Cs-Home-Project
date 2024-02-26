@@ -5,19 +5,21 @@ import Container from "./Container";
 import { useSelector } from "react-redux";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import { supabase } from "../../supabase";
 
 const BottomTab = ({ params }) => {
   const search = useSearchParams();
   const router = useRouter();
   const services = useSelector((state) => state.services);
   const step = search.get("step") ? parseInt(search.get("step")) : 0;
+  const total = useSelector((state) => state.total);
+  const address = useSelector((state) => state.address);
 
   const onClickNext = () => {
-    // const step = search.get("step") ? parseInt(search.get("step")) + 1 : 1;
     const nextStep = step + 1;
 
     console.log("nextStep :>> ", nextStep);
-    if (nextStep <= 3) {
+    if (nextStep <= 2) {
       router.push(`/servicedetails/${params.id}?step=${nextStep}`);
     }
   };
@@ -25,7 +27,6 @@ const BottomTab = ({ params }) => {
   const onClickBack = () => {
     const backStep = step - 1;
 
-    // const step = search.get("step") ? parseInt(search.get("step")) - 1 : 1;
     if (backStep === -1) {
       router.push(`/service`);
     } else {
@@ -40,9 +41,34 @@ const BottomTab = ({ params }) => {
     return hasQuantityGreaterThanZero;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่เมื่อกด Enter
-    // ดำเนินการต่อจากนี้ เช่น ส่งข้อมูลไปยังเซิร์ฟเวอร์
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+  };
+
+  const handleInsert = async (e) => {
+    const { sendAddress } = await supabase
+      .from("address")
+      .insert([
+        {
+          province: address.province,
+          district: address.amphoe,
+          sub_district: address.district,
+          address_no: address.address,
+          remark: address.more,
+        },
+      ])
+      .select();
+
+    console.log(sendAddress);
+
+    const { status } = await supabase
+      .from("orders")
+      .insert([
+        { mock_order_histories: services, total_price: parseInt(total) },
+      ])
+      .select();
+
+    console.log(status);
   };
 
   return (
@@ -56,15 +82,26 @@ const BottomTab = ({ params }) => {
             <KeyboardArrowLeftRoundedIcon className=" text-blue-500" />
             ย้อนกลับ
           </button>
-          <button
-            className=" rounded-lg bg-blue-600 text-white w-40 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
-            onClick={onClickNext}
-            disabled={!canProcess()}
-            onSubmit={handleSubmit}
-          >
-            ดำเนินการต่อ
-            <KeyboardArrowRightRoundedIcon className=" text-white" />
-          </button>
+          {step === 2 ? ( // เพิ่มเงื่อนไขตรวจสอบว่า step เท่ากับ 2 หรือไม่
+            <button
+              className=" rounded-lg bg-blue-600 text-white w-48 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
+              onClick={handleInsert}
+              disabled={!canProcess()}
+            >
+              ยืนยันการชำระเงิน
+              <KeyboardArrowRightRoundedIcon className=" text-white" />
+            </button>
+          ) : (
+            <button
+              className=" rounded-lg bg-blue-600 text-white w-40 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
+              onClick={onClickNext}
+              disabled={!canProcess()}
+              onSubmit={handleSubmit}
+            >
+              ดำเนินการต่อ
+              <KeyboardArrowRightRoundedIcon className=" text-white" />
+            </button>
+          )}
         </div>
       </Container>
     </div>

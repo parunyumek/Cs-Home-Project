@@ -6,7 +6,7 @@ import Summary from "./Summary";
 
 const AddAddress = () => {
   return (
-    <div className="w-full flex justify-center mt-16 ">
+    <div className="w-full flex justify-center mt-16 mb-16">
       <Container>
         <div className="flex flex-col w-full gap-8">
           <PaymentProcess />
