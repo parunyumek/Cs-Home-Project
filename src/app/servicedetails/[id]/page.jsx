@@ -1,59 +1,40 @@
-"use client";
+import React from 'react';
+import { StripeProvider, Elements } from 'react-stripe-elements';
+import PaymentForm from './PaymentForm';
 
-import { useState, useEffect } from "react";
-import AddAddress from "@/components/AddAddress";
-import BackgroundService from "@/components/BackgroundService";
-import BottomTab from "@/components/BottomTab";
-import Navbar from "@/components/Navbar";
-import Payment from "@/components/Payment";
-import ServiceDetail from "@/components/ServiceDetail";
-import { useSearchParams } from "next/navigation";
-import ServiceName from "@/components/ServiceName";
-import { fetchData } from "@/app/servicedetails/[id]/actions";
-import { useSelector, useDispatch } from "react-redux";
-import { setService, setData, saveAddress } from "@/reducers/service.reducer";
-import { Fragment } from "react";
-
-const Page = ({ params }) => {
-  const search = useSearchParams();
-  const stepParam = search?.get("step") || "0";
-
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.data); // ไว้เรียกใช้ value ใน reducer
-
-  const fetchServices = async () => {
+class App extends React.Component {
+  handlePayment = async (token) => {
+    // ส่ง token ไปยัง server ของคุณเพื่อทำการชำระเงิน
     try {
-      if (params.id) {
-        const data = await fetchData(params.id);
+      const response = await fetch('YOUR_SERVER_ENDPOINT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: token.id }),
+      });
 
-        dispatch(setService(data.sub_services)); // send value to reducer
-        dispatch(setData(data));
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        console.log('Payment successful');
+      } else {
+        console.error(result.message);
       }
     } catch (error) {
-      console.error("Error fetching services:", error);
+      console.error('Error processing payment:', error);
     }
   };
 
-  useEffect(() => {
-    if (parseInt(params.id) !== data.id) {
-      fetchServices();
-      dispatch(saveAddress({}));
-    }
-  }, []);
+  render() {
+    return (
+      <StripeProvider apiKey="YOUR_PUBLISHABLE_KEY">
+        <Elements>
+          <PaymentForm handlePayment={this.handlePayment} />
+        </Elements>
+      </StripeProvider>
+    );
+  }
+}
 
-  return (
-    <Fragment>
-      <div className=" bg-[#f3f4f6] w-screen h-screen relative  ">
-        <Navbar />
-        <BackgroundService />
-        <ServiceName />
-        {(stepParam === "0" || !stepParam) && <ServiceDetail />}
-        {stepParam === "1" && <AddAddress />}
-        {stepParam === "2" && <Payment />}
-      </div>
-      <BottomTab params={params} />
-    </Fragment>
-  );
-};
-
-export default Page;
+export default App;
