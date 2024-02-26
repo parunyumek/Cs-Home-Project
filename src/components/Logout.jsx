@@ -4,9 +4,9 @@ import handleLogout from "@/app/login/actions";
 
 const Logout = () => {
   return (
-    <div className=" fixed flex flex-row  justify-start mt-4">
-      <img src="/assets/icons/logout.svg" className="ml-5 mr-5" />
-      <button onClick={() => handleLogout()} className="">
+    <div className="  flex flex-row items-center ">
+      <img src="/assets/icons/logout.svg" className=" mr-5 ml-6 h-6" />
+      <button onClick={() => handleLogout()}>
         ออกจากระบบ
       </button>
     </div>

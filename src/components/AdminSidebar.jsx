@@ -3,26 +3,39 @@ import Logout from "./Logout";
 
 const AdminSideBar = () => {
   return (
-    <div className="w-60 h-screen bg-blue-950 flex flex-col ">
-      <div className="w-48 h-[46px] bg-indigo-50 rounded-xl mt-6 ml-6">
-        <div className="text-blue-600 text-xl font-medium text-center mt-2">
-          HomeServices
+    <div className="w-[250px] h-screen bg-blue-950 flex flex-col ">
+      <div className="text-blue-600 text-[19px] font-medium text-center bg-indigo-50 rounded-xl m-5 mt-8 p-2 flex flex-row items-center">
+        <div>
+          <img src="/assets/icons/icon_house_addmin.svg" />
         </div>
+        <p className="ml-1">HomeServices</p>
       </div>
       <div className="flex flex-col text-zinc-100 mt-11 text-base font-medium leading-normal">
-        <button className="h-[54px] bg-blue-950 hover:bg-blue-900">
-          <Link href={"/admin/category"}>หมวดหมู่</Link>
+      <Link href={"/admin/category"} className="h-[54px] bg-blue-950 hover:bg-blue-900 flex flex-row items-center">
+        <button className="flex items-center">
+        <img src="/assets/icons/icon_category_addmin.svg" className="mr-5 ml-6"/>
+          หมวดหมู่
         </button>
-        <button className="h-[54px] bg-blue-950 hover:bg-blue-900">
-          <Link href={"/admin/services"}>บริการ</Link>
+        </Link>
+
+        <Link href={"/admin/services"} className="h-[54px] bg-blue-950 hover:bg-blue-900 flex flex-row items-center">
+        <button className="flex items-center">
+        <img src="/assets/icons/icon_service_addmin.svg" className="mr-5 ml-6"/>
+        บริการ
         </button>
-        <button className="h-[54px] bg-blue-950 hover:bg-blue-900">
-          <Link href={"/admin/promotion"}>Promotion Code</Link>
+        </Link>
+
+        <Link href={"/admin/promotions"} className="h-[54px] bg-blue-950 hover:bg-blue-900 flex flex-row items-center">
+        <button className="flex items-center">
+        <img src="/assets/icons/icon_promotion_addmin.svg" className="mr-5 ml-6"/>
+        Promotion Code
         </button>
+        </Link>
+
       </div>
       <div className="flex flex-col mt-[500px]">
         <button>
-          <div className="text-zinc-100 text-base font-normal leading-normal h-[54px] bg-blue-950 hover:bg-blue-900 flex justify-center">
+          <div className="text-zinc-100 text-base font-normal leading-normal h-[54px] bg-blue-950 hover:bg-blue-900 flex ">
             <Logout />
           </div>
         </button>
