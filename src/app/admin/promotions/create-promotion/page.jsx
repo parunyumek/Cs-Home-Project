@@ -27,6 +27,8 @@ const page = () => {
     hour: "",
     minute: "",
   });
+  const [fixedDiscount, setFixedDiscount] = useState("");
+  const [percentDiscount, setPercentDiscount] = useState("");
 
   const navbarTitle = "เพิ่ม Promotion Code";
   const buttonCancle = "ยกเลิก";
@@ -36,7 +38,13 @@ const page = () => {
   const router = useRouter();
 
   const handleTypeChange = (e) => {
+    if (e.target.value === "Fixed") {
+      setPercentDiscount('')
+    } else {
+      setFixedDiscount('')
+    }
     setType(e.target.value);
+
   };
 
   const handlePromotionCode = (e) => {
@@ -47,31 +55,27 @@ const page = () => {
     setQuota(e.target.value);
   };
 
-  const handleDiscount = (e) => {
-    setDiscount(e.target.value);
+  const handleFixedDiscount = (e) => {
+    setFixedDiscount(e.target.value);
+  };
+
+  const handlePercentDiscount = (e) => {
+    setPercentDiscount(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const promotionData = {
-      promotionCode,
-      type,
-      discount,
-      quotaLimit: quota,
-      remainingQuota: quota,
-      expiryDate: expiryDate.date,
-      expiryTime: `${expiryDate.hour}:${expiryDate.minute}`,
+    const promotionDataFrom = {
+        promotion_code: promotionCode,
+        promotion_type: type,
+        promotion_discount: type === "Fixed" ? fixedDiscount : percentDiscount,
+        quota_limit: quota,
+        remaining_quota: quota,
+        expiry_date: expiryDate.date,
+        expiry_time: `${expiryDate.hour}:${expiryDate.minute}`,
     };
     const { error } = await supabase.from("promotions").insert([
-      {
-        promotion_code: promotionData.promotionCode,
-        promotion_type: promotionData.type,
-        promotion_discount: promotionData.discount,
-        quota_limit: promotionData.quotaLimit,
-        remaining_quota: promotionData.remainingQuota,
-        expiry_date: promotionData.expiryDate,
-        expiry_time: promotionData.expiryTime,
-      },
+      promotionDataFrom
     ]);
     if (error) {
       console.error("promotionCreate", error.message);
@@ -138,9 +142,10 @@ const page = () => {
                   <div className="ml-7">
                     <div>
                       <TextField
+                      value={fixedDiscount}
                         disabled={type === "Percent"}
                         variant="outlined"
-                        onChange={handleDiscount}
+                        onChange={handleFixedDiscount}
                         InputProps={{
                           sx: {
                             borderRadius: "7px",
@@ -162,9 +167,10 @@ const page = () => {
                     </div>
                     <div>
                       <TextField
+                      value={percentDiscount}
                         disabled={type === "Fixed"}
                         variant="outlined"
-                        onChange={handleDiscount}
+                        onChange={handlePercentDiscount}
                         InputProps={{
                           sx: {
                             borderRadius: "7px",

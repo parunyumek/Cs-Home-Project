@@ -16,10 +16,10 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../../../supabase";
 
+
 const page = () => {
   const [promotionCode, setPromotionCode] = useState("");
   const [type, setType] = useState("Fixed");
-  const [discount, setDiscount] = useState("");
   const [quota, setQuota] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -29,6 +29,8 @@ const page = () => {
     minute: "",
   });
   const [promotionData, setPromotionData] = useState([]);
+  const [fixedDiscount, setFixedDiscount] = useState("");
+  const [percentDiscount, setPercentDiscount] = useState("");
 console.log(selectedTime);
   const navbarTitle = "เพิ่ม Promotion Code";
   const buttonCancle = "ยกเลิก";
@@ -38,9 +40,16 @@ console.log(selectedTime);
   const id = searchParams.get("id");
 console.log(id);
   const router = useRouter();
+  const now = dayjs().format();
 
   const handleTypeChange = (e) => {
+    if (e.target.value === "Fixed") {
+      setPercentDiscount('')
+    } else {
+      setFixedDiscount('')
+    }
     setType(e.target.value);
+
   };
 
   const handlePromotionCode = (e) => {
@@ -51,31 +60,27 @@ console.log(id);
     setQuota(e.target.value);
   };
 
-  const handleDiscount = (e) => {
-    setDiscount(e.target.value);
+  const handleFixedDiscount = (e) => {
+    setFixedDiscount(e.target.value);
+  };
+
+  const handlePercentDiscount = (e) => {
+    setPercentDiscount(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const promotionData = {
-      promotionCode,
-      type,
-      discount,
-      quotaLimit: quota,
-      remainingQuota: quota,
-      expiryDate: expiryDate.date,
-      expiryTime: `${expiryDate.hour}:${expiryDate.minute}`,
+    const promotionDataFrom = {
+        promotion_code: promotionCode,
+        promotion_type: type,
+        promotion_discount: type === "Fixed" ? fixedDiscount : percentDiscount,
+        quota_limit: quota,
+        remaining_quota: quota,
+        expiry_date: expiryDate.date,
+        expiry_time: `${expiryDate.hour}:${expiryDate.minute}`,
     };
     const { error } = await supabase.from("promotions").insert([
-      {
-        promotion_code: promotionData.promotionCode,
-        promotion_type: promotionData.type,
-        promotion_discount: promotionData.discount,
-        quota_limit: promotionData.quotaLimit,
-        remaining_quota: promotionData.remainingQuota,
-        expiry_date: promotionData.expiryDate,
-        expiry_time: promotionData.expiryTime,
-      },
+      promotionDataFrom
     ]);
     if (error) {
       console.error("promotionCreate", error.message);
@@ -84,15 +89,25 @@ console.log(id);
   };
 
   const handleEdit = async (e) => {
-
+    const promotionDataFrom = {
+        promotion_code: promotionCode,
+        promotion_type: type,
+        promotion_discount: type === "Fixed" ? fixedDiscount : percentDiscount,
+        quota_limit: quota,
+        remaining_quota: quota,
+        expiry_date: expiryDate.date,
+        expiry_time: `${expiryDate.hour}:${expiryDate.minute}`,
+        updated_at: now,
+    };
     const { data, error } = await supabase
       .from("promotions")
-      .update({ other_column: "otherValue" })
+      .update([ promotionDataFrom ])
       .eq("id", id)
-      .select();
+      
       if (error) {
         console.error("promotionEdit", error.message);
       }
+      router.push("/admin/promotions");
   };
 
   useEffect(() => {
@@ -104,11 +119,17 @@ console.log(id);
             .select("*")
             .eq("id", id)
             .single();
+            setPromotionCode(data.promotion_code)
+            setQuota(data.quota_limit)
           setPromotionData(data)
           setSelectedDate(dayjs(data.expiry_date));
           setSelectedTime(dayjs(data.expiry_time, "HH:mm"));
           setType(data.promotion_type);
-
+          if (data.promotion_type === 'Fixed') {
+            setFixedDiscount(data.promotion_discount)
+          } else {
+            setPercentDiscount(data.promotion_discount)
+          }
           console.log(data);
       } catch (error) {
         console.error("Error fetching service:", error.message);
@@ -126,7 +147,7 @@ console.log(id);
         buttonTitle1={buttonCancle}
         buttonTitle2={buttonCreate}
         button1click={linkToCancle}
-        button2click={handleSubmit}
+        button2click={handleEdit}
       />
       <AdminSideBar />
       <div className="w-[100%]">
@@ -138,7 +159,7 @@ console.log(id);
               </p>
               <div>
                 <TextField
-                value={promotionData.promotion_code}
+                value={promotionCode}
                   onChange={handlePromotionCode}
                   variant="outlined"
                   InputProps={{
@@ -179,10 +200,11 @@ console.log(id);
                     <div>
                         
                       <TextField
+                      value={fixedDiscount}
                         disabled={type === "Percent"}
                         
                         variant="outlined"
-                        onChange={handleDiscount}
+                        onChange={handleFixedDiscount}
                         InputProps={{
                           sx: {
                             borderRadius: "7px",
@@ -204,10 +226,11 @@ console.log(id);
                     </div>
                     <div>
                       <TextField
+                      value={percentDiscount}
                         disabled={type === "Fixed"}
                         
                         variant="outlined"
-                        onChange={handleDiscount}
+                        onChange={handlePercentDiscount}
                         InputProps={{
                           sx: {
                             borderRadius: "7px",
@@ -238,7 +261,7 @@ console.log(id);
               </p>
               <div>
                 <TextField
-                value={promotionData.quota_limit}
+                value={quota}
                   variant="outlined"
                   onChange={handleQuota}
                   InputProps={{
