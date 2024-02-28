@@ -1,4 +1,5 @@
 "use client";
+import CheckoutStipe from "@/components/CheckoutStipe";
 
 import Banner from "@/components/Banner";
 import LayoutLanding from "@/components/LayoutLanding";

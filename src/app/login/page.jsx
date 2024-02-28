@@ -6,6 +6,8 @@ const page = () => {
     <div>
       <Navbar />
       <LoginForm />;
+      
+
     </div>
   );
 };
