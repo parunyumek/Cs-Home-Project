@@ -8,7 +8,7 @@ const Logout = () => {
       <img
         src="/assets/icons/sidebar-logout-icon.svg"
         alt="service-icon"
-        className=" w-[16px] h-[16px] mr-4 mt-1 "
+        className=" w-[20px] h-[18px] mr-4 mt-1 "
       />
       <button onClick={() => handleLogout()} className="">
         ออกจากระบบ
