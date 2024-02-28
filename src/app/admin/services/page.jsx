@@ -37,19 +37,23 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-[#f3f4f6] w-screen h-screen ">
-      <AdminNavbar
-        title1={navbarTitle}
-        title2={placeHolderMessage}
-        title3={buttonText}
-        buttonlink1={linkToCreateService}
-        navBarInputOnChange={handleSearchInputChange}
-      />
-      <AdminSideBar />
-      <AdminServiceLists
-        serviceDetails={serviceDetails}
-        searchInput={searchInput}
-      />
+    <div className="bg-[#f3f4f6] flex ">
+      <div>
+        <AdminSideBar />
+      </div>
+      <div className="w-[100%]">
+        <AdminNavbar
+          title1={navbarTitle}
+          title2={placeHolderMessage}
+          title3={buttonText}
+          buttonlink1={linkToCreateService}
+          navBarInputOnChange={handleSearchInputChange}
+        />
+        <AdminServiceLists
+          serviceDetails={serviceDetails}
+          searchInput={searchInput}
+        />
+      </div>
     </div>
   );
 };

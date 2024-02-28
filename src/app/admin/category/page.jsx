@@ -2,34 +2,34 @@
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminNavbar";
 import AdminSideBar from "@/components/AdminSidebar";
+import AdminServiceLists from "@/components/AdminServiceLists";
 import { supabase } from "../../../../supabase";
 import AdminCategoryLists from "@/components/AdminCategoryList";
 
 const Page = () => {
-  const [categoryList, setCategoryList] = useState([]);
+  const [serviceDetails, setServiceDetails] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
   const navbarTitle = "หมวดหมู่";
   const placeHolderMessage = "ค้นหาหมวดหมู่...";
   const buttonText = "เพิ่มหมวดหมู่ +";
-  const linkToCreateService = "/admin/create-category";
+  const linkToCreateService = "/admin/create-services";
 
-  const fetchCategoriesList = async () => {
+  const fetchCategories = async () => {
     try {
       const { data, error } = await supabase.from("categories").select("*");
       if (error) {
         throw error;
       }
 
-      setCategoryList(data);
+      setServiceDetails(data);
     } catch (error) {
       console.error("Error fetching services:", error.message);
     }
-    console.log(categoryList);
   };
 
   useEffect(() => {
-    fetchCategoriesList();
+    fetchCategories();
   }, []);
 
   const handleSearchInputChange = (event) => {
@@ -48,7 +48,7 @@ const Page = () => {
       />
       <AdminSideBar />
       <AdminCategoryLists
-        categoryListP={categoryList}
+        serviceDetails={serviceDetails}
         searchInput={searchInput}
       />
     </div>
