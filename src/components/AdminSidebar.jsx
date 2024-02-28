@@ -15,37 +15,44 @@ const AdminSideBar = () => {
         </div>
       </div>
       <div className="flex flex-col text-zinc-100 mt-11 text-base font-medium leading-normal ">
-        <button className="h-[54px] bg-blue-950 hover:bg-blue-900">
-          {" "}
-          <img
-            src="/assets/icons/sidebar-category-icon.svg"
-            alt="category-icon"
-            className=" w-[16px] h-[16px] absolute left-[25px] top-[134px]"
-          />
-          <Link className="mr-16" href={"/admin/category"}>
+        <Link
+          href={"/admin/category"}
+          className="h-[54px] bg-blue-950 hover:bg-blue-900 flex flex-row items-center"
+        >
+          <button className="flex items-center">
+            <img
+              src="/assets/icons/sidebar-category-icon.svg"
+              className="mr-5 ml-5"
+            />
             หมวดหมู่
-          </Link>
-        </button>
-        <img
-          src="/assets/icons/sidebar-service-icon.svg"
-          alt="service-icon"
-          className=" w-[16px] h-[16px] absolute left-[25px] top-[188px]"
-        />
-        <button className="h-[54px] bg-blue-950 hover:bg-blue-900">
-          <Link className="mr-20" href={"/admin/services"}>
+          </button>
+        </Link>
+        <Link
+          href={"/admin/services"}
+          className="h-[54px] bg-blue-950 hover:bg-blue-900 flex flex-row items-center"
+        >
+          <button className="flex items-center">
+            <img
+              src="/assets/icons/sidebar-service-icon.svg"
+              className="mr-[22px] ml-6"
+            />
             บริการ
-          </Link>
-        </button>
-        <button className="h-[54px] bg-blue-950 hover:bg-blue-900">
-          <img
-            src="/assets/icons/sidebar-promotioncode-icon.svg"
-            alt="service-icon"
-            className=" w-[16px] h-[16px] absolute left-[25px] top-[241px]"
-          />
-          <Link href={"/admin/promotion"}>Promotion Code</Link>
-        </button>
+          </button>
+        </Link>
+        <Link
+          href={"/admin/promotions"}
+          className="h-[54px] bg-blue-950 hover:bg-blue-900 flex flex-row items-center"
+        >
+          <button className="flex items-center">
+            <img
+              src="/assets/icons/sidebar-promotioncode-icon.svg"
+              className="mr-5 ml-6"
+            />
+            Promotion Code
+          </button>
+        </Link>
       </div>
-      <div className="flex flex-col mt-[410px]">
+      <div className="flex flex-col mt-[500px]">
         <button>
           <div className="text-zinc-100 text-base font-normal leading-normal h-[54px] bg-blue-950 hover:bg-blue-900 flex justify-center">
             <Logout />

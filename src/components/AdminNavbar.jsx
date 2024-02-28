@@ -30,10 +30,10 @@ const AdminNavbar = ({
             />
           </div>
           <Link
-            className="w-[148px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex mt-4 ml-6 hover:bg-blue-500"
+            className=" h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex mt-4 ml-6 hover:bg-blue-500"
             href={buttonlink1}
           >
-            <button className="text-center text-white text-base font-medium leading-normal w-100">
+            <button className="text-center text-white  font-medium  ">
               {title3}
             </button>
           </Link>
