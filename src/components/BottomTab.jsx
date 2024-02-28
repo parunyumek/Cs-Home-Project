@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { supabase } from "../../supabase";
+import { getCookie } from "cookies-next";
 
 const BottomTab = ({ params }) => {
   const search = useSearchParams();
@@ -46,10 +47,20 @@ const BottomTab = ({ params }) => {
   };
 
   const handleInsert = async (e) => {
-    const { sendAddress } = await supabase
-      .from("address")
+    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+
+    const userData = getCookie("user");
+    const userId = userData ? JSON.parse(userData) : {};
+
+    const { data: ordersData, error: ordersError } = await supabase
+      .from("orders")
       .insert([
         {
+          user_id: userId.id,
+          select_services: services,
+          total_price: parseInt(total),
+          service_date: address.date,
+          service_time: `${address.hour}:${address.minute}`,
           province: address.province,
           district: address.amphoe,
           sub_district: address.district,
@@ -59,16 +70,13 @@ const BottomTab = ({ params }) => {
       ])
       .select();
 
-    console.log(sendAddress);
-
-    const { status } = await supabase
-      .from("orders")
-      .insert([
-        { mock_order_histories: services, total_price: parseInt(total) },
-      ])
-      .select();
-
-    console.log(status);
+    if (ordersError) {
+      console.error(
+        "Error inserting data into 'orders' table:",
+        ordersError.message
+      );
+      return;
+    }
   };
 
   return (
