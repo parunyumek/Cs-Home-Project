@@ -70,6 +70,10 @@ const BottomTab = ({ params }) => {
       ])
       .select();
 
+    console.log(ordersData);
+
+    router.push("/paymentsuccess");
+
     if (ordersError) {
       console.error(
         "Error inserting data into 'orders' table:",

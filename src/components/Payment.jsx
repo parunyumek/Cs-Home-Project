@@ -5,7 +5,7 @@ import PaymentProcess from "./PaymentProcess";
 
 const Payment = () => {
   return (
-    <div className="w-full h-full flex justify-center mb-10 mt-16">
+    <div className="w-full flex justify-center mb-10 mt-16">
       <Container>
         <div className="flex flex-col w-full gap-8">
           <PaymentProcess />
