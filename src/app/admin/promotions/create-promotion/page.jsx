@@ -18,7 +18,6 @@ import { supabase } from "../../../../../supabase";
 const page = () => {
   const [promotionCode, setPromotionCode] = useState("");
   const [type, setType] = useState("Fixed");
-  const [discount, setDiscount] = useState("");
   const [quota, setQuota] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);

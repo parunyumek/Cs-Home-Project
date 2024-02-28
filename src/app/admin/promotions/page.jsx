@@ -7,20 +7,17 @@ import Link from "next/link";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Stack";
-import CloseIcon from '@mui/icons-material/Close';
-
-import Icon from "@mui/material/Icon";
+import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import { SxProps } from "@mui/system";
 
 const page = () => {
   const [promotionData, setPromotionData] = useState([]);
   const [open, setOpen] = useState(false);
   const [idTarget, setIdTarget] = useState(null);
+  const [codeTarget, setCodeTarget] = useState(null);
 
   const navbarTitle = "Promotion Code";
   const inputPlaceHolder = "ค้นหาPromotion Code..";
@@ -56,20 +53,58 @@ const page = () => {
     window.location.reload();
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (e, id, code) => {
     e.preventDefault();
     setIdTarget(id);
+    setCodeTarget(code);
     setOpen(true);
   };
 
   function formatDateTime(timestamp) {
     const date = new Date(timestamp);
-    const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1;
-    const year = date.getUTCFullYear();
-    const time = `${date.getUTCHours()}:${date.getUTCMinutes()}`;
-    return `${day}/${month}/${year} ${time}`;
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12;
+
+    const formattedDate = `${day}/${month}/${year} ${formattedHours}:${minutes
+      .toString()
+      .padStart(2, "0")}${ampm}`;
+
+    return formattedDate;
   }
+
+  function formatTime(timeString) {
+    // แยกชั่วโมงและนาที
+    if (!timeString) return "Invalid time";
+
+    // แยกชั่วโมงและนาที
+    const [hourString, minuteString] = timeString.split(':');
+    let hour = parseInt(hourString);
+    let minute = parseInt(minuteString);
+    
+    // ปรับรูปแบบเวลา
+    let formattedHour = (hour < 10 ? '0' : '') + hour; // เพิ่มเลข 0 ถ้าหลักเดียว
+    let ampm = 'AM';
+    if (hour >= 12) {
+        formattedHour = hour - 12;
+        ampm = 'PM';
+    }
+    if (formattedHour === 0) {
+        formattedHour = 12;
+    }
+
+    // เพิ่มเลข 0 ถ้าหลักเดียว
+    let formattedMinute = (minute < 10 ? '0' : '') + minute;
+
+    // ส่งค่าเวลาในรูปแบบ 'hh:mm AM/PM'
+    return `${formattedHour}:${formattedMinute}${ampm}`;
+}
 
   useEffect(() => {
     fetchData();
@@ -111,11 +146,11 @@ const page = () => {
               </p>
               <p className="w-[209px]">{formatDateTime(item.created_at)}</p>
               <p className="w-[225px]">
-                {item.expiry_date} {item.expiry_time}
+                {item.expiry_date} {formatTime(item.expiry_time)}
               </p>
               <div className="flex w-[85px] items-center">
                 <button
-                  onClick={(e) => handleDelete(e, item.id)}
+                  onClick={(e) => handleDelete(e, item.id, item.promotion_code)}
                   className="mr-5 w-6"
                 >
                   <img src="/assets/icons/trashbin.svg" />
@@ -130,95 +165,112 @@ const page = () => {
           ))}
         </div>
       </div>
-      {/* <Dialog
-        open={open}
+      <Dialog
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        open={open}
+        PaperProps={{ sx: { borderRadius: "16px", display: "" } }}
+        sx={{}}
       >
-        <DialogTitle id="alert-dialog-title">
-          {"ยืนยันการลบรายการ?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            คุณต้องการลบรายการ ‘HOME0202’<br/> ใช่หรือไม่
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button sx={} onClick={handleConfermDelete}>ลบรายการ</Button>
-          <Button onClick={handleClose} autoFocus>
-            ยกเลิก
-          </Button>
-        </DialogActions>
-      </Dialog> */}
-      <Box >
-      <Dialog onClose={handleClose} open={open} >
-        <DialogContent  >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            zIndex: 1,
+            "& .MuiButtonBase-root": {
+              color: "base.400",
+              display: "flex",
+            },
+          }}
+        >
+          <IconButton
+            size="small"
+            onClick={handleClose}
+            sx={{ marginLeft: "auto", p: 0 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <Box>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              
-              "& .MuiButtonBase-root": { color: "base.400", display: "flex" },
+              width: "360px",
+              height: "270px",
+              borderRadius: "16px",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          ><IconButton size='small' onClick={handleClose} sx={{ marginLeft: 'auto', p: 0 }}>
-          <CloseIcon className='icon-close' />
-        </IconButton></Box>
-          <Box sx={{
-            
-           
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            
-            mx: 'auto'
-          }}>
-          <img src="/assets/icons/alerticon.svg"  className=""/>
+          >
+            <Box
+              sx={{
+                width: "260px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mx: "auto",
+                  mb: 2,
+                }}
+              >
+                <img src="/assets/icons/alerticon.svg" />
+              </Box>
+
+              <DialogTitle
+                id="alert-dialog-title"
+                component="div"
+                sx={{
+                  textAlign: "center",
+                  p: 0,
+                  mb: 1,
+                }}
+              >
+                ยืนยันการลบรายการ?
+              </DialogTitle>
+              <DialogContentText
+                id="alert-dialog-description"
+                component="div"
+                sx={{ textAlign: "center", mb: 2 }}
+              >
+                คุณต้องการลบรายการ ‘{codeTarget}’
+                <br /> ใช่หรือไม่
+              </DialogContentText>
+              <DialogActions sx={{ justifyContent: "space-between" }}>
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={handleConfermDelete}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#336DF2",
+                    width: "112px",
+                    height: "44px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  ลบรายการ
+                </Button>
+                <Button
+                  type="button"
+                  variant="outlined"
+                  onClick={handleClose}
+                  sx={{
+                    color: "#336DF2",
+                    borderColor: "#336DF2",
+                    width: "112px",
+                    height: "44px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  ยกเลิก
+                </Button>
+              </DialogActions>
+            </Box>
           </Box>
-          
-          <DialogTitle
-            id="alert-dialog-title"
-            component="div"
-            sx={{ textAlign: "center", p: 0, mb: 3 }}
-          >
-            ยืนยันการลบรายการ?
-          </DialogTitle>
-          <DialogContentText
-            id="alert-dialog-description"
-            component="div"
-            sx={{ textAlign: "center" }}
-          >
-            คุณต้องการลบรายการ ‘HOME0202’
-            <br /> ใช่หรือไม่
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ mb: 4}}>
-          <Button
-            type="button"
-            variant="contained"
-            onClick={handleConfermDelete}
-            fullWidth
-            sx={{
-              backgroundColor: "#336DF2"
-            }}
-          >
-            ลบรายการ
-          </Button>
-          <Button
-            type="button"
-            variant="outlined"
-            onClick={handleClose}
-            fullWidth
-            sx={{
-              color: "#336DF2",
-              borderColor: "#336DF2"
-            }}
-          >
-            ยกเลิก
-          </Button>
-        </DialogActions>
+        </Box>
       </Dialog>
-      </Box>
     </div>
   );
 };
