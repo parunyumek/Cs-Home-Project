@@ -107,15 +107,10 @@ const AdminCreateServiceForm = ({
 
   return (
     <div
-      style={{
-        minHeight: "100vh",
-        paddingBottom: "100px",
-        overflowY: "scroll",
-        backgroundColor: "rgb(243,244,246)",
-      }}
+      
     >
       <form
-        className="ml-72 mt-28 bg-white w-4/5 h-auto rounded-[10px] pb-11"
+        className=" bg-white  h-auto rounded-[10px] pb-11"
         onSubmit={(event) => onSubmits(event)}
       >
         <div className="">

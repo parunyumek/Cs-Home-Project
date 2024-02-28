@@ -33,55 +33,6 @@ const page = () => {
   const buttonCreate = "สร้าง";
   const linkToCancle = "";
 
-  const router = useRouter();
-
-  const handleTypeChange = (e) => {
-    setType(e.target.value);
-  };
-
-  const handlePromotionCode = (e) => {
-    setPromotionCode(e.target.value);
-  };
-
-  const handleQuota = (e) => {
-    setQuota(e.target.value);
-  };
-
-  const handleDiscount = (e) => {
-    setDiscount(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const promotionData = {
-      promotionCode,
-      type,
-      discount,
-      quotaLimit: quota,
-      remainingQuota: quota,
-      expiryDate: expiryDate.date,
-      expiryTime: `${expiryDate.hour}:${expiryDate.minute}`,
-    };
-    const { error } = await supabase
-    .from("promotions")
-    .insert([
-      {
-        promotion_code: promotionData.promotionCode,
-        promotion_type: promotionData.type,
-        promotion_discount: promotionData.discount,
-        quota_limit: promotionData.quotaLimit,
-        remaining_quota: promotionData.remainingQuota,
-        expiry_date: promotionData.expiryDate,
-        expiry_time: promotionData.expiryTime,
-    },
-    ])
-    if (error) {
-        console.error("promotionCreate", error.message)
-    }
-    router.push("/admin/promotions");
-  };
-
-  const minTime = dayjs().add(1, "hour");
   return (
     <div className="flex">
       <div>
@@ -103,7 +54,6 @@ const page = () => {
               </p>
               <div>
                 <TextField
-                
                   onChange={handlePromotionCode}
                   variant="outlined"
                   InputProps={{
