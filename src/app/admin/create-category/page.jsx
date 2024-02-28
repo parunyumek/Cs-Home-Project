@@ -54,7 +54,7 @@ const Page = () => {
   };
 
   const handleCancelButtonClick = () => {
-    setIsDeleteConfirmationOpen(true);
+   router.push("/admin/category")
   };
 
   const handleCancelDelete = () => {
