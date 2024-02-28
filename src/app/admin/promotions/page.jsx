@@ -18,6 +18,7 @@ const page = () => {
   const [open, setOpen] = useState(false);
   const [idTarget, setIdTarget] = useState(null);
   const [codeTarget, setCodeTarget] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
   const navbarTitle = "Promotion Code";
   const inputPlaceHolder = "ค้นหาPromotion Code..";
@@ -38,7 +39,14 @@ const page = () => {
       console.log("get promotion", error);
       return;
     }
-    setPromotionData(data);
+    const filteredList = data.filter((promotion) =>
+      promotion.promotion_code.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setPromotionData(filteredList);
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchInput(event.target.value.toLowerCase());
   };
 
   const handleConfermDelete = async (e) => {
@@ -84,31 +92,31 @@ const page = () => {
     if (!timeString) return "Invalid time";
 
     // แยกชั่วโมงและนาที
-    const [hourString, minuteString] = timeString.split(':');
+    const [hourString, minuteString] = timeString.split(":");
     let hour = parseInt(hourString);
     let minute = parseInt(minuteString);
-    
+
     // ปรับรูปแบบเวลา
-    let formattedHour = (hour < 10 ? '0' : '') + hour; // เพิ่มเลข 0 ถ้าหลักเดียว
-    let ampm = 'AM';
+    let formattedHour = (hour < 10 ? "0" : "") + hour; // เพิ่มเลข 0 ถ้าหลักเดียว
+    let ampm = "AM";
     if (hour >= 12) {
-        formattedHour = hour - 12;
-        ampm = 'PM';
+      formattedHour = hour - 12;
+      ampm = "PM";
     }
     if (formattedHour === 0) {
-        formattedHour = 12;
+      formattedHour = 12;
     }
 
     // เพิ่มเลข 0 ถ้าหลักเดียว
-    let formattedMinute = (minute < 10 ? '0' : '') + minute;
+    let formattedMinute = (minute < 10 ? "0" : "") + minute;
 
     // ส่งค่าเวลาในรูปแบบ 'hh:mm AM/PM'
     return `${formattedHour}:${formattedMinute}${ampm}`;
-}
+  }
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [searchInput, promotionData]);
 
   return (
     <div className="bg-[#f3f4f6]  h-screen">
@@ -117,6 +125,7 @@ const page = () => {
         title2={inputPlaceHolder}
         title3={createCategoryTitle}
         buttonlink1={linkToCreateCategory}
+        navBarInputOnChange={handleSearchInputChange}
       />
       <AdminSideBar />
       <div>
