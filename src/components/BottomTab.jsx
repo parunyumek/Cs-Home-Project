@@ -8,6 +8,8 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import { supabase } from "../../supabase";
 import { getCookie } from "cookies-next";
 
+
+
 const BottomTab = ({ params }) => {
   const search = useSearchParams();
   const router = useRouter();
@@ -60,6 +62,7 @@ const BottomTab = ({ params }) => {
           select_services: services,
           total_price: parseInt(total),
           service_date: address.date,
+          status: "รอดำเนินการ",
           service_time: `${address.hour}:${address.minute}`,
           province: address.province,
           district: address.amphoe,
