@@ -3,6 +3,7 @@ import Container from "./Container";
 import * as React from "react";
 import PaymentProcess from "./PaymentProcess";
 import PaymentForm from "./PaymentForm";
+import CheckoutPaypal from "./CheckoutPaypal";
 
 const Payment = () => {
   return (
@@ -12,7 +13,8 @@ const Payment = () => {
           <PaymentProcess />
           <div className="flex gap-8">
             <div className="  flex flex-col gap-6 bg-white  text-black p-6 rounded-lg border-gray-300 border w-2/3">
-            <PaymentForm />
+            {/* <PaymentForm /> */}
+            <CheckoutPaypal/>
             </div>
             <div className="w-1/3">
               <Summary />

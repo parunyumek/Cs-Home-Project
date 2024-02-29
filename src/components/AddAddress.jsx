@@ -3,7 +3,6 @@ import * as React from "react";
 import AddAddressForm from "./AddAddressForm";
 import PaymentProcess from "./PaymentProcess";
 import Summary from "./Summary";
-import CheckoutStipe from "./CheckoutStipe";
 
 const AddAddress = () => {
   return (
@@ -17,7 +16,6 @@ const AddAddress = () => {
             </div>
             <div className="w-1/3">
               <Summary />
-              <CheckoutStipe />
             </div>
           </div>
         </div>
