@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.11",
     "@mui/system": "^5.15.6",
     "@mui/x-date-pickers": "^6.19.4",
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/react-paypal-js": "^8.1.4",
     "@reduxjs/toolkit": "^2.1.0",
     "@stripe/stripe-js": "^3.0.5",
