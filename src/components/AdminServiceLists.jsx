@@ -28,21 +28,22 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
 
-    // Get UTC time in milliseconds
-    const utcTime = date.getTime();
-
     // Bangkok, Thailand is UTC+7
-    const bangkokOffset = 24 * 60 * 60 * 1000; // 7 hours in milliseconds
-    const bangkokTime = new Date(utcTime + bangkokOffset);
+    const bangkokOffset = 0 * 60 * 60 * 1000; // 7 hours in milliseconds
+    const bangkokTime = new Date(date.getTime() - bangkokOffset);
 
     const day = bangkokTime.getDate().toString().padStart(2, "0");
     const month = (bangkokTime.getMonth() + 1).toString().padStart(2, "0");
     const year = bangkokTime.getFullYear();
-    const hours = bangkokTime.getHours().toString().padStart(2, "0");
+    let hours = bangkokTime.getHours();
     const minutes = bangkokTime.getMinutes().toString().padStart(2, "0");
-    const ampm = bangkokTime.getHours() >= 12 ? "PM" : "AM";
+    let ampm = hours >= 12 ? "PM" : "AM";
 
-    return `${day - 1}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+    // Convert hours to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
 
   const timeFormatted = (createdTime, updatedTime, callbackFunction) => {
@@ -102,7 +103,7 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
   }, [searchInput, serviceDetails]);
 
   // Function to handle reordering
- 
+
   const handleDragEnd = (result) => {
     if (!result.destination) return; // If dropped outside the list, return
 
@@ -228,9 +229,11 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
                           </div>
 
                           <p className=" w-[280px] text-start   ">
-                            {createdAt}
+                            {service.created_at}
                           </p>
-                          <p className=" w-[285px] text-start  ">{updatedAt}</p>
+                          <p className=" w-[285px] text-start  ">
+                            {service.updated_at}
+                          </p>
                           <div className="flex flex-row  gap-4 ">
                             <img
                               src="/assets/icons/trashbin.svg"
