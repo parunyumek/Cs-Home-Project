@@ -16,12 +16,11 @@ const page = () => {
     let { data, error } = await supabase
       .from("orders")
       .select("*")
-      .order("updated_at", { ascending: false });
+      .order("created_at", { ascending: false });
     if (error) {
       console.log("error", error);
       return;
     }
-
     const successfulOrders = data.filter(
       (order) => order.status === "ดำเนินการสำเร็จ"
     );
@@ -35,6 +34,11 @@ const page = () => {
   const handleDataLink = (e, data) => {
     e.preventDefault();
     setdataLink(data);
+  };
+
+  const handleFilterSubService = (item) => {
+    const filteredServices = item.filter((item) => item.quantity !== 0);
+    return filteredServices;
   };
 
   function formatDateTime(timestamp) {
@@ -154,13 +158,15 @@ const page = () => {
                       </p>
                     </div>
                     <h3 className=" text-gray-500 mt-5">รายการ:</h3>
-                    {order?.mock_order_histories.map((item, index) => (
-                      <div key={index}>
-                        <p className="mt-1 text-[14px]">
-                          • {item.subServiceName} {item.quantity} {item.unit}
-                        </p>
-                      </div>
-                    ))}
+                    {handleFilterSubService(order?.select_services).map(
+                      (item, index) => (
+                        <div key={index}>
+                          <p className="mt-1 text-[14px]">
+                            • {item.subServiceName} {item.quantity} {item.unit}
+                          </p>
+                        </div>
+                      )
+                    )}
                   </div>
                   <div className="flex flex-col justify-between">
                     <div>
@@ -224,13 +230,15 @@ const page = () => {
                       </p>
                     </div>
                     <h3 className=" text-gray-500 mt-5">รายการ:</h3>
-                    {order?.mock_order_histories.map((item, index) => (
-                      <div key={index}>
-                        <p className="mt-1 text-[14px]">
-                          • {item.subServiceName} {item.quantity} {item.unit}
-                        </p>
-                      </div>
-                    ))}
+                    {handleFilterSubService(order?.select_services).map(
+                      (item, index) => (
+                        <div key={index}>
+                          <p className="mt-1 text-[14px]">
+                            • {item.subServiceName} {item.quantity} {item.unit}
+                          </p>
+                        </div>
+                      )
+                    )}
                   </div>
                   <div className="flex flex-col justify-between">
                     <div>
@@ -255,7 +263,7 @@ const page = () => {
       </div>
       <div className="">
         <Footer />
-        <Copyright/>
+        <Copyright />
       </div>
     </div>
   );
