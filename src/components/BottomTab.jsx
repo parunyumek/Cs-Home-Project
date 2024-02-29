@@ -15,6 +15,8 @@ const BottomTab = ({ params }) => {
   const step = search.get("step") ? parseInt(search.get("step")) : 0;
   const total = useSelector((state) => state.total);
   const address = useSelector((state) => state.address);
+  const remainingQuota = useSelector((state) => state.remainingQuota);
+  const promotionCode = useSelector((state) => state.promotionCode);
 
   const onClickNext = () => {
     const nextStep = step + 1;
@@ -43,11 +45,27 @@ const BottomTab = ({ params }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+    e.preventDefault();
   };
 
-  const handleInsert = async (e) => {
-    e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const { error } = await supabase
+      .from("promotions")
+      .update([
+        {
+          remaining_quota: Number(remainingQuota) - 1,
+        },
+      ])
+      .eq("promotion_code", promotionCode);
+
+    if (error) {
+      console.error(
+        "Error inserting data into 'promotion' table:",
+        error.message
+      );
+      return;
+    }
 
     const userData = getCookie("user");
     const userId = userData ? JSON.parse(userData) : {};
@@ -60,12 +78,14 @@ const BottomTab = ({ params }) => {
           select_services: services,
           total_price: parseInt(total),
           service_date: address.date,
+          status: "รอดำเนินการ",
           service_time: `${address.hour}:${address.minute}`,
           province: address.province,
           district: address.amphoe,
           sub_district: address.district,
           address_no: address.address,
           remark: address.more,
+          order_code: generateOrderCode(),
         },
       ])
       .select();
@@ -83,6 +103,16 @@ const BottomTab = ({ params }) => {
     }
   };
 
+  function generateOrderCode() {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let orderCode = "";
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      orderCode += characters.charAt(randomIndex);
+    }
+    return orderCode;
+  }
+
   return (
     <div className="w-full  flex justify-center h-24 bg-white border-t border-gray-300 bottom-0 sticky">
       <Container>
@@ -97,7 +127,7 @@ const BottomTab = ({ params }) => {
           {step === 2 ? ( // เพิ่มเงื่อนไขตรวจสอบว่า step เท่ากับ 2 หรือไม่
             <button
               className=" rounded-lg bg-blue-600 text-white w-48 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
-              onClick={handleInsert}
+              onClick={handleUpdate}
               disabled={!canProcess()}
             >
               ยืนยันการชำระเงิน

@@ -8,6 +8,10 @@ const initialState = {
   address: {},
   role: "",
   total: "",
+  promotionCode: "",
+  promotionDiscount: "",
+  promotionType: "",
+  remainingQuota: "",
 };
 
 // 2
@@ -35,6 +39,21 @@ const serviceReducer = createSlice({
       state.total = "0.00";
       state.services = services; //reassign value from payload to state
     },
+
+    resetDiscount: (state, action) => {
+      state.promotionType = ""
+    },
+
+    totalDiscount: (state, action) => {
+      const { payload } = action;
+      console.log(payload.totalCalculate);
+      state.total = payload.totalCalculate;
+      state.promotionCode = payload.promotionCode
+      state.promotionDiscount = payload.promotionDiscount
+      state.promotionType = payload.promotionType
+      state.remainingQuota = payload.remainingQuota
+    },
+
     serviceIncrement: (state, action) => {
       const { payload } = action;
       const services = payload.services;
@@ -110,6 +129,8 @@ export const {
   serviceDecrement,
   setData,
   saveAddress,
+  totalDiscount,
   setUserRole,
+  resetDiscount,
 } = serviceReducer.actions;
 export default serviceReducer.reducer;

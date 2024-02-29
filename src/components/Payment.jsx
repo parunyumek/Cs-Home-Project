@@ -2,8 +2,49 @@ import Summary from "./Summary";
 import Container from "./Container";
 import * as React from "react";
 import PaymentProcess from "./PaymentProcess";
+import { useState } from "react";
+import { createClient } from "@/supabase/client";
+import { useSelector, useDispatch } from "react-redux";
+import { totalDiscount } from "@/reducers/service.reducer";
+
 
 const Payment = () => {
+  const [inputPromotionCode, setInputPromotionCode] = useState("");
+  const total = useSelector((state) => state.total);
+  const dispatch = useDispatch();
+  const supabase = createClient();
+
+
+  const handleCalCulate = async (e) => {
+    e.preventDefault();
+    let { data, error } = await supabase
+      .from("promotions")
+      .select("*")
+      .eq("promotion_code", inputPromotionCode)
+      .single()
+    if (error) {
+      console.log("get promotion", error);
+      return;
+    }
+
+    let totalCalculate = 0;
+    if (data.promotion_type === "Fixed") {
+      totalCalculate = Number(total) - Number(data.promotion_discount);
+    } else {
+      totalCalculate = Number(total) - (Number(total) * (Number(data.promotion_discount) / 100))
+    }
+    dispatch(
+      totalDiscount({
+        totalCalculate: totalCalculate.toLocaleString(),
+        promotionCode: data.promotion_code,
+        promotionDiscount: data.promotion_discount,
+        promotionType: data.promotion_type,
+        remainingQuota: data.remaining_quota,
+      })
+    );
+    
+  };
+
   return (
     <div className="w-full flex justify-center mb-10 mt-16">
       <Container>
@@ -92,10 +133,14 @@ const Payment = () => {
                     id="promotionCode"
                     type="text"
                     name="promotionCode"
+                    onChange={(e) => setInputPromotionCode(e.target.value)}
                     placeholder="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
                     className=" self-stretch text-gray-500 w-[47%] leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
                   />
-                  <button className="w-[90px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg text-white ">
+                  <button
+                    onClick={(e) => handleCalCulate(e)}
+                    className="w-[90px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg text-white "
+                  >
                     ใช้โค้ด
                   </button>
                 </div>

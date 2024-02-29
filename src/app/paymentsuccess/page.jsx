@@ -6,11 +6,18 @@ import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
 import { Fragment } from "react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const services = useSelector((state) => state.services);
   const address = useSelector((state) => state.address);
   const total = useSelector((state) => state.total);
+
+  const router = useRouter();
+
+  const handleLinkToOrders = () => {
+    router.push("/user/orders");
+  };
 
   const selectedServices = services
     ? services.filter((service) => service.quantity > 0)
@@ -84,7 +91,7 @@ const Page = () => {
               <h2 className="flex justify-between text-gray-700 text-lg">
                 รวม <span className=" font-semibold">{total} ฿</span>
               </h2>
-              <button className=" h-11 w-full bg-blue-600 rounded-lg text-white">
+              <button onClick={handleLinkToOrders} className=" h-11 w-full bg-blue-600 rounded-lg text-white">
                 เช็ครายการซ่อม
               </button>
             </div>
