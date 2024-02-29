@@ -81,7 +81,7 @@ const Summary = () => {
           {" "}
           Promotion Code{" "}
           <span className=" font-semibold text-[#C82438]">
-            -${promotionDiscount} ฿
+            -{promotionDiscount} ฿
           </span>
         </h2>
       ) : promotionType === "Percent" ? (
@@ -89,7 +89,7 @@ const Summary = () => {
           {" "}
           Promotion Code{" "}
           <span className=" font-semibold text-[#C82438]">
-            -${promotionDiscount} %
+            -{promotionDiscount} %
           </span>
         </h2>
       ) : null}
