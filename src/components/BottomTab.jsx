@@ -69,6 +69,7 @@ const BottomTab = ({ params }) => {
           sub_district: address.district,
           address_no: address.address,
           remark: address.more,
+          order_code: generateOrderCode(),
         },
       ])
       .select();
@@ -85,6 +86,16 @@ const BottomTab = ({ params }) => {
       return;
     }
   };
+
+  function generateOrderCode() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let orderCode = '';
+    for (let i = 0; i < 8; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        orderCode += characters.charAt(randomIndex);
+    }
+    return orderCode;
+}
 
   return (
     <div className="w-full  flex justify-center h-24 bg-white border-t border-gray-300 bottom-0 sticky">
