@@ -16,11 +16,11 @@ export async function POST() {
     purchase_units: [
       {
         amount: {
-          currency_code: "THB",
+          currency_code: "USD",
           value: "100.00",
           breakdown: {
             item_total: {
-              currency_code: "THB",
+              currency_code: "USD",
               value: "100.00",
             },
           },
@@ -31,7 +31,7 @@ export async function POST() {
             description: "Aaaaa",
             quantity: "1",
             unit_amount: {
-              currency_code: "THB",
+              currency_code: "USD",
               value: "50.00",
             },
           },
@@ -40,7 +40,7 @@ export async function POST() {
             description: "Bbbb",
             quantity: "1",
             unit_amount: {
-              currency_code: "THB",
+              currency_code: "USD",
               value: "50.00",
             },
           },
