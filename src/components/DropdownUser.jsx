@@ -18,7 +18,6 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { useRouter } from "next/navigation";
 
-
 const DropdownUser = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -84,7 +83,6 @@ const DropdownUser = () => {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
-        sx={{}}
       >
         <MenuItem
           onClick={handleClose}

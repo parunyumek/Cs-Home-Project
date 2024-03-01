@@ -61,7 +61,7 @@ const BottomTab = ({ params }) => {
       return hasAllRequiredInputs;
     }
   };
-  console.log(services)
+  console.log(services);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,7 +147,6 @@ const BottomTab = ({ params }) => {
             <button
               className=" rounded-lg bg-blue-600 text-white w-48 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
               onClick={handleUpdate}
-              disabled={!canProcess()}
             >
               ยืนยันการชำระเงิน
               <KeyboardArrowRightRoundedIcon className=" text-white" />

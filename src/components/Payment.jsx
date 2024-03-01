@@ -7,13 +7,12 @@ import { createClient } from "@/supabase/client";
 import { useSelector, useDispatch } from "react-redux";
 import { totalDiscount } from "@/reducers/service.reducer";
 
-
 const Payment = () => {
   const [inputPromotionCode, setInputPromotionCode] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const total = useSelector((state) => state.total);
   const dispatch = useDispatch();
   const supabase = createClient();
-
 
   const handleCalCulate = async (e) => {
     e.preventDefault();
@@ -21,7 +20,7 @@ const Payment = () => {
       .from("promotions")
       .select("*")
       .eq("promotion_code", inputPromotionCode)
-      .single()
+      .single();
     if (error) {
       console.log("get promotion", error);
       return;
@@ -30,8 +29,10 @@ const Payment = () => {
     let totalCalculate = 0;
     if (data.promotion_type === "Fixed") {
       totalCalculate = Number(total) - Number(data.promotion_discount);
+      setIsButtonDisabled(true);
     } else {
-      totalCalculate = Number(total) - (Number(total) * (Number(data.promotion_discount) / 100))
+      totalCalculate =
+        Number(total) - Number(total) * (Number(data.promotion_discount) / 100);
     }
     dispatch(
       totalDiscount({
@@ -42,7 +43,7 @@ const Payment = () => {
         remainingQuota: data.remaining_quota,
       })
     );
-    
+    setIsButtonDisabled(true);
   };
 
   return (
@@ -138,8 +139,11 @@ const Payment = () => {
                     className=" self-stretch text-gray-500 w-[47%] leading-normal px-4 py-2.5  border  border-gray-300 rounded-lg gap-2.5"
                   />
                   <button
+                    disabled={isButtonDisabled}
                     onClick={(e) => handleCalCulate(e)}
-                    className="w-[90px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg text-white "
+                    className={`w-[90px] h-11 px-6 py-2.5 rounded-lg text-white ${
+                      isButtonDisabled ? "bg-gray-300 " : "bg-blue-600"
+                    }`}
                   >
                     ใช้โค้ด
                   </button>
