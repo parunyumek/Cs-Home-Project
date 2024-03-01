@@ -52,7 +52,7 @@ const AdminSideBar = () => {
           </button>
         </Link>
       </div>
-      <div className="flex flex-col mt-[500px]">
+      <div className="flex flex-col justify-end h-[62%]">
         <button>
           <div className="text-zinc-100 text-base font-normal leading-normal h-[54px] bg-blue-950 hover:bg-blue-900 flex justify-center">
             <Logout />

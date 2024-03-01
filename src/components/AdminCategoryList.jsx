@@ -201,14 +201,13 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                             {index + 1}
                           </p>
                           <Link
+                            className="  ml-12 w-[30%] text-start text-black hover:text-blue-600 "
                             href={`/admin/details-category?id=${category.id}`}
                           >
-                            <p className=" ml-12 w-[430px] text-start text-black hover:text-blue-600 ">
-                              {category.category_name}
-                            </p>
+                            <p>{category.category_name}</p>
                           </Link>
 
-                          <p className=" w-[28%] text-start   ">
+                          <p className="  w-[28%] text-start   ">
                             {category.created_at}
                           </p>
                           <p className=" w-[27%] text-start   ">

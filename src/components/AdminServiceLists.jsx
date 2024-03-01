@@ -169,18 +169,14 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
     >
       <DragDropContext onDragEnd={handleDragEnd}>
         <div>
-          <div className=" w-[1570px] h-[41px] border-[1px] border-[#e6e7eb] ml-[280px] mt-[150px]  bg-[#EFEFF2] z-10 rounded-t-[10px]">
-            <div className="flex flex-row text-[#646C80] text-[14px] mt-2">
-              <div className="flex flex-row w-[400px] justify-start gap-8 ml-16">
-                <p>ลำดับ</p>
-                <p>ชื่อบริการ</p>
-              </div>
-              <div className="flex flex-row w-[900px] justify-between ml-36 mb-[11px]">
-                <p>หมวดหมู่</p>
-                <p>สร้างเมื่อ</p>
-                <p>แก้ไขล่าสุด</p>
-                <p>Action</p>
-              </div>
+          <div className=" w-[82.5%] h-[41px] border-[1px] border-[#e6e7eb] ml-[280px] mt-[150px]  bg-[#EFEFF2] z-10 rounded-t-[10px]">
+            <div className="flex flex-row text-[#646C80] text-[14px] mt-2 mb-2.5 ">
+              <p className="ml-16 w-[4.5%]  text-start">ลำดับ</p>
+              <p className="w-[31%] ">ชื่อบริการ</p>
+              <p className="w-[17.5%] ">หมวดหมู่</p>
+              <p className="w-[18.5%] ">สร้างเมื่อ</p>
+              <p className="w-[18.5%] ">แก้ไขล่าสุด</p>
+              <p className="w-[6.5%] ">Action</p>
             </div>
 
             <Droppable droppableId="serviceDetails">
@@ -201,26 +197,25 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className="flex bg-white w-[1568px] h-[90px] text-black text-[16px] items-center border-b-[1px] "
+                          className="flex bg-white w-auto h-[90px] text-black text-[16px] items-center border-b-[1px] "
                         >
                           <img
                             src="/assets/icons/resequence.png"
-                            className="h-[16px] ml-7"
+                            className="h-[16px] ml-7 w-auto"
                             alt="resequence"
                           />
-                          <p className=" ml-[35px] w-auto text-center  ">
+                          <p className=" ml-9  w-[3.5%] text-start  ">
                             {index + 1}
                           </p>
                           <Link
+                            className="   w-[31%] text-start text-black hover:text-blue-600"
                             href={`/admin/details-services?id=${service.id}`}
                           >
-                            <p className="ml-[45px] w-[480px] text-start text-black hover:text-blue-600">
-                              {service.service_name}
-                            </p>
+                            <p>{service.service_name}</p>
                           </Link>
-                          <div className="w-[285px]">
+                          <div className="w-[17.5%] ">
                             <span
-                              className={`p-1 rounded-md text-sm ${
+                              className={` p-1 rounded-md text-sm ${
                                 categoryBackgroundColors[service.category_name]
                               } ${categoryTextColors[service.category_name]}`}
                             >
@@ -228,13 +223,13 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
                             </span>
                           </div>
 
-                          <p className=" w-[280px] text-start   ">
+                          <p className=" w-[18.5%]  text-start   ">
                             {service.created_at}
                           </p>
-                          <p className=" w-[285px] text-start  ">
+                          <p className=" w-[18.5%]  text-start  ">
                             {service.updated_at}
                           </p>
-                          <div className="flex flex-row  gap-4 ">
+                          <div className="flex flex-row  gap-4 w-[6.5%] ">
                             <img
                               src="/assets/icons/trashbin.svg"
                               className="cursor-pointer"
