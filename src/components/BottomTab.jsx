@@ -38,11 +38,30 @@ const BottomTab = ({ params }) => {
   };
 
   const canProcess = () => {
-    const hasQuantityGreaterThanZero = services.some(
-      (service) => service.quantity > 0
-    );
-    return hasQuantityGreaterThanZero;
+    if (step === 0) {
+      const hasQuantityGreaterThanZero = services.some(
+        (service) => service.quantity > 0
+      );
+      return hasQuantityGreaterThanZero;
+    } else if (step === 1) {
+      const requiredInputs = [
+        "address",
+        "date",
+        "hour",
+        "district",
+        "amphoe",
+        "province",
+        "zipcode",
+      ]; // รายการ input ที่ต้องการให้กรอกทั้งหมด
+
+      const hasAllRequiredInputs = requiredInputs.every((input) => {
+        return address[input] && address[input] !== ""; // ตรวจสอบว่า input นั้นๆ ไม่เป็นค่าว่างหรือไม่
+      });
+
+      return hasAllRequiredInputs;
+    }
   };
+  console.log(services)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
