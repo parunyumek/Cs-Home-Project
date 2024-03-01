@@ -47,7 +47,8 @@ const Summary = () => {
             <span className="text-gray-700">เวลา</span>
             {address.hour && (
               <span className="text-black">
-                {address.hour}.{address.minute} น.
+                {address.hour.toString().padStart(2, "0")}:
+                {address.minute.toString().padStart(2, "0")} น.
               </span>
             )}
           </div>
