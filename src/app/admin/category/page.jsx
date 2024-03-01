@@ -22,7 +22,7 @@ const Page = () => {
       }
 
       setCategoryList(data);
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error("Error fetching services:", error.message);
     }

@@ -159,13 +159,13 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
     >
       <DragDropContext onDragEnd={handleDragEnd}>
         <div>
-          <div className=" w-[1570px] h-[41px] border-[1px] border-[#e6e7eb] ml-[280px] mt-[150px]  bg-[#EFEFF2] z-10 rounded-t-[10px]">
+          <div className=" w-[82.5%] h-[10%] border-[1px] border-[#e6e7eb] ml-[280px] mt-[150px]  bg-[#EFEFF2] z-10 rounded-t-[10px]">
             <div className="flex flex-row text-[#646C80] text-[14px] mt-2">
-              <div className="flex flex-row w-[400px] justify-start gap-8 ml-16">
+              <div className="flex flex-row w-[25%] justify-start gap-8 ml-16 ">
                 <p>ลำดับ</p>
                 <p>ชื่อหมวดหมู่</p>
               </div>
-              <div className="flex flex-row w-[900px] justify-between ml-36 mb-[11px]">
+              <div className="flex flex-row w-[58%] justify-between ml-36 mb-[11px]">
                 <p>สร้างเมื่อ</p>
                 <p>แก้ไขล่าสุด</p>
                 <p>Action</p>
@@ -190,7 +190,7 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className="flex bg-white w-[1568px] h-[90px] text-black text-[16px] items-center border-b-[1px] "
+                          className="flex bg-white w-[100%] h-[90px] text-black text-[16px] items-center border-b-[1px] "
                         >
                           <img
                             src="/assets/icons/resequence.png"
@@ -203,15 +203,15 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                           <Link
                             href={`/admin/details-category?id=${category.id}`}
                           >
-                            <p className="ml-[45px] w-[480px] text-start text-black hover:text-blue-600">
+                            <p className=" ml-12 w-[430px] text-start text-black hover:text-blue-600 ">
                               {category.category_name}
                             </p>
                           </Link>
 
-                          <p className=" w-[420px] text-start   ">
+                          <p className=" w-[28%] text-start   ">
                             {category.created_at}
                           </p>
-                          <p className=" w-[430px] text-start  ">
+                          <p className=" w-[27%] text-start   ">
                             {" "}
                             {category.updated_at}
                           </p>
