@@ -32,7 +32,6 @@ const page = () => {
   const navbarTitle = "เพิ่ม Promotion Code";
   const buttonCancle = "ยกเลิก";
   const buttonCreate = "สร้าง";
-  const linkToCancle = "";
 
   const router = useRouter();
 
@@ -45,6 +44,10 @@ const page = () => {
     setType(e.target.value);
 
   };
+
+  const handleCancelButtonClick = () => {
+    router.push("/admin/promotions")
+     };
 
   const handlePromotionCode = (e) => {
     setPromotionCode(e.target.value);
@@ -89,7 +92,7 @@ const page = () => {
         title1={navbarTitle}
         buttonTitle1={buttonCancle}
         buttonTitle2={buttonCreate}
-        button1click={linkToCancle}
+        button1click={handleCancelButtonClick}
         button2click={handleSubmit}
       />
       <AdminSideBar />

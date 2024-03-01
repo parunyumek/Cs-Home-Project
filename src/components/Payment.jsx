@@ -36,7 +36,7 @@ const Payment = () => {
     }
     dispatch(
       totalDiscount({
-        totalCalculate: totalCalculate.toLocaleString(),
+        totalCalculate: totalCalculate,
         promotionCode: data.promotion_code,
         promotionDiscount: data.promotion_discount,
         promotionType: data.promotion_type,

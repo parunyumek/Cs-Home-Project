@@ -8,12 +8,10 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 const page = () => {
-
   const [orders, setOrders] = useState([]);
 
-
   const supabase = createClient();
-  const router = useRouter()
+  const router = useRouter();
 
   const fetchData = async () => {
     const userData = getCookie("user");
@@ -27,7 +25,7 @@ const page = () => {
       console.log("error", error);
       return;
     }
-   
+
     const pendingOrders = data.filter(
       (order) => order.status !== "ดำเนินการสำเร็จ"
     );
@@ -71,15 +69,12 @@ const page = () => {
     <div>
       <div className=" h-[80px]">
         <div className="fixed w-full">
-        <Navbar />
+          <Navbar />
         </div>
       </div>
-     
-        <div className="h-[90px] bg-blue-600 flex justify-center items-center mb-6">
-          <h1 className=" text-[32px] text-white">รายการคำสั่งซ่อม</h1>
-        </div>
-      
-
+      <div className="h-[90px] bg-blue-600 flex justify-center items-center mb-6">
+        <h1 className=" text-[32px] text-white">รายการคำสั่งซ่อม</h1>
+      </div>
       <div className="flex flex-row justify-center  mx-auto  w-[100%] bg-gray-100 ">
         <div className="w-[253px] h-[252px] ">
           <div className="  bg-white p-6 rounded-md border-[1px] w-[253px] h-[252px] mr-10 fixed ">
@@ -92,109 +87,97 @@ const page = () => {
               />
               <p>ข้อมูลผู้ใช้งาน</p>
             </div>
-
-            
-              <button
-                className=" flex flex-row items-center mt-6 text-blue-600"
-                onClick={(e) => handleLinkToOrders(e)}
-              >
-                <img
-                  src="/assets/icons/icon-service-order-list-blue.svg"
-                  className="pr-3 pl-1"
-                />
-                รายการคำสั่งซ่อม
-              </button>
-            
-
-            
-              <button
-                className=" flex flex-row items-center mt-6"
-                onClick={(e) => handleLinkToHistories(e)}
-              >
-                <img
-                  src="/assets/icons/icon-history-service.svg"
-                  className="pr-3"
-                />
-                ประวัติการซ่อม
-              </button>
-          
+            <button
+              className=" flex flex-row items-center mt-6 text-blue-600"
+              onClick={(e) => handleLinkToOrders(e)}
+            >
+              <img
+                src="/assets/icons/icon-service-order-list-blue.svg"
+                className="pr-3 pl-1"
+              />
+              รายการคำสั่งซ่อม
+            </button>
+            <button
+              className=" flex flex-row items-center mt-6"
+              onClick={(e) => handleLinkToHistories(e)}
+            >
+              <img
+                src="/assets/icons/icon-history-service.svg"
+                className="pr-3"
+              />
+              ประวัติการซ่อม
+            </button>
           </div>
         </div>
-
         <div>
-         
-           {orders.map((order, index) => (
-                <div
-                  key={index}
-                  className=" w-[830px] bg-white rounded-md border-[1px] p-6 flex flex-row justify-between mb-6 ml-10"
-                >
-                  <div>
-                    <h1 className="text-[20px] font-bold">
-                      คำสั่งการซ่อมรหัส : {order?.order_code}
-                    </h1>
-                    <div className="flex flex-row mt-4">
-                      <img
-                        src="/assets/icons/icon-processing-time.svg"
-                        className="pr-3"
-                      />
-                      <p className=" text-gray-500 text-[14px]">
-                        วันเวลาดำเนินการ: {formatDate(order?.service_date)}
-                        {formatTime(order?.service_time)}
+          {orders.map((order, index) => (
+            <div
+              key={index}
+              className=" w-[830px] bg-white rounded-md border-[1px] p-6 flex flex-row justify-between mb-6 ml-10"
+            >
+              <div>
+                <h1 className="text-[20px] font-bold">
+                  คำสั่งการซ่อมรหัส : {order?.order_code}
+                </h1>
+                <div className="flex flex-row mt-4">
+                  <img
+                    src="/assets/icons/icon-processing-time.svg"
+                    className="pr-3"
+                  />
+                  <p className=" text-gray-500 text-[14px]">
+                    วันเวลาดำเนินการ: {formatDate(order?.service_date)}
+                    {formatTime(order?.service_time)}
+                  </p>
+                </div>
+                <div className="flex flex-row mt-1">
+                  <img src="/assets/icons/icon-employee.svg" className="pr-3" />
+                  <p className=" text-gray-500 text-[14px]">
+                    พนักงาน: เมฆา ฟ้าแว๊บแว๊บ
+                  </p>
+                </div>
+                <h3 className=" text-gray-500 mt-5">รายการ:</h3>
+                {handleFilterSubService(order?.select_services).map(
+                  (item, index) => (
+                    <div key={index}>
+                      <p className="mt-1 text-[14px]">
+                        • {item.subServiceName} {item.quantity} {item.unit}
                       </p>
                     </div>
-                    <div className="flex flex-row mt-1">
-                      <img
-                        src="/assets/icons/icon-employee.svg"
-                        className="pr-3"
-                      />
-                      <p className=" text-gray-500 text-[14px]">
-                        พนักงาน: เมฆา ฟ้าแว๊บแว๊บ
-                      </p>
-                    </div>
-                    <h3 className=" text-gray-500 mt-5">รายการ:</h3>
-                    {handleFilterSubService(order?.select_services).map(
-                      (item, index) => (
-                        <div key={index}>
-                          <p className="mt-1 text-[14px]">
-                            • {item.subServiceName} {item.quantity} {item.unit}
-                          </p>
-                        </div>
-                      )
-                    )}
+                  )
+                )}
+              </div>
+              <div className="flex flex-col justify-between">
+                <div>
+                  <div className="flex flex-row justify-end">
+                    <p className="mr-4 text-gray-500">สถานะ:</p>
+                    <p
+                      className={`rounded-full px-3 ${
+                        order.status === "กำลังดำเนินการ"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.status === "รอดำเนินการ"
+                          ? "bg-gray-200 text-gray-800"
+                          : null
+                      }`}
+                    >
+                      {order.status}
+                    </p>
                   </div>
-                  <div className="flex flex-col justify-between">
-                    <div>
-                      <div className="flex flex-row justify-end">
-                        <p className="mr-4 text-gray-500">สถานะ:</p>
-                        <p
-                          className={`rounded-full px-3 ${
-                            order.status === "กำลังดำเนินการ"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : order.status === "รอดำเนินการ"
-                              ? "bg-gray-200 text-gray-800"
-                              : null
-                          }`}
-                        >
-                          {order.status}
-                        </p>
-                      </div>
-                      <div className="flex flex-row justify-end mt-3">
-                        <p className="mr-4 text-gray-500">ราคารวม:</p>
-                        <p className="text-[18px] font-bold">
-                          {order.total_price.toLocaleString()}.00 ฿
-                        </p>
-                        <p></p>
-                      </div>
-                    </div>
-                    <div className="flex justify-end">
-                      <button className=" text-white bg-blue-600 px-6 py-3 rounded-lg">
-                        ดูรายละเอียด
-                      </button>
-                    </div>
+                  <div className="flex flex-row justify-end mt-3">
+                    <p className="mr-4 text-gray-500">ราคารวม:</p>
+                    <p className="text-[18px] font-bold">
+                      {(order.total_price).toLocaleString()}.00 ฿
+                    </p>
+                    <p></p>
                   </div>
                 </div>
-              ))
-            }
+                <div className="flex justify-end">
+                  <button className=" text-white bg-blue-600 px-6 py-3 rounded-lg">
+                    ดูรายละเอียด
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       <div className="">
