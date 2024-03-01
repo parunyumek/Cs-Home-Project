@@ -100,7 +100,7 @@ const DropdownUser = () => {
           ข้อมูลผู้ใช้งาน
         </MenuItem>
         <MenuItem
-          onClick={handleLinkToHistories}
+          onClick={handleLinkToOrders}
           className="flex gap-2"
           sx={{
             color: "#4B5160",
@@ -119,7 +119,7 @@ const DropdownUser = () => {
           รายการคำสั่งซ่อม
         </MenuItem>
         <MenuItem
-          onClick={handleLinkToOrders}
+          onClick={handleLinkToHistories}
           className="flex gap-2"
           sx={{
             color: "#4B5160",
