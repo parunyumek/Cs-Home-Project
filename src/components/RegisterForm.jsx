@@ -23,8 +23,9 @@ const RegisterForm = () => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const router = useRouter();
-  ////
 
   const validateName = (name) => {
     // Your validation logic here
@@ -56,6 +57,10 @@ const RegisterForm = () => {
     const hasLowerCase = /[a-z]/.test(password);
 
     return hasLength && hasSpecialChar && hasUpperCase && hasLowerCase;
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const FullNameValidator = ({ fullName }) => {
@@ -448,7 +453,7 @@ const RegisterForm = () => {
                 รหัสผ่าน<span className="text-rose-700">*</span>
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className="border-zinc-400 w-[460px] h-9 bg-white rounded border focus:outline-none focus:ring-1 focus:ring-blue-600 p-2 
                 showFullNameValidator
                mx-auto text-black"
@@ -457,6 +462,13 @@ const RegisterForm = () => {
                 id="password"
                 onChange={handlePasswordChange}
               />
+              <button
+                type="button"
+                className="absolute top-[70.5%] transform -translate-y-1/2 right-[34%] text-blue-600 text-sm"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? "ซ่อน" : "แสดง"}
+              </button>
               {showPasswordValidator && (
                 <PasswordValidator password={password} />
               )}
