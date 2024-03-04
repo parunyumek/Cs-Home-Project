@@ -2,14 +2,14 @@
 import AdminNavbar3 from "@/components/AdminNavbar3";
 import AdminSideBar from "@/components/AdminSidebar";
 import { createClient } from "@/supabase/client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 const page = () => {
   const [promotionData, setPromotionData] = useState([]);
-  
-  const router = useRouter()
+
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const navbarTitle = "Promotion Code";
@@ -17,11 +17,10 @@ const page = () => {
   const editPromotion = "แก้ไข";
   const linkToPromotionPage = "/admin/promotions";
   const supabase = createClient();
-  
 
   const handleLinkToEditPage = () => {
-    router.push(`/admin/promotions/edit-promotion?id=${id}`)
-  }
+    router.push(`/admin/promotions/edit-promotion?id=${id}`);
+  };
 
   const fetchData = async () => {
     let { data, error } = await supabase
@@ -73,27 +72,27 @@ const page = () => {
     if (!timeString) return "Invalid time";
 
     // แยกชั่วโมงและนาที
-    const [hourString, minuteString] = timeString.split(':');
+    const [hourString, minuteString] = timeString.split(":");
     let hour = parseInt(hourString);
     let minute = parseInt(minuteString);
-    
+
     // ปรับรูปแบบเวลา
-    let formattedHour = (hour < 10 ? '0' : '') + hour; // เพิ่มเลข 0 ถ้าหลักเดียว
-    let ampm = 'AM';
+    let formattedHour = (hour < 10 ? "0" : "") + hour; // เพิ่มเลข 0 ถ้าหลักเดียว
+    let ampm = "AM";
     if (hour >= 12) {
-        formattedHour = hour - 12;
-        ampm = 'PM';
+      formattedHour = hour - 12;
+      ampm = "PM";
     }
     if (formattedHour === 0) {
-        formattedHour = 12;
+      formattedHour = 12;
     }
 
     // เพิ่มเลข 0 ถ้าหลักเดียว
-    let formattedMinute = (minute < 10 ? '0' : '') + minute;
+    let formattedMinute = (minute < 10 ? "0" : "") + minute;
 
     // ส่งค่าเวลาในรูปแบบ 'hh:mm AM/PM'
     return `${formattedHour}:${formattedMinute}${ampm}`;
-}
+  }
 
   console.log(promotionData);
 
@@ -109,33 +108,41 @@ const page = () => {
       <AdminSideBar />
       <div className="flex flex-col fixed left-[280px] top-[150px] w-[1570px] bg-white gap-10 p-6 py-10 border rounded-lg ">
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80]">Promotion Code</p>
-            <p>{promotionData.promotion_code}</p>
+          <p className="w-[250px] text-[#646C80]">Promotion Code</p>
+          <p>{promotionData.promotion_code}</p>
         </div>
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80]">ประเภท</p>
-            <p>{promotionData.promotion_type}</p>
+          <p className="w-[250px] text-[#646C80]">ประเภท</p>
+          <p>{promotionData.promotion_type}</p>
         </div>
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80]">ราคาที่ลด</p>
-            <p className=" text-[#C82438]">-{promotionData.promotion_discount}{promotionData.promotion_type==="Fixed" ? "฿" : "%"}</p>
+          <p className="w-[250px] text-[#646C80]">ราคาที่ลด</p>
+          <p className=" text-[#C82438]">
+            -{promotionData.promotion_discount}
+            {promotionData.promotion_type === "Fixed" ? "฿" : "%"}
+          </p>
         </div>
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80]">โควต้าการใช้</p>
-            <p>{promotionData.remaining_quota}/{promotionData.quota_limit}</p>
+          <p className="w-[250px] text-[#646C80]">โควต้าการใช้</p>
+          <p>
+            {promotionData.remaining_quota}/{promotionData.quota_limit}
+          </p>
         </div>
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80] ">วันหมดอายุ</p>
-            <p>{formatDateTime2(promotionData.expiry_date)} {formatTime(promotionData.expiry_time)}</p>
+          <p className="w-[250px] text-[#646C80] ">วันหมดอายุ</p>
+          <p>
+            {formatDateTime2(promotionData.expiry_date)}{" "}
+            {formatTime(promotionData.expiry_time)}
+          </p>
         </div>
-        <hr className=""/>
+        <hr className="" />
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80]">สร้างเมื่อ</p>
-            <p>{formatDateTime(promotionData.created_at)}</p>
+          <p className="w-[250px] text-[#646C80]">สร้างเมื่อ</p>
+          <p>{formatDateTime(promotionData.created_at)}</p>
         </div>
         <div className="flex flex-row ">
-            <p className="w-[250px] text-[#646C80]">แก้ไขล่าสุด</p>
-            <p>{formatDateTime(promotionData.updated_at)}</p>
+          <p className="w-[250px] text-[#646C80]">แก้ไขล่าสุด</p>
+          <p>{formatDateTime(promotionData.updated_at)}</p>
         </div>
       </div>
     </div>

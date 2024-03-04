@@ -6,7 +6,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import { useState } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -37,17 +37,16 @@ const page = () => {
 
   const handleTypeChange = (e) => {
     if (e.target.value === "Fixed") {
-      setPercentDiscount('')
+      setPercentDiscount("");
     } else {
-      setFixedDiscount('')
+      setFixedDiscount("");
     }
     setType(e.target.value);
-
   };
 
   const handleCancelButtonClick = () => {
-    router.push("/admin/promotions")
-     };
+    router.push("/admin/promotions");
+  };
 
   const handlePromotionCode = (e) => {
     setPromotionCode(e.target.value);
@@ -68,17 +67,17 @@ const page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const promotionDataFrom = {
-        promotion_code: promotionCode,
-        promotion_type: type,
-        promotion_discount: type === "Fixed" ? fixedDiscount : percentDiscount,
-        quota_limit: quota,
-        remaining_quota: quota,
-        expiry_date: expiryDate.date,
-        expiry_time: `${expiryDate.hour}:${expiryDate.minute}`,
+      promotion_code: promotionCode,
+      promotion_type: type,
+      promotion_discount: type === "Fixed" ? fixedDiscount : percentDiscount,
+      quota_limit: quota,
+      remaining_quota: quota,
+      expiry_date: expiryDate.date,
+      expiry_time: `${expiryDate.hour}:${expiryDate.minute}`,
     };
-    const { error } = await supabase.from("promotions").insert([
-      promotionDataFrom
-    ]);
+    const { error } = await supabase
+      .from("promotions")
+      .insert([promotionDataFrom]);
     if (error) {
       console.error("promotionCreate", error.message);
     }
@@ -144,7 +143,7 @@ const page = () => {
                   <div className="ml-7">
                     <div>
                       <TextField
-                      value={fixedDiscount}
+                        value={fixedDiscount}
                         disabled={type === "Percent"}
                         variant="outlined"
                         onChange={handleFixedDiscount}
@@ -169,7 +168,7 @@ const page = () => {
                     </div>
                     <div>
                       <TextField
-                      value={percentDiscount}
+                        value={percentDiscount}
                         disabled={type === "Fixed"}
                         variant="outlined"
                         onChange={handlePercentDiscount}

@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Copyright from "@/components/Copyright";
 import Footer from "@/components/Footer";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createClient } from "@/supabase/client";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -161,7 +161,7 @@ const page = () => {
                   <div className="flex flex-row justify-end mt-3">
                     <p className="mr-4 text-gray-500">ราคารวม:</p>
                     <p className="text-[18px] font-bold">
-                    {(order.total_price).toLocaleString()}.00 ฿
+                      {order.total_price.toLocaleString()}.00 ฿
                     </p>
                   </div>
                 </div>
