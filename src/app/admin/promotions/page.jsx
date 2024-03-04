@@ -2,7 +2,7 @@
 import AdminNavbar from "@/components/AdminNavbar";
 import AdminSideBar from "@/components/AdminSidebar";
 import { createClient } from "@/supabase/client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";

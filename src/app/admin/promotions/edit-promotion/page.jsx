@@ -6,7 +6,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -30,9 +30,9 @@ const page = () => {
   const [promotionData, setPromotionData] = useState([]);
   const [fixedDiscount, setFixedDiscount] = useState("");
   const [percentDiscount, setPercentDiscount] = useState("");
-  console.log("aaa"+selectedDate);
-  console.log("bbb"+selectedTime);
-  console.log("ccc"+expiryDate);
+  console.log("aaa" + selectedDate);
+  console.log("bbb" + selectedTime);
+  console.log("ccc" + expiryDate);
 
   const navbarTitle = "เพิ่ม Promotion Code";
   const buttonCancle = "ยกเลิก";
@@ -110,8 +110,8 @@ const page = () => {
   };
 
   const handleCancelButtonClick = () => {
-    router.push("/admin/services")
-     };
+    router.push("/admin/services");
+  };
 
   useEffect(() => {
     const fetchService = async () => {
