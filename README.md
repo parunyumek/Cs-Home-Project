@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+A website that provides services related to home maintenance or services associated with homes, such as home repair, home cleaning, and home decoration.
+
 ## Getting Started
 
 First, run the development server:
