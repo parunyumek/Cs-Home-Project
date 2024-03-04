@@ -464,7 +464,7 @@ const RegisterForm = () => {
               />
               <button
                 type="button"
-                className="absolute top-[70.5%] transform -translate-y-1/2 right-[34%] text-blue-600 text-sm"
+                className="relative  transform -translate-y-1/5 right-[-33%] text-blue-600 text-sm"
                 onClick={togglePasswordVisibility}
               >
                 {showPassword ? "ซ่อน" : "แสดง"}
