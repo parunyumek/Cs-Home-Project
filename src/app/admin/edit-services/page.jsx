@@ -39,21 +39,22 @@ const Page = () => {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
 
-    // Get UTC time in milliseconds
-    const utcTime = date.getTime();
-
     // Bangkok, Thailand is UTC+7
-    const bangkokOffset = 24 * 60 * 60 * 1000; // 7 hours in milliseconds
-    const bangkokTime = new Date(utcTime + bangkokOffset);
+    const bangkokOffset = 0 * 60 * 60 * 1000; // 7 hours in milliseconds
+    const bangkokTime = new Date(date.getTime() - bangkokOffset);
 
     const day = bangkokTime.getDate().toString().padStart(2, "0");
     const month = (bangkokTime.getMonth() + 1).toString().padStart(2, "0");
     const year = bangkokTime.getFullYear();
-    const hours = bangkokTime.getHours().toString().padStart(2, "0");
+    let hours = bangkokTime.getHours();
     const minutes = bangkokTime.getMinutes().toString().padStart(2, "0");
-    const ampm = bangkokTime.getHours() >= 12 ? "PM" : "AM";
+    let ampm = hours >= 12 ? "PM" : "AM";
 
-    return `${day - 1}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+    // Convert hours to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
 
   const handleServiceNameChange = (name) => {
@@ -169,7 +170,7 @@ const Page = () => {
       category_name: selectedServiceCategory,
       sub_services: subService,
     };
-    
+
     // Check if imageFile exists before attempting to upload
     if (imageFile) {
       const fileName = uuid();
@@ -179,12 +180,12 @@ const Page = () => {
       if (error) {
         throw error;
       }
-    
+
       const publicUrl = supabase.storage.from("picture").getPublicUrl(fileName);
-    
+
       updatedService.img = publicUrl?.data?.publicUrl;
     }
-    
+
     try {
       // Insert data into 'services' table
       const { data, error } = await supabase

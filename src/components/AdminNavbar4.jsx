@@ -13,7 +13,7 @@ const AdminNavbar4 = ({
   // AdminNavbar with 2 buttons and back button
   return (
     <nav className="w-screen h-[80px] border-gray-300 border-b-2 flex flex-row fixed left-[230px] bg-white z-10 ">
-      <div className="container w-screen flex flex-row justify-between items-center ml-20 ">
+      <div className="container w-[79.5%]  flex flex-row justify-between items-center ml-20 ">
         <div className="ml-10  w-auto ">
           <Link href={backButtonClick}>
             <img

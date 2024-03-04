@@ -8,7 +8,7 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 const page = () => {
-  const [orders, setOrders] = useState([]);
+  const [orderHistories, setOrdersHistories] = useState([]);
 
   const supabase = createClient();
   const router = useRouter();
@@ -25,12 +25,18 @@ const page = () => {
       console.log("error", error);
       return;
     }
-
-    const pendingOrders = data.filter(
-      (order) => order.status !== "ดำเนินการสำเร็จ"
+    const successfulOrders = data.filter(
+      (order) => order.status === "ดำเนินการสำเร็จ"
     );
-    setOrders(pendingOrders);
+
+    setOrdersHistories(successfulOrders);
   };
+
+  const handleFilterSubService = (item) => {
+    const filteredServices = item.filter((item) => item.quantity !== 0);
+    return filteredServices;
+  };
+
   const handleLinkToHistories = (e) => {
     e.preventDefault();
     router.push("/user/order-histories");
@@ -39,11 +45,6 @@ const page = () => {
   const handleLinkToOrders = (e) => {
     e.preventDefault();
     router.push("/user/orders");
-  };
-
-  const handleFilterSubService = (item) => {
-    const filteredServices = item.filter((item) => item.quantity !== 0);
-    return filteredServices;
   };
 
   function formatDate(timestamp) {
@@ -73,9 +74,10 @@ const page = () => {
         </div>
       </div>
       <div className="h-[90px] bg-blue-600 flex justify-center items-center mb-6">
-        <h1 className=" text-[32px] text-white">รายการคำสั่งซ่อม</h1>
+        <h1 className=" text-[32px] text-white ">ประวัติการซ่อม</h1>
       </div>
-      <div className="flex flex-row justify-center  mx-auto  w-[100%] bg-gray-100 ">
+
+      <div className="flex flex-row justify-center  mx-auto h-[100%] w-full bg-gray-100">
         <div className="w-[253px] h-[252px] ">
           <div className="  bg-white p-6 rounded-md border-[1px] w-[253px] h-[252px] mr-10 fixed ">
             <p className="text-[20px] mb-5">บัญชีผู้ใช้</p>
@@ -87,22 +89,24 @@ const page = () => {
               />
               <p>ข้อมูลผู้ใช้งาน</p>
             </div>
+
             <button
-              className=" flex flex-row items-center mt-6 text-blue-600"
+              className=" flex flex-row items-center mt-6"
               onClick={(e) => handleLinkToOrders(e)}
             >
               <img
-                src="/assets/icons/icon-service-order-list-blue.svg"
+                src="/assets/icons/icon-service-order-list.svg"
                 className="pr-3 pl-1"
               />
               รายการคำสั่งซ่อม
             </button>
+
             <button
-              className=" flex flex-row items-center mt-6"
+              className=" flex flex-row items-center mt-6 text-blue-600"
               onClick={(e) => handleLinkToHistories(e)}
             >
               <img
-                src="/assets/icons/icon-history-service.svg"
+                src="/assets/icons/icon-history-service-blue.svg"
                 className="pr-3"
               />
               ประวัติการซ่อม
@@ -110,7 +114,7 @@ const page = () => {
           </div>
         </div>
         <div>
-          {orders.map((order, index) => (
+          {orderHistories.map((order, index) => (
             <div
               key={index}
               className=" w-[830px] bg-white rounded-md border-[1px] p-6 flex flex-row justify-between mb-6 ml-10"
@@ -125,7 +129,7 @@ const page = () => {
                     className="pr-3"
                   />
                   <p className=" text-gray-500 text-[14px]">
-                    วันเวลาดำเนินการ: {formatDate(order?.service_date)}
+                    วันเวลาดำเนินการสำเร็จ: {formatDate(order?.service_date)}
                     {formatTime(order?.service_time)}
                   </p>
                 </div>
@@ -150,30 +154,16 @@ const page = () => {
                 <div>
                   <div className="flex flex-row justify-end">
                     <p className="mr-4 text-gray-500">สถานะ:</p>
-                    <p
-                      className={`rounded-full px-3 ${
-                        order.status === "กำลังดำเนินการ"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : order.status === "รอดำเนินการ"
-                          ? "bg-gray-200 text-gray-800"
-                          : null
-                      }`}
-                    >
+                    <p className=" bg-green-100 text-green-700 rounded-full px-3">
                       {order.status}
                     </p>
                   </div>
                   <div className="flex flex-row justify-end mt-3">
                     <p className="mr-4 text-gray-500">ราคารวม:</p>
                     <p className="text-[18px] font-bold">
-                      {(order.total_price).toLocaleString()}.00 ฿
+                    {(order.total_price).toLocaleString()}.00 ฿
                     </p>
-                    <p></p>
                   </div>
-                </div>
-                <div className="flex justify-end">
-                  <button className=" text-white bg-blue-600 px-6 py-3 rounded-lg">
-                    ดูรายละเอียด
-                  </button>
                 </div>
               </div>
             </div>

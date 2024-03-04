@@ -25,20 +25,16 @@ const AdminNavbar = ({
         <div className="flex">
         <div className="flex">
           <div className="mt-4 ">
-            <img
-              src="/assets/icons/magnifier-icon.svg"
-              alt="magnifier-icon"
-              className=" w-[16px] h-[16px] ml-3 mt-3.5 absolute  "
-            />{" "}
+            {" "}
             <input
               type="text"
               placeholder={title2}
-              className="w-[350px] h-11 px-10 py-2.5 rounded-lg border border-grey-300 text-black"
+              className="w-[350px] h-11 px-4 py-2.5 rounded-lg border border-grey-300 text-black placeholder-ml-[200px]"
               onChange={navBarInputOnChange}
             />
           </div>
           <Link
-            className="w-[148px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex mt-4 ml-6 hover:bg-blue-500"
+            className="w-[148px] h-11 px-6 py-2.5 bg-blue-600 rounded-lg justify-center items-center gap-2 inline-flex mt-4 ml-6"
             href={buttonlink1}
           >
             <button className="text-center text-white text-base font-medium leading-normal w-100">

@@ -16,10 +16,13 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import { useRouter } from "next/navigation";
 
 const DropdownUser = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const router = useRouter();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -33,6 +36,16 @@ const DropdownUser = () => {
   const handleGetUserData = async () => {
     const result = await checkUserData(user?.email);
     setUserData(result);
+  };
+
+  const handleLinkToHistories = (e) => {
+    e.preventDefault();
+    router.push("/user/order-histories");
+  };
+
+  const handleLinkToOrders = (e) => {
+    e.preventDefault();
+    router.push("/user/orders");
   };
 
   useEffect(() => {
@@ -70,7 +83,6 @@ const DropdownUser = () => {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
-        sx={{}}
       >
         <MenuItem
           onClick={handleClose}
@@ -88,7 +100,7 @@ const DropdownUser = () => {
           ข้อมูลผู้ใช้งาน
         </MenuItem>
         <MenuItem
-          onClick={handleClose}
+          onClick={handleLinkToOrders}
           className="flex gap-2"
           sx={{
             color: "#4B5160",
@@ -104,10 +116,10 @@ const DropdownUser = () => {
               fill: "#9AA1B0",
             }}
           />
-          รายงานคำสั่งซ่อม
+          รายการคำสั่งซ่อม
         </MenuItem>
         <MenuItem
-          onClick={handleClose}
+          onClick={handleLinkToHistories}
           className="flex gap-2"
           sx={{
             color: "#4B5160",

@@ -17,21 +17,22 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
 
-    // Get UTC time in milliseconds
-    const utcTime = date.getTime();
-
     // Bangkok, Thailand is UTC+7
-    const bangkokOffset = 24 * 60 * 60 * 1000; // 7 hours in milliseconds
-    const bangkokTime = new Date(utcTime + bangkokOffset);
+    const bangkokOffset = 0 * 60 * 60 * 1000; // 7 hours in milliseconds
+    const bangkokTime = new Date(date.getTime() - bangkokOffset);
 
     const day = bangkokTime.getDate().toString().padStart(2, "0");
     const month = (bangkokTime.getMonth() + 1).toString().padStart(2, "0");
     const year = bangkokTime.getFullYear();
-    const hours = bangkokTime.getHours().toString().padStart(2, "0");
+    let hours = bangkokTime.getHours();
     const minutes = bangkokTime.getMinutes().toString().padStart(2, "0");
-    const ampm = bangkokTime.getHours() >= 12 ? "PM" : "AM";
+    let ampm = hours >= 12 ? "PM" : "AM";
 
-    return `${day - 1}/${month}/${year} ${hours}:${minutes} ${ampm}`;
+    // Convert hours to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
   };
 
   const timeFormatted = (createdTime, updatedTime, callbackFunction) => {
@@ -158,13 +159,13 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
     >
       <DragDropContext onDragEnd={handleDragEnd}>
         <div>
-          <div className=" w-[1570px] h-[41px] border-[1px] border-[#e6e7eb] ml-[280px] mt-[150px]  bg-[#EFEFF2] z-10 rounded-t-[10px]">
+          <div className=" w-[82.5%] h-[10%] border-[1px] border-[#e6e7eb] ml-[280px] mt-[150px]  bg-[#EFEFF2] z-10 rounded-t-[10px]">
             <div className="flex flex-row text-[#646C80] text-[14px] mt-2">
-              <div className="flex flex-row w-[400px] justify-start gap-8 ml-16">
+              <div className="flex flex-row w-[25%] justify-start gap-8 ml-16 ">
                 <p>ลำดับ</p>
                 <p>ชื่อหมวดหมู่</p>
               </div>
-              <div className="flex flex-row w-[900px] justify-between ml-36 mb-[11px]">
+              <div className="flex flex-row w-[58%] justify-between ml-36 mb-[11px]">
                 <p>สร้างเมื่อ</p>
                 <p>แก้ไขล่าสุด</p>
                 <p>Action</p>
@@ -189,7 +190,7 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className="flex bg-white w-[1568px] h-[90px] text-black text-[16px] items-center border-b-[1px] "
+                          className="flex bg-white w-[100%] h-[90px] text-black text-[16px] items-center border-b-[1px] "
                         >
                           <img
                             src="/assets/icons/resequence.png"
@@ -200,17 +201,19 @@ const AdminCategoryLists = ({ categoryListP, searchInput }) => {
                             {index + 1}
                           </p>
                           <Link
+                            className="  ml-12 w-[30%] text-start text-black hover:text-blue-600 "
                             href={`/admin/details-category?id=${category.id}`}
                           >
-                            <p className="ml-[45px] w-[480px] text-start text-black hover:text-blue-600">
-                              {category.category_name}
-                            </p>
+                            <p>{category.category_name}</p>
                           </Link>
 
-                          <p className=" w-[420px] text-start   ">
-                            {createdAt}
+                          <p className="  w-[28%] text-start   ">
+                            {category.created_at}
                           </p>
-                          <p className=" w-[430px] text-start  ">{updatedAt}</p>
+                          <p className=" w-[27%] text-start   ">
+                            {" "}
+                            {category.updated_at}
+                          </p>
                           <div className="flex flex-row  gap-4 ">
                             <img
                               src="/assets/icons/trashbin.svg"

@@ -95,7 +95,7 @@ const Page = () => {
   };
 
   const handleCancelButtonClick = () => {
-    setIsDeleteConfirmationOpen(true);
+ router.push("/admin/services")
   };
 
   const handleCancelDelete = () => {

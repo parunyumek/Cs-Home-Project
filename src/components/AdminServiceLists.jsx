@@ -50,27 +50,6 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
     setUpdatedAt(updatedTime);
   };
 
-  const fetchServicesDetails = async () => {
-    try {
-      let { data, error } = await supabase.from("services").select("*");
-
-      if (error) {
-        throw error;
-      }
-
-      // Modify the timestamp format before setting state
-      data.forEach((service) => {
-        service.created_at = formatDate(service.created_at);
-        service.updated_at = formatDate(service.updated_at);
-      });
-
-      setFilteredServiceList(data);
-      timeFormatted(data[0].created_at, data[0].updated_at, formatDate);
-    } catch (error) {
-      console.error("Error fetching services:", error.message);
-    }
-  };
-
   useEffect(() => {
     const fetchAndFilterServices = async () => {
       try {
@@ -102,7 +81,6 @@ const AdminServiceLists = ({ serviceDetails, searchInput }) => {
   }, [searchInput, serviceDetails]);
 
   // Function to handle reordering
- 
   const handleDragEnd = (result) => {
     if (!result.destination) return; // If dropped outside the list, return
 
