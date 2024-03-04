@@ -6,7 +6,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import React, { useState } from "react";
+import { useState } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -15,7 +15,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../../../supabase";
 
-const page = () => {
+const Page = () => {
   const [promotionCode, setPromotionCode] = useState("");
   const [type, setType] = useState("Fixed");
   const [quota, setQuota] = useState("");
@@ -321,4 +321,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

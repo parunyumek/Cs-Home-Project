@@ -2,7 +2,7 @@
 import AdminNavbar from "@/components/AdminNavbar";
 import AdminSideBar from "@/components/AdminSidebar";
 import { createClient } from "@/supabase/client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -13,7 +13,7 @@ import Box from "@mui/material/Stack";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 
-const page = () => {
+const Page = () => {
   const [promotionData, setPromotionData] = useState([]);
   const [open, setOpen] = useState(false);
   const [idTarget, setIdTarget] = useState(null);
@@ -284,4 +284,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -2,11 +2,11 @@
 import AdminNavbar3 from "@/components/AdminNavbar3";
 import AdminSideBar from "@/components/AdminSidebar";
 import { createClient } from "@/supabase/client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const [promotionData, setPromotionData] = useState([]);
 
   const router = useRouter();
@@ -149,4 +149,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
