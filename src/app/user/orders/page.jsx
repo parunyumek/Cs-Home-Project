@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Copyright from "@/components/Copyright";
 import Footer from "@/components/Footer";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createClient } from "@/supabase/client";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
