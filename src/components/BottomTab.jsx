@@ -144,13 +144,7 @@ const BottomTab = ({ params }) => {
             ย้อนกลับ
           </button>
           {step === 2 ? ( // เพิ่มเงื่อนไขตรวจสอบว่า step เท่ากับ 2 หรือไม่
-            <button
-              className=" rounded-lg bg-blue-600 text-white w-48 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
-              onClick={handleUpdate}
-            >
-              ยืนยันการชำระเงิน
-              <KeyboardArrowRightRoundedIcon className=" text-white" />
-            </button>
+            <div>{""}</div>
           ) : (
             <button
               className=" rounded-lg bg-blue-600 text-white w-40 h-11 flex justify-center items-center gap-2 disabled:bg-gray-300"
