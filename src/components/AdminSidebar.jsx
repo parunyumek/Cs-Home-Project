@@ -5,7 +5,7 @@ const AdminSideBar = () => {
   return (
     <div className="w-60 h-screen bg-blue-950 flex flex-col fixed z-20">
       <div className="w-48 h-[46px] bg-indigo-50 rounded-xl mt-6 ml-6">
-        <Link href={"http://localhost:3000/"}>
+        <Link href={"/"}>
           <div className="text-blue-600 text-xl font-medium flex justify-center mt-2">
             <img
               src="/assets/icons/house_1.svg"

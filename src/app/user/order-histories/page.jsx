@@ -2,12 +2,12 @@
 import Navbar from "@/components/Navbar";
 import Copyright from "@/components/Copyright";
 import Footer from "@/components/Footer";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/supabase/client";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const [orderHistories, setOrdersHistories] = useState([]);
 
   const supabase = createClient();
@@ -178,4 +178,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
