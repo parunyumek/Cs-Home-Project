@@ -35,7 +35,8 @@ const Service = () => {
         let { data, error } = await supabase
           .from("services")
           .select("*")
-          .limit(3);
+          .limit(3)
+          .order("quantity_checkout", { ascending: false });
 
         if (error) {
           throw error;
