@@ -5,6 +5,7 @@ import { supabase } from "../../supabase";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import bcrypt from "bcryptjs";
 
 const RegisterForm = () => {
   const [fullName, setFullName] = useState("");
@@ -326,19 +327,21 @@ const RegisterForm = () => {
     event.preventDefault();
 
     try {
-      // ตรวจสอบข้อมูลในแบบฟอร์ม
+      // Encrypt the password
+      const hashedPassword = await bcrypt.hash(password, 10); // 10 is the saltRounds, you can adjust it as needed
 
+      // Register user with encrypted password
       const { user, error } = await supabase.auth.signUp({
         fullName,
         phoneNumber,
         email,
-        password,
+        password: hashedPassword, // Use the hashed password here
       });
 
       if (error) {
         console.error("Error registering user:", error.message);
       } else {
-        // ลงทะเบียนผู้ใช้สำเร็จ
+        // Registration successful
         console.log("User registered successfully.");
         Swal.fire({
           title: "ขอบคุณสำหรับการลงทะเบียน !",
@@ -349,12 +352,13 @@ const RegisterForm = () => {
         });
         router.push("/login");
 
+        // Insert user data into the table
         const { data, error } = await supabase.from("users").insert([
           {
             fullname: fullName,
             phone_no: phoneNumber,
             email,
-            password,
+            password: hashedPassword, // Use the hashed password here
             created_at: new Date(),
           },
         ]);
